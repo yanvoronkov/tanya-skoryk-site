@@ -1101,7 +1101,7 @@
             </span>
             <span class="checkbox-label-text">
               Я согласна на обработку моих данных, чтобы со мной связались. 
-              <a href="#" onclick="openPrivacyModal(event)">Политика конфиденциальности</a>
+              <a href="javascript:void(0)" onclick="openPrivacyModal(event)">Политика конфиденциальности</a>
             </span>
           </label>
 
@@ -1242,5 +1242,254 @@
   <!-- ========================================================================
        JavaScript: High Performance, No Dependencies
        ======================================================================== -->
-  </body>
+  <script>
+    // Текущий Telegram ник (по умолчанию)
+    let currentTgHandle = 'your_telegram_username';
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Проверяем сохраненный ник в localStorage или URL параметрах (?tg=username)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlTg = urlParams.get('tg');
+      const savedTg = localStorage.getItem('ts_tg_handle');
+
+      if (urlTg) {
+        currentTgHandle = urlTg.replace('@', '').trim();
+        localStorage.setItem('ts_tg_handle', currentTgHandle);
+      } else if (savedTg) {
+        currentTgHandle = savedTg;
+      }
+
+      updateTelegramLink();
+
+      // Закрытие модальных окон по клавише ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closePrivacyModal();
+          closeSettingsModal();
+        }
+      });
+    });
+
+    // Обновление ссылки кнопки Telegram
+    function updateTelegramLink() {
+      const msg = encodeURIComponent("Таня, привет! Я посмотрела видео, хочу узнать подробнее и пообщаться на встрече");
+      const btn = document.getElementById('mainTgBtn');
+      if (btn) {
+        btn.href = `https://t.me/${currentTgHandle}?text=${msg}`;
+      }
+    }
+
+    // Модальное окно политики конфиденциальности
+    function openPrivacyModal(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      const modal = document.getElementById('privacyModal');
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closePrivacyModal() {
+      const modal = document.getElementById('privacyModal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Модальное окно настроек Telegram-ника
+    function openSettingsModal(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      const input = document.getElementById('tgHandleInput');
+      if (input) {
+        input.value = currentTgHandle === 'your_telegram_username' ? '' : currentTgHandle;
+      }
+      const modal = document.getElementById('settingsModal');
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeSettingsModal() {
+      const modal = document.getElementById('settingsModal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function saveSettings() {
+      const input = document.getElementById('tgHandleInput');
+      const val = input ? input.value.trim().replace('@', '') : '';
+      if (val) {
+        currentTgHandle = val;
+        localStorage.setItem('ts_tg_handle', currentTgHandle);
+        updateTelegramLink();
+        closeSettingsModal();
+        showToast('Настройки сохранены', `Кнопка Telegram теперь ведет на @${currentTgHandle}`, 'success');
+      } else {
+        closeSettingsModal();
+      }
+    }
+
+    // Клик по темному фону для закрытия
+    function handleBackdropClick(event, modalId) {
+      if (event.target.id === modalId) {
+        if (modalId === 'privacyModal') closePrivacyModal();
+        if (modalId === 'settingsModal') closeSettingsModal();
+      }
+    }
+
+    // Воспроизведение видео
+    function handlePlayVideo() {
+      const video = document.getElementById('nativeVideoPlayer');
+      const poster = document.getElementById('videoPoster');
+      const playBtn = document.getElementById('playVideoBtn');
+
+      if (!video) return;
+      const source = video.querySelector('source');
+      if (source && source.getAttribute('src') && source.getAttribute('src').trim() !== '') {
+        video.style.display = 'block';
+        if (poster) poster.style.display = 'none';
+        if (playBtn) playBtn.style.display = 'none';
+        video.play().catch(e => console.log('Autoplay prevented:', e));
+      } else {
+        showToast(
+          'Готово к подключению видео',
+          'Вставьте ссылку на ваш видеофайл из Cloudflare Stream или R2 в тег <video> в index.html.',
+          'info'
+        );
+      }
+    }
+
+    // Обработка отправки формы «Мы свяжемся с вами»
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const nameInput = document.getElementById('userNameInput');
+      const contactInput = document.getElementById('userContactInput');
+      const consentInput = document.getElementById('consentCheckbox');
+      const submitBtn = document.getElementById('submitLeadBtn');
+      const spinner = document.getElementById('btnSpinner');
+      const btnText = document.getElementById('btnText');
+
+      const name = nameInput.value.trim();
+      const contact = contactInput.value.trim();
+      const consent = consentInput.checked;
+
+      if (!name) {
+        nameInput.focus();
+        nameInput.classList.add('error');
+        showToast('Пожалуйста, укажите имя', 'Введите ваше имя для обращения', 'error');
+        return;
+      }
+      nameInput.classList.remove('error');
+
+      if (!contact) {
+        contactInput.focus();
+        contactInput.classList.add('error');
+        showToast('Укажите контакт', 'Введите ваш Telegram никнейм или номер телефона', 'error');
+        return;
+      }
+      contactInput.classList.remove('error');
+
+      if (!consent) {
+        showToast('Требуется согласие', 'Подтвердите согласие на обработку персональных данных', 'error');
+        return;
+      }
+
+      // Блокируем кнопку и показываем спиннер
+      submitBtn.disabled = true;
+      if (spinner) spinner.style.display = 'inline-block';
+      if (btnText) btnText.textContent = 'Отправка...';
+
+      try {
+        // Отправка на Cloudflare Pages Function (/api/lead)
+        const response = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, contact, consent })
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          showToast('Заявка отправлена! ✨', resData.message || 'Татьяна свяжется с вами в ближайшее время.', 'success');
+          document.getElementById('leadForm').reset();
+        } else {
+          fallbackLeadAction(name, contact);
+        }
+      } catch (err) {
+        console.warn('API error, using local fallback:', err);
+        fallbackLeadAction(name, contact);
+      } finally {
+        submitBtn.disabled = false;
+        if (spinner) spinner.style.display = 'none';
+        if (btnText) btnText.textContent = 'Оставить заявку';
+      }
+    }
+
+    // Фолбэк при локальном тестировании или отсутствии настроенного Worker
+    function fallbackLeadAction(name, contact) {
+      showToast(
+        'Заявка успешно сформирована!',
+        `Спасибо, ${name}! Мы открываем диалог с Татьяной для подтверждения.`,
+        'success'
+      );
+      const message = encodeURIComponent(`Привет, Таня! Меня зовут ${name}. Мой контакт: ${contact}. Хочу узнать подробнее о круизном клубе и встрече!`);
+      setTimeout(() => {
+        window.open(`https://t.me/${currentTgHandle}?text=${message}`, '_blank');
+      }, 1200);
+      document.getElementById('leadForm').reset();
+    }
+
+    // Всплывающие уведомления (Toast)
+    function showToast(title, desc, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+
+      let iconColor = '#229ED9';
+      let iconSvg = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>';
+
+      if (type === 'success') {
+        iconColor = '#10B981';
+        iconSvg = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+      } else if (type === 'error') {
+        iconColor = '#EF4444';
+        iconSvg = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>';
+      }
+
+      toast.innerHTML = `
+        <svg class="toast-icon" viewBox="0 0 24 24" fill="${iconColor}">
+          ${iconSvg}
+        </svg>
+        <div style="flex: 1;">
+          <div class="toast-title">${title}</div>
+          <div class="toast-desc">${desc}</div>
+        </div>
+      `;
+
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.add('show');
+      });
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 4200);
+    }
+  </script>
+</body>
 </html>
