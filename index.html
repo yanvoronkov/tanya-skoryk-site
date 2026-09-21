@@ -22,21 +22,25 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
   <!-- OpenGraph (Telegram, WhatsApp, Viber, VK, Facebook) -->
-  <meta property="og:type" content="profile">
-  <meta property="og:site_name" content="Татьяна Скорик — Путешествия и Бизнес">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Татьяна Скорик — Путешествия и Онлайн-Бизнес">
   <meta property="og:title" content="Татьяна Скорик | Путешествия на круизных лайнерах и онлайн-бизнес">
   <meta property="og:description" content="Посмотри 7-минутную историю Тани: как она живёт в стиле «каждый месяц — новая страна» и работает онлайн за чашкой кофе с видом на океан.">
-  <meta property="og:image" content="assets/og-image.jpg">
+  <meta property="og:url" content="https://tanya-skoryk-site.pages.dev/">
+  <meta property="og:image" content="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
+  <meta property="og:image:secure_url" content="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Татьяна Скорик — Путешествия на круизных лайнерах и онлайн-бизнес">
   <meta property="og:locale" content="ru_RU">
+  <link rel="image_src" href="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Татьяна Скорик | Путешествия на круизных лайнерах и онлайн-бизнес">
   <meta name="twitter:description" content="Посмотри 7-минутную историю Тани: как она живёт в стиле «каждый месяц — новая страна» и работает онлайн за чашкой кофе с видом на океан.">
-  <meta name="twitter:image" content="assets/og-image.jpg">
+  <meta name="twitter:image" content="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
 
   <!-- Google Fonts: Cormorant Garamond & Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -187,28 +191,28 @@
       padding: 0 4px;
     }
 
-    /* Speaker Pill Badge */
+    /* Speaker Pill Badge - увеличен в 1.5 раза */
     .speaker-badge {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 6px 14px 6px 6px;
+      gap: 14px;
+      padding: 7px 22px 7px 7px;
       background: var(--glass-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(215, 146, 130, 0.35);
-      border-radius: 40px;
-      box-shadow: 0 4px 14px rgba(194, 116, 100, 0.1);
-      margin-bottom: 16px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(215, 146, 130, 0.4);
+      border-radius: 50px;
+      box-shadow: 0 6px 20px rgba(194, 116, 100, 0.12);
+      margin-bottom: 22px;
     }
     .speaker-avatar-wrap {
       position: relative;
-      width: 38px;
-      height: 38px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2px solid #FFFFFF;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border: 2.5px solid #FFFFFF;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
       flex-shrink: 0;
     }
     .speaker-avatar-img {
@@ -220,51 +224,53 @@
     }
     .speaker-online-dot {
       position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 9px;
-      height: 9px;
+      bottom: 2px;
+      right: 2px;
+      width: 13px;
+      height: 13px;
       background: #10B981;
-      border: 1.5px solid #FFFFFF;
+      border: 2px solid #FFFFFF;
       border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     .speaker-text {
       display: flex;
       flex-direction: column;
+      gap: 2px;
     }
     .speaker-name-row {
       display: flex;
       align-items: center;
-      gap: 5px;
-      font-size: 13px;
+      gap: 6px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text-navy);
       line-height: 1.2;
     }
     .verified-icon {
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
       fill: var(--color-tg-blue);
       flex-shrink: 0;
     }
     .speaker-tag {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--color-rose-500);
       font-weight: 500;
       line-height: 1.2;
     }
 
-    /* Headings */
+    /* Headings - увеличен заголовок в 1.5 раза, подзаголовок на 20% */
     .hero-title {
       font-family: var(--font-serif);
-      font-size: clamp(26px, 6.8vw, 34px);
-      line-height: 1.2;
+      font-size: clamp(34px, 9vw, 48px);
+      line-height: 1.12;
       font-weight: 700;
       text-align: center;
       color: var(--text-navy);
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
-      padding: 0 6px;
+      letter-spacing: -0.015em;
+      margin-bottom: 14px;
+      padding: 0 4px;
       text-wrap: balance;
     }
     .shimmer-text {
@@ -276,13 +282,13 @@
     }
 
     .hero-subtitle {
-      font-size: 14px;
+      font-size: 17px;
       line-height: 1.55;
       text-align: center;
       color: #4A5568;
       font-weight: 400;
-      margin-bottom: 20px;
-      padding: 0 6px;
+      margin-bottom: 24px;
+      padding: 0 4px;
       text-wrap: pretty;
     }
 
@@ -558,12 +564,13 @@
     }
     .form-input {
       width: 100%;
-      padding: 13px 16px;
+      padding: 14px 18px;
+      min-height: 52px;
       border-radius: var(--radius-input);
       border: 1px solid #E2D7CE;
       background: #FFFFFF;
       font-family: var(--font-sans);
-      font-size: 14px;
+      font-size: 16px !important; /* Предотвращает авто-зум экрана на iPhone в Safari */
       color: var(--text-dark);
       transition: all 0.2s ease;
       outline: none;
@@ -1058,21 +1065,21 @@
               id="userNameInput" 
               name="name" 
               class="form-input" 
-              placeholder="" 
+              placeholder="Например, Анна" 
               required
               autocomplete="name"
             >
           </div>
 
-          <!-- Field 2: Telegram или телефон -->
+          <!-- Field 2: Telegram или WhatsApp -->
           <div class="form-group" style="margin-bottom: 18px;">
-            <label for="userContactInput" class="form-label">Telegram или телефон</label>
+            <label for="userContactInput" class="form-label">Telegram или WhatsApp</label>
             <input 
               type="text" 
               id="userContactInput" 
               name="contact" 
               class="form-input" 
-              placeholder="@username или +49..." 
+              placeholder="@username или +7 999 123-45-67" 
               required
               autocomplete="tel"
             >
