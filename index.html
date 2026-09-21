@@ -26,21 +26,20 @@
   <meta property="og:site_name" content="Татьяна Скорик — Путешествия и Онлайн-Бизнес">
   <meta property="og:title" content="Татьяна Скорик | Путешествия на круизных лайнерах и онлайн-бизнес">
   <meta property="og:description" content="Посмотри 7-минутную историю Тани: как она живёт в стиле «каждый месяц — новая страна» и работает онлайн за чашкой кофе с видом на океан.">
-  <meta property="og:url" content="https://tanya-skoryk-site.pages.dev/">
-  <meta property="og:image" content="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
-  <meta property="og:image:secure_url" content="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
+  <meta property="og:image" content="https://raw.githubusercontent.com/yanvoronkov/tanya-skoryk-site/main/assets/og-image.jpg">
+  <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/yanvoronkov/tanya-skoryk-site/main/assets/og-image.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Татьяна Скорик — Путешествия на круизных лайнерах и онлайн-бизнес">
   <meta property="og:locale" content="ru_RU">
-  <link rel="image_src" href="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
+  <link rel="image_src" href="https://raw.githubusercontent.com/yanvoronkov/tanya-skoryk-site/main/assets/og-image.jpg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Татьяна Скорик | Путешествия на круизных лайнерах и онлайн-бизнес">
   <meta name="twitter:description" content="Посмотри 7-минутную историю Тани: как она живёт в стиле «каждый месяц — новая страна» и работает онлайн за чашкой кофе с видом на океан.">
-  <meta name="twitter:image" content="https://tanya-skoryk-site.pages.dev/assets/og-image.jpg">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/yanvoronkov/tanya-skoryk-site/main/assets/og-image.jpg">
 
   <!-- Google Fonts: Cormorant Garamond & Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,7 +70,8 @@
         "@type": "VideoObject",
         "name": "7-минутная история Татьяны Скорик: круизы и онлайн-бизнес",
         "description": "Как жить в стиле «каждый месяц — новая страна» и зарабатывать онлайн за чашкой кофе с видом на океан.",
-        "thumbnailUrl": "assets/og-image.jpg",
+        "thumbnailUrl": "https://raw.githubusercontent.com/yanvoronkov/tanya-skoryk-site/main/assets/og-image.jpg",
+        "contentUrl": "https://video.inetskills.ru/taniya-video-presentation-incruses.MP4",
         "uploadDate": "2026-09-21T00:00:00+03:00",
         "duration": "PT7M11S"
       }
@@ -1009,7 +1009,7 @@
           playsinline 
           preload="metadata"
         >
-          <source src="" type="video/mp4">
+          <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.MP4" type="video/mp4">
           Ваш браузер не поддерживает воспроизведение видео.
         </video>
 
@@ -1353,6 +1353,8 @@
       const video = document.getElementById('nativeVideoPlayer');
       const poster = document.getElementById('videoPoster');
       const playBtn = document.getElementById('playVideoBtn');
+      const quote = document.querySelector('.video-quote');
+      const topBar = document.querySelector('.video-top-bar');
 
       if (!video) return;
       const source = video.querySelector('source');
@@ -1360,13 +1362,9 @@
         video.style.display = 'block';
         if (poster) poster.style.display = 'none';
         if (playBtn) playBtn.style.display = 'none';
+        if (quote) quote.style.display = 'none';
+        if (topBar) topBar.style.display = 'none';
         video.play().catch(e => console.log('Autoplay prevented:', e));
-      } else {
-        showToast(
-          'Готово к подключению видео',
-          'Вставьте ссылку на ваш видеофайл из Cloudflare Stream или R2 в тег <video> в index.html.',
-          'info'
-        );
       }
     }
 
