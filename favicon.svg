@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8B4A6" />
+      <stop offset="50%" stop-color="#C27464" />
+      <stop offset="100%" stop-color="#8F3E2F" />
+    </linearGradient>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE8DF" />
+      <stop offset="100%" stop-color="#D79282" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="url(#goldGrad)" />
+  <rect x="2" y="2" width="60" height="60" rx="16" stroke="url(#borderGrad)" stroke-width="2" />
+  <!-- Elegant anchor / crown monogram symbol -->
+  <path d="M32 14v22M24 22h16M18 28c1.5 8 7 13 14 13s12.5-5 14-13M32 41v9M27 50h10" stroke="#FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="32" cy="14" r="3" fill="#FFF" />
+</svg>

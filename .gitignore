@@ -1,0 +1,5 @@
+.DS_Store
+*.log
+screenshot_*.png
+.system_generated/
+node_modules/
