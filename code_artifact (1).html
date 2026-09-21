@@ -1075,17 +1075,17 @@
          ====================================================================== -->
     <div class="action-section">
 
-      <!-- Blue Telegram Button with Airplane Icon -->
+      <!-- Blue Telegram Button with Authentic Telegram Icon -->
       <a 
         id="mainTgBtn"
-        href="https://t.me/your_telegram_username?text=%D0%A2%D0%B0%D0%BD%D1%8F%2C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82!%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%D0%B0%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5"
+        href="https://t.me/tanya_skoryk?text=%D0%A2%D0%B0%D0%BD%D1%8F%2C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82!%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%D0%B0%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5"
         target="_blank" 
         rel="noopener noreferrer" 
         class="btn-tg-primary"
       >
-        <!-- Paper Plane SVG Icon -->
-        <svg viewBox="0 0 24 24">
-          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        <!-- Authentic Round Telegram Icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/>
         </svg>
         <span>Написать мне в телеграм</span>
       </a>
@@ -1277,7 +1277,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/>
           </svg>
-          <span>Написать мне в Telegram</span>
+          <span>Написать мне в телеграм</span>
         </a>
 
         <!-- Кнопка закрытия -->
@@ -1353,27 +1353,15 @@
     });
 
     // Модальное окно успеха отправки заявки
-    let successTimer = null;
-
     function openSuccessModal() {
       const modal = document.getElementById('successModal');
       if (modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-
-        // Автозакрытие через 6 секунд (пользователь также может закрыть крестиком или кнопкой)
-        if (successTimer) clearTimeout(successTimer);
-        successTimer = setTimeout(() => {
-          closeSuccessModal();
-        }, 6000);
       }
     }
 
     function closeSuccessModal() {
-      if (successTimer) {
-        clearTimeout(successTimer);
-        successTimer = null;
-      }
       const modal = document.getElementById('successModal');
       if (modal) {
         modal.classList.remove('active');
