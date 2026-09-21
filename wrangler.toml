@@ -1,0 +1,8 @@
+name = "tanya-skoryk-site"
+main = "_worker.js"
+compatibility_date = "2024-09-21"
+keep_vars = true
+
+[assets]
+directory = "."
+binding = "ASSETS"
