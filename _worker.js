@@ -23,7 +23,7 @@ const CORS_HEADERS = {
 async function handleDiagnostics(env) {
   const botToken = env.TELEGRAM_BOT_TOKEN;
   const chatId = env.TELEGRAM_CHAT_ID;
-  const telegramLink = env.TELEGRAM_LINK || null;
+  const telegramLink = env.TELEGRAM_LINK || 'https://t.me/m/cThxNnSsYTE6';
 
   let botStatus = 'not_configured';
   let botUsername = null;
