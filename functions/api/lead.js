@@ -47,30 +47,61 @@ export async function onRequestPost(context) {
     // Проверка настроек Telegram Bot в переменных окружения Cloudflare
     const botToken = env.TELEGRAM_BOT_TOKEN;
     const chatId = env.TELEGRAM_CHAT_ID;
+    const topicId = env.TELEGRAM_TOPIC_ID; // Опционально: ID темы/топика в супергруппе
 
     if (botToken && chatId) {
-      const textMessage = `🔔 *Новая заявка с сайта Татьяны Скорик!*\n\n` +
-        `👤 *Имя:* ${cleanName}\n` +
-        `✈️ *Контакт (Telegram / Телефон):* ${cleanContact}\n` +
-        `⏱ *Время:* ${dateStr} (МСК)\n` +
-        `🌐 *Формат:* Личный разбор / круизный клуб`;
+      // Функция экранирования специальных символов для HTML режима Telegram
+      const escapeHtml = (str) => {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      };
+
+      const safeName = escapeHtml(cleanName);
+      const safeContact = escapeHtml(cleanContact);
+
+      const htmlMessage = [
+        `🔔 <b>Новая заявка с сайта Татьяны Скорик!</b>`,
+        ``,
+        `👤 <b>Имя:</b> ${safeName}`,
+        `✈️ <b>Telegram / Телефон:</b> ${safeContact}`,
+        `⏱ <b>Время отправки:</b> ${dateStr} (МСК)`,
+        `🌐 <b>Источник:</b> Форма презентации (Cloudflare Pages)`
+      ].join('\n');
+
+      const tgPayload = {
+        chat_id: chatId,
+        text: htmlMessage,
+        parse_mode: 'HTML'
+      };
+
+      if (topicId) {
+        tgPayload.message_thread_id = Number(topicId);
+      }
 
       const tgUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
       const tgRes = await fetch(tgUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: textMessage,
-          parse_mode: 'Markdown'
-        })
+        body: JSON.stringify(tgPayload)
       });
 
       if (!tgRes.ok) {
-        console.error('Ошибка отправки в Telegram Bot API:', await tgRes.text());
+        const errorText = await tgRes.text();
+        console.error('Ошибка отправки в Telegram Bot API:', errorText);
+        return new Response(JSON.stringify({ 
+          error: true, 
+          message: 'Ошибка доставки сообщения ботом в Telegram. Проверьте правильность токена и ID чата.' 
+        }), {
+          status: 502,
+          headers: corsHeaders
+        });
       }
     } else {
       // Если переменные еще не заданы в панели Cloudflare, логируем в консоль Cloudflare
+      console.warn(`[Внимание]: Переменные TELEGRAM_BOT_TOKEN или TELEGRAM_CHAT_ID не настроены в Cloudflare Pages.`);
       console.log(`[Новая заявка]: Имя: ${cleanName}, Контакт: ${cleanContact}, Дата: ${dateStr}`);
     }
 
