@@ -94,7 +94,8 @@ async function sendMetaCapiLeadEvent(env, {
   fbp,
   fbc,
   fbclid,
-  urlParams
+  urlParams,
+  videoStats
 }) {
   const pixelId = env.FB_PIXEL_ID || '4047095728920722';
   const accessToken = env.FB_ACCESS_TOKEN;
