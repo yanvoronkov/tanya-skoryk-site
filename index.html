@@ -1394,6 +1394,66 @@
       };
     }
 
+    // ========================================================================
+    // Аналитика видеоплеера (длина и глубина просмотра)
+    // ========================================================================
+    let videoWatchData = {
+      started: false,
+      completed: false,
+      maxSeconds: 0,
+      duration: 0
+    };
+
+    function initVideoAnalytics() {
+      const video = document.getElementById('nativeVideoPlayer');
+      if (!video) return;
+
+      const updateProgress = () => {
+        videoWatchData.started = true;
+        if (video.currentTime > videoWatchData.maxSeconds) {
+          videoWatchData.maxSeconds = Math.round(video.currentTime);
+        }
+        if (video.duration && !isNaN(video.duration)) {
+          videoWatchData.duration = Math.round(video.duration);
+          // Если до конца осталось менее 10 сек или просмотрено от 92%
+          if (video.currentTime >= video.duration - 10 || (video.currentTime / video.duration) >= 0.92) {
+            videoWatchData.completed = true;
+          }
+        }
+      };
+
+      video.addEventListener('play', () => {
+        videoWatchData.started = true;
+        if (video.duration && !isNaN(video.duration)) {
+          videoWatchData.duration = Math.round(video.duration);
+        }
+      });
+
+      video.addEventListener('timeupdate', updateProgress);
+
+      video.addEventListener('ended', () => {
+        videoWatchData.completed = true;
+        if (video.duration) {
+          videoWatchData.maxSeconds = Math.round(video.duration);
+        }
+      });
+    }
+
+    function getVideoStats() {
+      const video = document.getElementById('nativeVideoPlayer');
+      let dur = videoWatchData.duration;
+      if ((!dur || dur === 0) && video && !isNaN(video.duration) && video.duration > 0) {
+        dur = Math.round(video.duration);
+      }
+
+      return {
+        started: videoWatchData.started,
+        completed: videoWatchData.completed,
+        watchedSeconds: videoWatchData.maxSeconds,
+        durationSeconds: dur
+      };
+    }
+
     // Функция обновления всех ссылок Telegram на странице
     function applyTelegramLink(url) {
       if (!url) return;
@@ -1411,7 +1471,10 @@
       // 1. Инициализируем сбор маркетинговых параметров из ссылки
       initMarketingTracking();
 
-      // 2. Применяем ссылку Telegram по умолчанию
+      // 2. Инициализируем аналитику видеоплеера
+      initVideoAnalytics();
+
+      // 3. Применяем ссылку Telegram по умолчанию
       applyTelegramLink(DEFAULT_TELEGRAM_LINK);
 
       // 3. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel)
@@ -1620,6 +1683,7 @@
       // Генерируем уникальный event_id для дедупликации Browser Pixel и Conversions API
       const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
       const mktData = getMarketingData();
+      const videoStats = getVideoStats();
 
       // 1. Отправляем браузерное событие Lead в Meta Pixel с eventID
       if (typeof fbq === 'function') {
@@ -1645,7 +1709,8 @@
             fbp: mktData.fbp,
             fbc: mktData.fbc,
             fbclid: mktData.fbclid,
-            urlParams: mktData.urlParams
+            urlParams: mktData.urlParams,
+            videoStats: videoStats
           })
         });
 

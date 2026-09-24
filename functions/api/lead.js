@@ -48,6 +48,41 @@ function extractEmail(str) {
   return match ? match[0].toLowerCase().trim() : null;
 }
 
+// Форматирование статистики просмотра видео для Telegram
+function formatVideoProgress(videoStats) {
+  if (!videoStats || !videoStats.started || !videoStats.watchedSeconds || videoStats.watchedSeconds < 2) {
+    return 'Видео не просмотрено';
+  }
+
+  if (videoStats.completed) {
+    return 'Просмотрено полностью (100%) ✅';
+  }
+
+  const watched = videoStats.watchedSeconds;
+  const duration = videoStats.durationSeconds;
+
+  if (duration && duration > 0) {
+    const percent = Math.min(100, Math.round((watched / duration) * 100));
+    if (percent >= 92) {
+      return 'Просмотрено полностью (100%) ✅';
+    }
+
+    const watchedM = Math.floor(watched / 60);
+    const watchedS = watched % 60;
+    const durM = Math.floor(duration / 60);
+    const durS = duration % 60;
+
+    const watchedStr = `${watchedM} мин ${watchedS < 10 ? '0' : ''}${watchedS} сек`;
+    const durStr = `${durM}:${durS < 10 ? '0' : ''}${durS}`;
+
+    return `${watchedStr} из ${durStr} (${percent}%)`;
+  }
+
+  const watchedM = Math.floor(watched / 60);
+  const watchedS = watched % 60;
+  return `${watchedM} мин ${watchedS < 10 ? '0' : ''}${watchedS} сек`;
+}
+
 // Отправка события конверсии в Meta Conversions API (Graph API)
 async function sendMetaCapiLeadEvent(env, {
   eventId,
@@ -105,6 +140,13 @@ async function sendMetaCapiLeadEvent(env, {
       if (typeof v === 'string' && v.length > 0 && v.length < 300) {
         customData[k] = v;
       }
+    }
+  }
+
+  if (videoStats && videoStats.watchedSeconds) {
+    customData.video_watched_seconds = videoStats.watchedSeconds;
+    if (videoStats.durationSeconds) {
+      customData.video_watched_percent = Math.min(100, Math.round((videoStats.watchedSeconds / videoStats.durationSeconds) * 100));
     }
   }
 
@@ -235,7 +277,8 @@ export async function onRequestPost(context) {
       fbp: finalFbp,
       fbc: finalFbc,
       fbclid: data.fbclid,
-      urlParams: data.urlParams
+      urlParams: data.urlParams,
+      videoStats: data.videoStats
     });
 
     if (!botToken || !chatId) {
@@ -306,12 +349,16 @@ export async function onRequestPost(context) {
       }
     }
 
+    const videoProgressText = formatVideoProgress(data.videoStats);
+    const videoLine = `🎬 <b>Просмотр видео:</b> ${escapeHtml(videoProgressText)}`;
+
     const messageParts = [
       `🔔 <b>Новая заявка с сайта Татьяны Скорик!</b>`,
       ``,
       `👤 <b>Имя:</b> ${safeName}`,
       `✈️ <b>Telegram / Телефон:</b> ${safeContact}`,
-      `⏱ <b>Время отправки:</b> ${dateStr} (МСК)`
+      `⏱ <b>Время отправки:</b> ${dateStr} (МСК)`,
+      videoLine
     ];
 
     // Добавляем блок UTM-меток ТОЛЬКО если есть хотя бы одна метка
