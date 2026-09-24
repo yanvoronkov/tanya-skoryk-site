@@ -52,6 +52,8 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
+    // Отключение автоматического определения событий и кликов без кода (SubscribedButtonClick)
+    fbq('set', 'autoConfig', false, '4047095728920722');
     fbq('init', '4047095728920722');
     fbq('track', 'PageView');
   </script>
@@ -1100,6 +1102,7 @@
         target="_blank" 
         rel="noopener noreferrer" 
         class="btn-tg-primary"
+        data-fbq-track="false"
       >
         <!-- Authentic Round Telegram Icon -->
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
@@ -1170,7 +1173,7 @@
           </label>
 
           <!-- Submit Button: Оставить заявку -->
-          <button type="submit" id="submitLeadBtn" class="btn-submit">
+          <button type="submit" id="submitLeadBtn" class="btn-submit" data-fbq-track="false">
             <span class="spinner" id="btnSpinner"></span>
             <span id="btnText">Оставить заявку</span>
           </button>
@@ -1290,6 +1293,7 @@
           target="_blank" 
           rel="noopener" 
           class="btn-tg-primary"
+          data-fbq-track="false"
           style="margin-top: 18px; padding: 14px 18px; font-size: 15px; width: 100%;"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
