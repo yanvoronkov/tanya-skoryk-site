@@ -42,6 +42,24 @@
   <meta name="twitter:description" content="Посмотри мою 7-минутную историю: как я живу в стиле «каждый месяц — новая страна» и работаю онлайн за чашкой кофе с видом на океан.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/yanvoronkov/tanya-skoryk-site/main/assets/og-image.jpg">
 
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '4047095728920722');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=4047095728920722&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
   <!-- Google Fonts: Cormorant Garamond & Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1302,6 +1320,76 @@
     // ========================================================================
     let DEFAULT_TELEGRAM_LINK = "https://t.me/m/cThxNnSsYTE6";
 
+    // ========================================================================
+    // Маркетинговая аналитика: Facebook Pixel & Meta Conversions API (CAPI)
+    // ========================================================================
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+      return match ? decodeURIComponent(match[3]) : null;
+    }
+
+    // Сохранение всех параметров из ссылки (UTM, fbclid и т.д.) в sessionStorage
+    function initMarketingTracking() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        let stored = {};
+        try {
+          stored = JSON.parse(sessionStorage.getItem('skoryk_mkt_params') || '{}');
+        } catch(e) {}
+
+        let changed = false;
+        for (const [key, value] of params.entries()) {
+          if (value && (!stored[key] || stored[key] !== value)) {
+            stored[key] = value;
+            changed = true;
+          }
+        }
+
+        // Если в URL есть fbclid, фиксируем fbc (формат: fb.1.timestamp.fbclid)
+        const fbclid = params.get('fbclid');
+        if (fbclid && !stored.fbc) {
+          stored.fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+          changed = true;
+        }
+
+        if (changed) {
+          sessionStorage.setItem('skoryk_mkt_params', JSON.stringify(stored));
+        }
+      } catch (err) {
+        console.warn('Ошибка инициализации маркетинговых параметров:', err);
+      }
+    }
+
+    // Получение собранных параметров для передачи в Meta CAPI
+    function getMarketingData() {
+      let stored = {};
+      try {
+        stored = JSON.parse(sessionStorage.getItem('skoryk_mkt_params') || '{}');
+      } catch(e) {}
+
+      const params = new URLSearchParams(window.location.search);
+      const current = {};
+      for (const [key, value] of params.entries()) {
+        current[key] = value;
+      }
+
+      const allParams = { ...stored, ...current };
+      const fbclid = allParams.fbclid || null;
+
+      const fbp = getCookie('_fbp') || stored._fbp || null;
+      let fbc = getCookie('_fbc') || stored.fbc || null;
+      if (!fbc && fbclid) {
+        fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+      }
+
+      return {
+        urlParams: allParams,
+        fbclid,
+        fbp,
+        fbc
+      };
+    }
+
     // Функция обновления всех ссылок Telegram на странице
     function applyTelegramLink(url) {
       if (!url) return;
@@ -1316,10 +1404,32 @@
 
     // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Применяем ссылку по умолчанию
+      // 1. Инициализируем сбор маркетинговых параметров из ссылки
+      initMarketingTracking();
+
+      // 2. Применяем ссылку Telegram по умолчанию
       applyTelegramLink(DEFAULT_TELEGRAM_LINK);
 
-      // 2. Проверяем URL параметры (?link=... или ?tg=...)
+      // 3. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel)
+      const mainTgBtn = document.getElementById('mainTgBtn');
+      if (mainTgBtn) {
+        mainTgBtn.addEventListener('click', () => {
+          if (typeof fbq === 'function') {
+            fbq('track', 'Contact', { content_name: 'Кнопка Telegram (Главная)' });
+          }
+        });
+      }
+
+      const successTgBtn = document.getElementById('successTgBtn');
+      if (successTgBtn) {
+        successTgBtn.addEventListener('click', () => {
+          if (typeof fbq === 'function') {
+            fbq('track', 'Contact', { content_name: 'Кнопка Telegram (Окно успеха)' });
+          }
+        });
+      }
+
+      // 4. Проверяем URL параметры (?link=... или ?tg=...)
       const urlParams = new URLSearchParams(window.location.search);
       const urlLink = urlParams.get('link');
       const urlTg = urlParams.get('tg');
@@ -1332,7 +1442,7 @@
         applyTelegramLink(`https://t.me/${handle}?text=${msg}`);
       }
 
-      // 3. Запрашиваем конфиг с бэкенда Cloudflare (/api/lead)
+      // 5. Запрашиваем конфиг с бэкенда Cloudflare (/api/lead)
       fetch('/api/lead')
         .then(res => res.json())
         .then(data => {
@@ -1503,12 +1613,36 @@
       if (spinner) spinner.style.display = 'inline-block';
       if (btnText) btnText.textContent = 'Отправка...';
 
+      // Генерируем уникальный event_id для дедупликации Browser Pixel и Conversions API
+      const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+      const mktData = getMarketingData();
+
+      // 1. Отправляем браузерное событие Lead в Meta Pixel с eventID
+      if (typeof fbq === 'function') {
+        fbq('track', 'Lead', {
+          content_name: 'Форма презентации',
+          content_category: 'Круизный клуб / Бизнес',
+          status: 'submitted'
+        }, { eventID: eventId });
+      }
+
       try {
-        // Отправка на Cloudflare API (/api/lead)
+        // 2. Отправка на Cloudflare API (/api/lead) с параметрами для CAPI и Telegram
         const response = await fetch('/api/lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, contact, consent })
+          body: JSON.stringify({
+            name,
+            contact,
+            consent,
+            eventId,
+            pageUrl: window.location.href,
+            userAgent: navigator.userAgent,
+            fbp: mktData.fbp,
+            fbc: mktData.fbc,
+            fbclid: mktData.fbclid,
+            urlParams: mktData.urlParams
+          })
         });
 
         const resData = await response.json().catch(() => ({}));

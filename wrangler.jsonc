@@ -4,6 +4,9 @@
   "main": "_worker.js",
   "compatibility_date": "2024-09-21",
   "keep_vars": true,
+  "vars": {
+    "FB_PIXEL_ID": "4047095728920722"
+  },
   "assets": {
     "directory": ".",
     "binding": "ASSETS"
