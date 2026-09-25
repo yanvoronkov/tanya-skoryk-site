@@ -505,6 +505,43 @@
       margin-top: 4px;
     }
 
+    /* Primary WhatsApp Green Button */
+    .btn-wa-primary {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 18px;
+      border-radius: var(--radius-btn);
+      background: linear-gradient(180deg, #25D366 0%, #1EBE5D 100%);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 15.5px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 10px 24px -4px rgba(37, 211, 102, 0.42);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+    .btn-wa-primary:hover {
+      background: linear-gradient(180deg, #2CE06E 0%, #1CAE54 100%);
+      box-shadow: 0 14px 28px -4px rgba(37, 211, 102, 0.52);
+      transform: translateY(-1px);
+    }
+    .btn-wa-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 14px -2px rgba(37, 211, 102, 0.4);
+    }
+    .btn-wa-primary svg {
+      width: 20px;
+      height: 20px;
+      fill: #FFFFFF;
+      flex-shrink: 0;
+    }
+
     /* Primary Telegram Blue Button */
     .btn-tg-primary {
       width: 100%;
@@ -1116,6 +1153,22 @@
          ====================================================================== -->
     <div class="action-section">
 
+      <!-- Green WhatsApp Button (Above Telegram) -->
+      <a 
+        id="mainWaBtn"
+        href="https://wa.me/6281337045610?text=%D0%A2%D0%B0%D0%BD%D1%8F%2C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82%21%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%28%D0%B0%29%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%BE%D1%81%D1%82%D0%B8"
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn-wa-primary"
+        data-fbq-track="false"
+      >
+        <!-- Authentic WhatsApp Icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7.02 8.48 7.02 9.69C7.02 10.9 7.9 12.06 8.02 12.23C8.14 12.4 9.73 14.86 12.18 15.92C12.76 16.17 13.22 16.32 13.57 16.43C14.16 16.62 14.7 16.59 15.12 16.53C15.6 16.46 16.58 15.94 16.79 15.36C17 14.78 17 14.28 16.93 14.18C16.87 14.07 16.71 14.01 16.46 13.89C16.22 13.76 15 13.16 14.77 13.08C14.55 13 14.38 12.96 14.22 13.21C14.05 13.46 13.58 14.01 13.44 14.18C13.3 14.34 13.15 14.36 12.91 14.24C12.66 14.11 11.87 13.85 10.93 13.01C10.2 12.36 9.71 11.55 9.56 11.3C9.42 11.06 9.55 10.92 9.67 10.8C9.78 10.69 9.92 10.51 10.05 10.36C10.17 10.22 10.21 10.11 10.3 9.94C10.38 9.78 10.34 9.63 10.28 9.51C10.22 9.39 9.73 8.18 9.52 7.68C9.33 7.19 9.12 7.26 8.97 7.25C8.82 7.24 8.68 7.33 8.53 7.33Z"/>
+        </svg>
+        <span>Написать мне в WhatsApp</span>
+      </a>
+
       <!-- Blue Telegram Button with Authentic Telegram Icon -->
       <a 
         id="mainTgBtn"
@@ -1307,6 +1360,22 @@
           Спасибо! В ближайшее время я лично свяжусь с вами.
         </p>
 
+        <!-- Кнопка перехода в WhatsApp -->
+        <a 
+          id="successWaBtn" 
+          href="https://wa.me/6281337045610?text=%D0%A2%D0%B0%D0%BD%D1%8F%2C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82%21%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%28%D0%B0%29%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%BE%D1%81%D1%82%D0%B8" 
+          target="_blank" 
+          rel="noopener" 
+          class="btn-wa-primary"
+          data-fbq-track="false"
+          style="margin-top: 18px; padding: 14px 18px; font-size: 15px; width: 100%;"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7.02 8.48 7.02 9.69C7.02 10.9 7.9 12.06 8.02 12.23C8.14 12.4 9.73 14.86 12.18 15.92C12.76 16.17 13.22 16.32 13.57 16.43C14.16 16.62 14.7 16.59 15.12 16.53C15.6 16.46 16.58 15.94 16.79 15.36C17 14.78 17 14.28 16.93 14.18C16.87 14.07 16.71 14.01 16.46 13.89C16.22 13.76 15 13.16 14.77 13.08C14.55 13 14.38 12.96 14.22 13.21C14.05 13.46 13.58 14.01 13.44 14.18C13.3 14.34 13.15 14.36 12.91 14.24C12.66 14.11 11.87 13.85 10.93 13.01C10.2 12.36 9.71 11.55 9.56 11.3C9.42 11.06 9.55 10.92 9.67 10.8C9.78 10.69 9.92 10.51 10.05 10.36C10.17 10.22 10.21 10.11 10.3 9.94C10.38 9.78 10.34 9.63 10.28 9.51C10.22 9.39 9.73 8.18 9.52 7.68C9.33 7.19 9.12 7.26 8.97 7.25C8.82 7.24 8.68 7.33 8.53 7.33Z"/>
+          </svg>
+          <span>Написать мне в WhatsApp</span>
+        </a>
+
         <!-- Кнопка перехода в Telegram -->
         <a 
           id="successTgBtn" 
@@ -1315,7 +1384,7 @@
           rel="noopener" 
           class="btn-tg-primary"
           data-fbq-track="false"
-          style="margin-top: 18px; padding: 14px 18px; font-size: 15px; width: 100%;"
+          style="margin-top: 10px; padding: 14px 18px; font-size: 15px; width: 100%;"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/>
@@ -1340,10 +1409,11 @@
        ======================================================================== -->
   <script>
     // ========================================================================
-    // Настройка прямой ссылки на Telegram (с предустановленным сообщением)
-    // Можно изменить прямо здесь или передать через переменную TELEGRAM_LINK в Cloudflare
+    // Настройка прямых ссылок на мессенджеры (Telegram и WhatsApp)
+    // Можно изменить прямо здесь или передать через переменные окружения Cloudflare
     // ========================================================================
     let DEFAULT_TELEGRAM_LINK = "https://t.me/m/cThxNnSsYTE6";
+    let DEFAULT_WHATSAPP_LINK = "https://wa.me/6281337045610?text=%D0%A2%D0%B0%D0%BD%D1%8F%2C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82%21%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%28%D0%B0%29%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%BE%D1%81%D1%82%D0%B8";
 
     // ========================================================================
     // Маркетинговая аналитика: Facebook Pixel & Meta Conversions API (CAPI)
@@ -1487,6 +1557,18 @@
       if (successBtn) successBtn.href = url;
     }
 
+    // Функция обновления всех ссылок WhatsApp на странице
+    function applyWhatsAppLink(url) {
+      if (!url) return;
+      DEFAULT_WHATSAPP_LINK = url;
+      
+      const mainBtn = document.getElementById('mainWaBtn');
+      if (mainBtn) mainBtn.href = url;
+
+      const successBtn = document.getElementById('successWaBtn');
+      if (successBtn) successBtn.href = url;
+    }
+
     // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Инициализируем сбор маркетинговых параметров из ссылки
@@ -1495,14 +1577,70 @@
       // 2. Инициализируем аналитику видеоплеера
       initVideoAnalytics();
 
-      // 3. Применяем ссылку Telegram по умолчанию
+      // 3. Применяем ссылки на мессенджеры по умолчанию
       applyTelegramLink(DEFAULT_TELEGRAM_LINK);
+      applyWhatsAppLink(DEFAULT_WHATSAPP_LINK);
 
-      // 3. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel и уведомление в Telegram)
+      // 4. Отслеживание кликов по кнопкам WhatsApp (событие Contact в Meta Pixel и уведомление в Telegram)
+      const mainWaBtn = document.getElementById('mainWaBtn');
+      if (mainWaBtn) {
+        mainWaBtn.addEventListener('click', () => {
+          const eventId = 'contact_wa_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+
+          // Фиксируем событие Contact в Meta Pixel
+          if (typeof fbq === 'function') {
+            fbq('track', 'Contact', {
+              content_name: 'Кнопка WhatsApp (Главная)'
+            }, { eventID: eventId });
+          }
+
+          // Защита от дублей кликов (не чаще 1 раза в 15 секунд)
+          const lastClickTime = Number(sessionStorage.getItem('wa_main_click_time') || 0);
+          const now = Date.now();
+          if (now - lastClickTime < 15000) {
+            return;
+          }
+          sessionStorage.setItem('wa_main_click_time', String(now));
+
+          // Отправка фонового уведомления в Telegram и Meta CAPI через бэкенд
+          const mktData = getMarketingData();
+          const videoStats = getVideoStats();
+
+          fetch('/api/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              type: 'contact',
+              messenger: 'whatsapp',
+              action: 'whatsapp_click',
+              eventId: eventId,
+              pageUrl: window.location.href,
+              userAgent: navigator.userAgent,
+              fbp: mktData.fbp,
+              fbc: mktData.fbc,
+              fbclid: mktData.fbclid,
+              urlParams: mktData.urlParams,
+              videoStats: videoStats
+            })
+          }).catch((err) => console.warn('WA click notify error:', err));
+        });
+      }
+
+      const successWaBtn = document.getElementById('successWaBtn');
+      if (successWaBtn) {
+        successWaBtn.addEventListener('click', () => {
+          if (typeof fbq === 'function') {
+            fbq('track', 'Contact', { content_name: 'Кнопка WhatsApp (Окно успеха)' });
+          }
+        });
+      }
+
+      // 5. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel и уведомление в Telegram)
       const mainTgBtn = document.getElementById('mainTgBtn');
       if (mainTgBtn) {
         mainTgBtn.addEventListener('click', () => {
-          const eventId = 'contact_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+          const eventId = 'contact_tg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
 
           // Фиксируем событие Contact в Meta Pixel
           if (typeof fbq === 'function') {
@@ -1529,6 +1667,7 @@
             keepalive: true,
             body: JSON.stringify({
               type: 'contact',
+              messenger: 'telegram',
               action: 'telegram_click',
               eventId: eventId,
               pageUrl: window.location.href,
@@ -1552,10 +1691,11 @@
         });
       }
 
-      // 4. Проверяем URL параметры (?link=... или ?tg=...)
+      // 6. Проверяем URL параметры (?link=..., ?tg=..., ?wa=...)
       const urlParams = new URLSearchParams(window.location.search);
       const urlLink = urlParams.get('link');
       const urlTg = urlParams.get('tg');
+      const urlWa = urlParams.get('wa') || urlParams.get('whatsapp');
 
       if (urlLink) {
         applyTelegramLink(decodeURIComponent(urlLink));
@@ -1565,12 +1705,25 @@
         applyTelegramLink(`https://t.me/${handle}?text=${msg}`);
       }
 
-      // 5. Запрашиваем конфиг с бэкенда Cloudflare (/api/lead)
+      if (urlWa) {
+        if (urlWa.startsWith('http')) {
+          applyWhatsAppLink(decodeURIComponent(urlWa));
+        } else {
+          const phone = urlWa.replace(/[^\d]/g, '');
+          const msg = encodeURIComponent("Таня, привет! Я посмотрел(а) видео, хочу узнать подробности");
+          applyWhatsAppLink(`https://wa.me/${phone}?text=${msg}`);
+        }
+      }
+
+      // 7. Запрашиваем конфиг с бэкенда Cloudflare (/api/lead)
       fetch('/api/lead')
         .then(res => res.json())
         .then(data => {
           if (data && data.telegramLink) {
             applyTelegramLink(data.telegramLink);
+          }
+          if (data && data.whatsappLink) {
+            applyWhatsAppLink(data.whatsappLink);
           }
         })
         .catch(() => {});

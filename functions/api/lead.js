@@ -223,10 +223,12 @@ export async function onRequestPost(context) {
 
   try {
     const data = await request.json();
-    const isContactClick = data.type === 'contact' || data.action === 'telegram_click';
+    const isContactClick = data.type === 'contact' || data.action === 'telegram_click' || data.action === 'whatsapp_click';
+    const isWhatsApp = data.messenger === 'whatsapp' || data.action === 'whatsapp_click';
+    const messengerLabel = isWhatsApp ? 'WhatsApp' : 'Telegram';
     const { name, contact, consent } = data;
 
-    // Валидация входных данных для формы заявки (для клика по Telegram валидация не требуется)
+    // Валидация входных данных для формы заявки (для клика по мессенджерам валидация не требуется)
     if (!isContactClick) {
       if (!name || typeof name !== 'string' || name.trim().length === 0) {
         return new Response(JSON.stringify({ error: true, message: 'Пожалуйста, укажите ваше имя' }), {
@@ -276,8 +278,10 @@ export async function onRequestPost(context) {
     }
 
     const eventName = isContactClick ? 'Contact' : 'Lead';
-    const contentName = isContactClick ? 'Кнопка Telegram (Главная)' : 'Форма презентации';
-    const eventPrefix = isContactClick ? 'contact_' : 'lead_';
+    const contentName = isContactClick 
+      ? (isWhatsApp ? 'Кнопка WhatsApp (Главная)' : 'Кнопка Telegram (Главная)') 
+      : 'Форма презентации';
+    const eventPrefix = isContactClick ? (isWhatsApp ? 'contact_wa_' : 'contact_tg_') : 'lead_';
     const eventId = data.eventId || (eventPrefix + Date.now() + '_' + Math.random().toString(36).substring(2, 8));
 
     // Отправка в Meta Conversions API
@@ -357,7 +361,7 @@ export async function onRequestPost(context) {
     if (env.FB_ACCESS_TOKEN) {
       if (capiResult.status === 'success') {
         capiLine = isContactClick
-          ? `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован переход (Contact)`
+          ? `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован переход (${messengerLabel})`
           : `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован лид (Lead)`;
       } else {
         capiLine = `🎯 <b>Meta CAPI:</b> ⚠️ Ошибка (${escapeHtml(capiResult.status)})`;
@@ -370,12 +374,29 @@ export async function onRequestPost(context) {
     let messageParts = [];
 
     if (isContactClick) {
+      const title = isWhatsApp
+        ? `💬 <b>Переход в WhatsApp с сайта Татьяны Скорик!</b>`
+        : `💬 <b>Переход в Telegram с сайта Татьяны Скорик!</b>`;
+      const actionText = isWhatsApp
+        ? `Клик по кнопке «Написать мне в WhatsApp»`
+        : `Клик по кнопке «Написать мне в телеграм»`;
+
       messageParts = [
-        `💬 <b>Переход в Telegram с сайта Татьяны Скорик!</b>`,
+        title,
         ``,
         `⏱ <b>Время перехода:</b> ${dateStr} (МСК)`,
         videoLine
       ];
+
+      if (utmLines.length > 0) {
+        messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
+      }
+
+      if (capiLine) {
+        messageParts.push(``, capiLine);
+      }
+
+      messageParts.push(``, `🌐 <b>Действие:</b> ${actionText}`);
     } else {
       const safeName = escapeHtml(cleanName);
       const safeContact = escapeHtml(cleanContact);
@@ -387,21 +408,15 @@ export async function onRequestPost(context) {
         `⏱ <b>Время отправки:</b> ${dateStr} (МСК)`,
         videoLine
       ];
-    }
 
-    // Добавляем блок UTM-меток ТОЛЬКО если есть хотя бы одна метка
-    if (utmLines.length > 0) {
-      messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
-    }
+      if (utmLines.length > 0) {
+        messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
+      }
 
-    // Добавляем статус Meta CAPI (если токен настроен)
-    if (capiLine) {
-      messageParts.push(``, capiLine);
-    }
+      if (capiLine) {
+        messageParts.push(``, capiLine);
+      }
 
-    if (isContactClick) {
-      messageParts.push(``, `🌐 <b>Действие:</b> Клик по кнопке «Написать мне в телеграм»`);
-    } else {
       messageParts.push(``, `🌐 <b>Источник:</b> Форма презентации (Cloudflare Pages)`);
     }
 
@@ -475,6 +490,7 @@ export async function onRequestGet(context) {
   const botToken = env.TELEGRAM_BOT_TOKEN;
   const chatId = env.TELEGRAM_CHAT_ID;
   const telegramLink = env.TELEGRAM_LINK || 'https://t.me/m/cThxNnSsYTE6';
+  const whatsappLink = env.WHATSAPP_LINK || 'https://wa.me/6281337045610?text=%D0%A2%D0%B0%D0%BD%D1%8F%2C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82%21%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%28%D0%B0%29%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%BE%D1%81%D1%82%D0%B8';
   const fbAccessToken = env.FB_ACCESS_TOKEN;
   const fbPixelId = env.FB_PIXEL_ID || '4047095728920722';
 
@@ -507,6 +523,7 @@ export async function onRequestGet(context) {
     ok: true,
     status: isConfigured ? 'ready' : 'configuration_needed',
     telegramLink: telegramLink,
+    whatsappLink: whatsappLink,
     diagnostics: {
       hasBotToken: Boolean(botToken),
       hasChatId: Boolean(chatId),
