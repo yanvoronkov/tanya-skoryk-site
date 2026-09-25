@@ -3,3 +3,5 @@
 screenshot_*.png
 .system_generated/
 node_modules/
+*.mp4
+*.MP4
