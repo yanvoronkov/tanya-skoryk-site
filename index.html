@@ -428,6 +428,24 @@
       fill: var(--color-rose-500);
       transform: translateX(2px);
     }
+    .play-btn.loading .play-icon {
+      display: none;
+    }
+    .play-btn.loading .play-btn-ripple {
+      animation: none;
+    }
+    .play-btn-spinner {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(194, 116, 100, 0.25);
+      border-top-color: var(--color-rose-500);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .play-btn.loading .play-btn-spinner {
+      display: block;
+    }
 
     /* Video Quote */
     .video-quote {
@@ -1023,7 +1041,7 @@
 
     <!-- Video Module (9:16 Aspect, Cloudflare Stream / R2 / MP4 Ready) -->
     <div class="video-card-wrap">
-      <div class="video-container" id="videoContainer">
+      <div class="video-container" id="videoContainer" onclick="handlePlayVideo(event)" style="cursor: pointer;">
         
         <!-- Video Poster -->
         <img 
@@ -1053,13 +1071,14 @@
         <button 
           id="playVideoBtn" 
           class="play-btn" 
-          onclick="handlePlayVideo()" 
+          onclick="handlePlayVideo(event)" 
           aria-label="Смотреть видео"
         >
           <div class="play-btn-ripple"></div>
           <svg class="play-icon" viewBox="0 0 24 24">
             <path d="M8 5v14l11-7z"/>
           </svg>
+          <div class="play-btn-spinner"></div>
         </button>
 
         <!-- Speaker Quote -->
@@ -1071,6 +1090,7 @@
         <video 
           id="nativeVideoPlayer" 
           class="native-player" 
+          src="https://video.inetskills.ru/taniya-video-presentation-incruses.MP4"
           controls 
           playsinline 
           preload="metadata"
@@ -1656,7 +1676,11 @@
     }
 
     // Воспроизведение видео
-    function handlePlayVideo() {
+    function handlePlayVideo(event) {
+      if (event) {
+        event.stopPropagation();
+      }
+
       const video = document.getElementById('nativeVideoPlayer');
       const poster = document.getElementById('videoPoster');
       const playBtn = document.getElementById('playVideoBtn');
@@ -1664,14 +1688,56 @@
       const topBar = document.querySelector('.video-top-bar');
 
       if (!video) return;
-      const source = video.querySelector('source');
-      if (source && source.getAttribute('src') && source.getAttribute('src').trim() !== '') {
+
+      // Если видео уже играет, ничего не делаем
+      if (!video.paused && video.currentTime > 0) return;
+
+      // Показываем спиннер загрузки на кнопке
+      if (playBtn) {
+        playBtn.classList.add('loading');
+      }
+
+      const videoUrl = 'https://video.inetskills.ru/taniya-video-presentation-incruses.MP4';
+      if (!video.src || video.src === '' || video.error || video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+        video.src = videoUrl;
+        video.load();
+      }
+
+      let isRevealed = false;
+      const revealVideoPlayer = () => {
+        if (isRevealed) return;
+        isRevealed = true;
         video.style.display = 'block';
         if (poster) poster.style.display = 'none';
-        if (playBtn) playBtn.style.display = 'none';
+        if (playBtn) {
+          playBtn.style.display = 'none';
+          playBtn.classList.remove('loading');
+        }
         if (quote) quote.style.display = 'none';
         if (topBar) topBar.style.display = 'none';
-        video.play().catch(e => console.log('Autoplay prevented:', e));
+      };
+
+      // Прячем постер только когда видео РЕАЛЬНО готово играть или пошли первые кадры
+      video.addEventListener('playing', revealVideoPlayer, { once: true });
+      video.addEventListener('timeupdate', () => {
+        if (video.currentTime > 0.05) revealVideoPlayer();
+      }, { once: true });
+      video.addEventListener('canplay', () => {
+        if (video.readyState >= 2) revealVideoPlayer();
+      }, { once: true });
+
+      video.addEventListener('error', (e) => {
+        console.warn('Ошибка загрузки видеофайла:', video.error, e);
+        if (playBtn) playBtn.classList.remove('loading');
+        showToast('Загрузка видео', 'Подключаемся к видеосерверу... Нажмите еще раз', 'info');
+      }, { once: true });
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(e => {
+          console.warn('Воспроизведение приостановлено браузером:', e);
+          if (playBtn) playBtn.classList.remove('loading');
+        });
       }
     }
 
