@@ -51,11 +51,11 @@ function extractEmail(str) {
 // Форматирование статистики просмотра видео для Telegram
 function formatVideoProgress(videoStats) {
   if (!videoStats || !videoStats.started || !videoStats.watchedSeconds || videoStats.watchedSeconds < 2) {
-    return 'Не запускал';
+    return 'Не просмотрено';
   }
 
   if (videoStats.completed) {
-    return 'Досмотрел до конца (100%) ✅';
+    return 'Просмотрено полностью (100%) ✅';
   }
 
   const watched = videoStats.watchedSeconds;
@@ -64,7 +64,7 @@ function formatVideoProgress(videoStats) {
   if (duration && duration > 0) {
     const percent = Math.min(100, Math.round((watched / duration) * 100));
     if (percent >= 92) {
-      return 'Досмотрел до конца (100%) ✅';
+      return 'Просмотрено полностью (100%) ✅';
     }
 
     const watchedM = Math.floor(watched / 60);
