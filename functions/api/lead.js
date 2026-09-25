@@ -51,11 +51,11 @@ function extractEmail(str) {
 // Форматирование статистики просмотра видео для Telegram
 function formatVideoProgress(videoStats) {
   if (!videoStats || !videoStats.started || !videoStats.watchedSeconds || videoStats.watchedSeconds < 2) {
-    return 'Видео не просмотрено';
+    return 'Не запускал';
   }
 
   if (videoStats.completed) {
-    return 'Просмотрено полностью (100%) ✅';
+    return 'Досмотрел до конца (100%) ✅';
   }
 
   const watched = videoStats.watchedSeconds;
@@ -64,7 +64,7 @@ function formatVideoProgress(videoStats) {
   if (duration && duration > 0) {
     const percent = Math.min(100, Math.round((watched / duration) * 100));
     if (percent >= 92) {
-      return 'Просмотрено полностью (100%) ✅';
+      return 'Досмотрел до конца (100%) ✅';
     }
 
     const watchedM = Math.floor(watched / 60);
@@ -84,7 +84,9 @@ function formatVideoProgress(videoStats) {
 }
 
 // Отправка события конверсии в Meta Conversions API (Graph API)
-async function sendMetaCapiLeadEvent(env, {
+async function sendMetaCapiEvent(env, {
+  eventName = 'Lead',
+  contentName = 'Форма презентации',
   eventId,
   name,
   contact,
@@ -129,12 +131,15 @@ async function sendMetaCapiLeadEvent(env, {
   if (hashedEmail) userData.em = [hashedEmail];
 
   const customData = {
-    content_name: 'Форма презентации',
+    content_name: contentName,
     content_category: 'Круизный клуб / Бизнес',
-    status: 'submitted',
-    currency: 'USD',
-    value: 0
+    status: eventName === 'Lead' ? 'submitted' : 'clicked'
   };
+
+  if (eventName === 'Lead') {
+    customData.currency = 'USD';
+    customData.value = 0;
+  }
 
   if (urlParams && typeof urlParams === 'object') {
     for (const [k, v] of Object.entries(urlParams)) {
@@ -152,7 +157,7 @@ async function sendMetaCapiLeadEvent(env, {
   }
 
   const eventPayload = {
-    event_name: 'Lead',
+    event_name: eventName,
     event_time: Math.floor(Date.now() / 1000),
     event_id: eventId,
     event_source_url: pageUrl || 'https://tanyaskoryk.com',
@@ -211,37 +216,42 @@ async function sendMetaCapiLeadEvent(env, {
   }
 }
 
+const sendMetaCapiLeadEvent = sendMetaCapiEvent;
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
     const data = await request.json();
+    const isContactClick = data.type === 'contact' || data.action === 'telegram_click';
     const { name, contact, consent } = data;
 
-    // Валидация входных данных
-    if (!name || typeof name !== 'string' || name.trim().length === 0) {
-      return new Response(JSON.stringify({ error: true, message: 'Пожалуйста, укажите ваше имя' }), {
-        status: 400,
-        headers: CORS_HEADERS
-      });
+    // Валидация входных данных для формы заявки (для клика по Telegram валидация не требуется)
+    if (!isContactClick) {
+      if (!name || typeof name !== 'string' || name.trim().length === 0) {
+        return new Response(JSON.stringify({ error: true, message: 'Пожалуйста, укажите ваше имя' }), {
+          status: 400,
+          headers: CORS_HEADERS
+        });
+      }
+
+      if (!contact || typeof contact !== 'string' || contact.trim().length === 0) {
+        return new Response(JSON.stringify({ error: true, message: 'Пожалуйста, укажите ваш Telegram или телефон' }), {
+          status: 400,
+          headers: CORS_HEADERS
+        });
+      }
+
+      if (!consent) {
+        return new Response(JSON.stringify({ error: true, message: 'Необходимо согласие на обработку персональных данных' }), {
+          status: 400,
+          headers: CORS_HEADERS
+        });
+      }
     }
 
-    if (!contact || typeof contact !== 'string' || contact.trim().length === 0) {
-      return new Response(JSON.stringify({ error: true, message: 'Пожалуйста, укажите ваш Telegram или телефон' }), {
-        status: 400,
-        headers: CORS_HEADERS
-      });
-    }
-
-    if (!consent) {
-      return new Response(JSON.stringify({ error: true, message: 'Необходимо согласие на обработку персональных данных' }), {
-        status: 400,
-        headers: CORS_HEADERS
-      });
-    }
-
-    const cleanName = name.trim();
-    const cleanContact = contact.trim();
+    const cleanName = (name && typeof name === 'string') ? name.trim() : '';
+    const cleanContact = (contact && typeof contact === 'string') ? contact.trim() : '';
     const dateStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
 
     // Проверка настроек Telegram Bot в переменных окружения Cloudflare
@@ -265,10 +275,15 @@ export async function onRequestPost(context) {
       if (match) finalFbc = match[1];
     }
 
-    const eventId = data.eventId || ('lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8));
+    const eventName = isContactClick ? 'Contact' : 'Lead';
+    const contentName = isContactClick ? 'Кнопка Telegram (Главная)' : 'Форма презентации';
+    const eventPrefix = isContactClick ? 'contact_' : 'lead_';
+    const eventId = data.eventId || (eventPrefix + Date.now() + '_' + Math.random().toString(36).substring(2, 8));
 
     // Отправка в Meta Conversions API
-    const capiResult = await sendMetaCapiLeadEvent(env, {
+    const capiResult = await sendMetaCapiEvent(env, {
+      eventName: eventName,
+      contentName: contentName,
       eventId: eventId,
       name: cleanName,
       contact: cleanContact,
@@ -299,9 +314,6 @@ export async function onRequestPost(context) {
         headers: CORS_HEADERS
       });
     }
-
-    const safeName = escapeHtml(cleanName);
-    const safeContact = escapeHtml(cleanContact);
 
     // Сбор UTM-меток и параметров рекламных кампаний
     const utmLines = [];
@@ -344,7 +356,9 @@ export async function onRequestPost(context) {
     let capiLine = null;
     if (env.FB_ACCESS_TOKEN) {
       if (capiResult.status === 'success') {
-        capiLine = `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован лид (Lead)`;
+        capiLine = isContactClick
+          ? `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован переход (Contact)`
+          : `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован лид (Lead)`;
       } else {
         capiLine = `🎯 <b>Meta CAPI:</b> ⚠️ Ошибка (${escapeHtml(capiResult.status)})`;
       }
@@ -353,14 +367,27 @@ export async function onRequestPost(context) {
     const videoProgressText = formatVideoProgress(data.videoStats);
     const videoLine = `🎬 <b>Просмотр видео:</b> ${escapeHtml(videoProgressText)}`;
 
-    const messageParts = [
-      `🔔 <b>Новая заявка с сайта Татьяны Скорик!</b>`,
-      ``,
-      `👤 <b>Имя:</b> ${safeName}`,
-      `✈️ <b>Telegram / Телефон:</b> ${safeContact}`,
-      `⏱ <b>Время отправки:</b> ${dateStr} (МСК)`,
-      videoLine
-    ];
+    let messageParts = [];
+
+    if (isContactClick) {
+      messageParts = [
+        `💬 <b>Переход в Telegram с сайта Татьяны Скорик!</b>`,
+        ``,
+        `⏱ <b>Время перехода:</b> ${dateStr} (МСК)`,
+        videoLine
+      ];
+    } else {
+      const safeName = escapeHtml(cleanName);
+      const safeContact = escapeHtml(cleanContact);
+      messageParts = [
+        `🔔 <b>Новая заявка с сайта Татьяны Скорик!</b>`,
+        ``,
+        `👤 <b>Имя:</b> ${safeName}`,
+        `✈️ <b>Telegram / Телефон:</b> ${safeContact}`,
+        `⏱ <b>Время отправки:</b> ${dateStr} (МСК)`,
+        videoLine
+      ];
+    }
 
     // Добавляем блок UTM-меток ТОЛЬКО если есть хотя бы одна метка
     if (utmLines.length > 0) {
@@ -372,7 +399,11 @@ export async function onRequestPost(context) {
       messageParts.push(``, capiLine);
     }
 
-    messageParts.push(``, `🌐 <b>Источник:</b> Форма презентации (Cloudflare Pages)`);
+    if (isContactClick) {
+      messageParts.push(``, `🌐 <b>Действие:</b> Клик по кнопке «Написать мне в телеграм»`);
+    } else {
+      messageParts.push(``, `🌐 <b>Источник:</b> Форма презентации (Cloudflare Pages)`);
+    }
 
     const htmlMessage = messageParts.join('\n');
 
@@ -418,7 +449,7 @@ export async function onRequestPost(context) {
 
     return new Response(JSON.stringify({
       success: true,
-      message: 'Спасибо! Ваша заявка принята. В ближайшее время я свяжусь с вами.',
+      message: isContactClick ? 'Переход зафиксирован' : 'Спасибо! Ваша заявка принята. В ближайшее время я свяжусь с вами.',
       capi: {
         status: capiResult.status
       }

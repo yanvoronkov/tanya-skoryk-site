@@ -1478,13 +1478,48 @@
       // 3. Применяем ссылку Telegram по умолчанию
       applyTelegramLink(DEFAULT_TELEGRAM_LINK);
 
-      // 3. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel)
+      // 3. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel и уведомление в Telegram)
       const mainTgBtn = document.getElementById('mainTgBtn');
       if (mainTgBtn) {
         mainTgBtn.addEventListener('click', () => {
+          const eventId = 'contact_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+
+          // Фиксируем событие Contact в Meta Pixel
           if (typeof fbq === 'function') {
-            fbq('track', 'Contact', { content_name: 'Кнопка Telegram (Главная)' });
+            fbq('track', 'Contact', {
+              content_name: 'Кнопка Telegram (Главная)'
+            }, { eventID: eventId });
           }
+
+          // Защита от дублей кликов (не чаще 1 раза в 15 секунд)
+          const lastClickTime = Number(sessionStorage.getItem('tg_main_click_time') || 0);
+          const now = Date.now();
+          if (now - lastClickTime < 15000) {
+            return;
+          }
+          sessionStorage.setItem('tg_main_click_time', String(now));
+
+          // Отправка фонового уведомления в Telegram и Meta CAPI через бэкенд
+          const mktData = getMarketingData();
+          const videoStats = getVideoStats();
+
+          fetch('/api/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              type: 'contact',
+              action: 'telegram_click',
+              eventId: eventId,
+              pageUrl: window.location.href,
+              userAgent: navigator.userAgent,
+              fbp: mktData.fbp,
+              fbc: mktData.fbc,
+              fbclid: mktData.fbclid,
+              urlParams: mktData.urlParams,
+              videoStats: videoStats
+            })
+          }).catch((err) => console.warn('TG click notify error:', err));
         });
       }
 
