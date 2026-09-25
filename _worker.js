@@ -1,5 +1,5 @@
 /**
- * Cloudflare Worker / Pages Advanced Mode Script
+ * Cloudflare Worker / Pages Advanced Mode Script (v1.2.1)
  * Обеспечивает работу API /api/lead, отправку в Telegram, передачу событий в Meta Conversions API (CAPI)
  * и отдачу статических файлов лендинга
  */
