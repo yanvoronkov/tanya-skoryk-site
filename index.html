@@ -1529,10 +1529,49 @@
           videoWatchData.maxSeconds = Math.round(video.duration);
         }
       });
+
+      video.addEventListener('pause', updateProgress);
+      video.addEventListener('seeking', updateProgress);
+
+      // Резервный поллинг каждые 3 сек (для мобильных где timeupdate не срабатывает в фоне)
+      setInterval(() => {
+        if (!video.paused && video.currentTime > 0) {
+          updateProgress();
+        }
+      }, 3000);
     }
 
     function getVideoStats() {
       const video = document.getElementById('nativeVideoPlayer');
+
+      // Синхронно считываем актуальное состояние видео прямо из DOM
+      // (timeupdate мог не успеть сработать — особенно на мобильных в фоне)
+      if (video) {
+        // Обновляем maxSeconds из актуального currentTime
+        if (video.currentTime > videoWatchData.maxSeconds) {
+          videoWatchData.maxSeconds = Math.round(video.currentTime);
+        }
+        // Обновляем duration если он загружен
+        if (!isNaN(video.duration) && video.duration > 0) {
+          videoWatchData.duration = Math.round(video.duration);
+        }
+        // Обновляем started если видео хоть раз воспроизводилось
+        if (video.currentTime > 0 || !video.paused) {
+          videoWatchData.started = true;
+        }
+        // Обновляем completed
+        if (video.ended) {
+          videoWatchData.completed = true;
+          videoWatchData.maxSeconds = Math.round(video.duration || videoWatchData.maxSeconds);
+        } else if (videoWatchData.duration > 0 && videoWatchData.maxSeconds > 0) {
+          const ratio = videoWatchData.maxSeconds / videoWatchData.duration;
+          const remaining = videoWatchData.duration - videoWatchData.maxSeconds;
+          if (ratio >= 0.92 || remaining <= 10) {
+            videoWatchData.completed = true;
+          }
+        }
+      }
+
       let dur = videoWatchData.duration;
       if ((!dur || dur === 0) && video && !isNaN(video.duration) && video.duration > 0) {
         dur = Math.round(video.duration);
