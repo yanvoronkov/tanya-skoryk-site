@@ -1489,12 +1489,36 @@
     // ========================================================================
     // Аналитика видеоплеера (длина и глубина просмотра)
     // ========================================================================
-    let videoWatchData = {
-      started: false,
-      completed: false,
-      maxSeconds: 0,
-      duration: 0
-    };
+    // Ключ хранилища для персистентного трекинга просмотра видео
+    const VIDEO_STORAGE_KEY = 'vwd_ts_v1';
+
+    // Восстанавливаем данные из sessionStorage (переживает F5, но не новую вкладку)
+    function loadVideoWatchData() {
+      try {
+        const saved = sessionStorage.getItem(VIDEO_STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed === 'object') {
+            return {
+              started: Boolean(parsed.started),
+              completed: Boolean(parsed.completed),
+              maxSeconds: Number(parsed.maxSeconds) || 0,
+              duration: Number(parsed.duration) || 0
+            };
+          }
+        }
+      } catch (e) { /* игнорируем ошибки парсинга */ }
+      return { started: false, completed: false, maxSeconds: 0, duration: 0 };
+    }
+
+    // Сохраняем данные в sessionStorage
+    function saveVideoWatchData() {
+      try {
+        sessionStorage.setItem(VIDEO_STORAGE_KEY, JSON.stringify(videoWatchData));
+      } catch (e) { /* игнорируем если sessionStorage недоступен */ }
+    }
+
+    let videoWatchData = loadVideoWatchData();
 
     function initVideoAnalytics() {
       const video = document.getElementById('nativeVideoPlayer');
@@ -1512,6 +1536,8 @@
             videoWatchData.completed = true;
           }
         }
+        // Сохраняем актуальные данные в sessionStorage после каждого обновления
+        saveVideoWatchData();
       };
 
       video.addEventListener('play', () => {
@@ -1519,6 +1545,7 @@
         if (video.duration && !isNaN(video.duration)) {
           videoWatchData.duration = Math.round(video.duration);
         }
+        saveVideoWatchData();
       });
 
       video.addEventListener('timeupdate', updateProgress);
@@ -1528,6 +1555,7 @@
         if (video.duration) {
           videoWatchData.maxSeconds = Math.round(video.duration);
         }
+        saveVideoWatchData();
       });
 
       video.addEventListener('pause', updateProgress);
@@ -1539,6 +1567,23 @@
           updateProgress();
         }
       }, 3000);
+
+      // Сохраняем при уходе со страницы / смене вкладки
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && video.currentTime > 0) {
+          updateProgress();
+        }
+      });
+
+      window.addEventListener('beforeunload', () => {
+        if (video.currentTime > 0) {
+          if (video.currentTime > videoWatchData.maxSeconds) {
+            videoWatchData.maxSeconds = Math.round(video.currentTime);
+            videoWatchData.started = true;
+          }
+          saveVideoWatchData();
+        }
+      });
     }
 
     function getVideoStats() {
