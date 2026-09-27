@@ -387,53 +387,32 @@ async function handleLead(request, env) {
       });
     }
 
-    // Сбор UTM-меток и параметров рекламных кампаний
+    // Сбор только читаемых UTM-меток (без технических ID и fbclid)
     const utmLines = [];
     if (data.urlParams && typeof data.urlParams === 'object') {
-      // Приоритетный порядок стандартных меток
-      const priorityKeys = [
-        'utm_source',
-        'utm_medium',
-        'utm_campaign',
-        'utm_content',
-        'utm_term',
-        'fbclid',
-        'ad_id',
-        'adset_id',
-        'campaign_id'
-      ];
+      // Только 4 человекочитаемых метки — всё остальное технический мусор
+      const allowedKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
 
-      const addedKeys = new Set();
+      const labelMap = {
+        utm_source: 'Источник',
+        utm_medium: 'Тип трафика',
+        utm_campaign: 'Кампания',
+        utm_content: 'Объявление'
+      };
 
-      for (const k of priorityKeys) {
+      for (const k of allowedKeys) {
         const val = data.urlParams[k];
         if (val && typeof val === 'string' && val.trim().length > 0) {
-          utmLines.push(`• <b>${escapeHtml(k)}:</b> <code>${escapeHtml(val.trim())}</code>`);
-          addedKeys.add(k);
-        }
-      }
-
-      // Добавляем любые другие метки, начинающиеся на utm_
-      for (const [k, v] of Object.entries(data.urlParams)) {
-        if (!addedKeys.has(k) && k.toLowerCase().startsWith('utm_')) {
-          if (v && typeof v === 'string' && v.trim().length > 0) {
-            utmLines.push(`• <b>${escapeHtml(k)}:</b> <code>${escapeHtml(v.trim())}</code>`);
-            addedKeys.add(k);
-          }
+          const label = labelMap[k] || k;
+          utmLines.push(`• <b>${label}:</b> <code>${escapeHtml(val.trim())}</code>`);
         }
       }
     }
 
-    // Статус Meta Conversions API (добавляется только если настроен токен)
+    // Строка Meta CAPI — показываем только при ошибке (успех не нужен, захламляет чат)
     let capiLine = null;
-    if (env.FB_ACCESS_TOKEN) {
-      if (capiResult.status === 'success') {
-        capiLine = isContactClick
-          ? `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован переход (${messengerLabel})`
-          : `🎯 <b>Meta CAPI:</b> ✅ Зафиксирован лид (Lead)`;
-      } else {
-        capiLine = `🎯 <b>Meta CAPI:</b> ⚠️ Ошибка (${escapeHtml(capiResult.status)})`;
-      }
+    if (env.FB_ACCESS_TOKEN && capiResult.status !== 'success') {
+      capiLine = `🎯 <b>Meta CAPI:</b> ⚠️ Ошибка (${escapeHtml(capiResult.status)})`;
     }
 
     const videoProgressText = formatVideoProgress(data.videoStats);
@@ -484,8 +463,6 @@ async function handleLead(request, env) {
       if (capiLine) {
         messageParts.push(``, capiLine);
       }
-
-      messageParts.push(``, `🌐 <b>Источник:</b> Форма презентации (Cloudflare Worker)`);
     }
 
     const htmlMessage = messageParts.join('\n');

@@ -1491,31 +1491,51 @@
     // ========================================================================
     // Ключ хранилища для персистентного трекинга просмотра видео
     const VIDEO_STORAGE_KEY = 'vwd_ts_v1';
+    const VIDEO_LS_KEY = 'vwd_ts_ls_v1'; // localStorage ключ (для FB In-App Browser)
+    const VIDEO_TTL_MS = 24 * 60 * 60 * 1000; // 24 часа
 
-    // Восстанавливаем данные из sessionStorage (переживает F5, но не новую вкладку)
-    function loadVideoWatchData() {
+    // Читаем данные из хранилища (безопасно, без исключений)
+    function readStorage(key, isLocal) {
       try {
-        const saved = sessionStorage.getItem(VIDEO_STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && typeof parsed === 'object') {
-            return {
-              started: Boolean(parsed.started),
-              completed: Boolean(parsed.completed),
-              maxSeconds: Number(parsed.maxSeconds) || 0,
-              duration: Number(parsed.duration) || 0
-            };
-          }
-        }
-      } catch (e) { /* игнорируем ошибки парсинга */ }
+        const raw = isLocal ? localStorage.getItem(key) : sessionStorage.getItem(key);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        // Проверяем TTL для localStorage
+        if (isLocal && parsed.ts && (Date.now() - parsed.ts > VIDEO_TTL_MS)) return null;
+        return parsed;
+      } catch (e) { return null; }
+    }
+
+    // Восстанавливаем данные из обоих хранилищ (берём лучшее из двух)
+    function loadVideoWatchData() {
+      const fromSS = readStorage(VIDEO_STORAGE_KEY, false);
+      const fromLS = readStorage(VIDEO_LS_KEY, true);
+
+      // Берём максимальный maxSeconds из обоих источников
+      const bestMaxSeconds = Math.max(
+        Number((fromSS && fromSS.maxSeconds) || 0),
+        Number((fromLS && fromLS.maxSeconds) || 0)
+      );
+      const bestDuration = Math.max(
+        Number((fromSS && fromSS.duration) || 0),
+        Number((fromLS && fromLS.duration) || 0)
+      );
+      const started = Boolean((fromSS && fromSS.started) || (fromLS && fromLS.started) || bestMaxSeconds > 0);
+      const completed = Boolean((fromSS && fromSS.completed) || (fromLS && fromLS.completed));
+
+      if (bestMaxSeconds > 0 || started) {
+        return { started, completed, maxSeconds: bestMaxSeconds, duration: bestDuration };
+      }
       return { started: false, completed: false, maxSeconds: 0, duration: 0 };
     }
 
-    // Сохраняем данные в sessionStorage
+    // Сохраняем в оба хранилища одновременно
     function saveVideoWatchData() {
-      try {
-        sessionStorage.setItem(VIDEO_STORAGE_KEY, JSON.stringify(videoWatchData));
-      } catch (e) { /* игнорируем если sessionStorage недоступен */ }
+      const payload = JSON.stringify(videoWatchData);
+      const lsPayload = JSON.stringify({ ...videoWatchData, ts: Date.now() });
+      try { sessionStorage.setItem(VIDEO_STORAGE_KEY, payload); } catch (e) { /* игнор */ }
+      try { localStorage.setItem(VIDEO_LS_KEY, lsPayload); } catch (e) { /* игнор */ }
     }
 
     let videoWatchData = loadVideoWatchData();
