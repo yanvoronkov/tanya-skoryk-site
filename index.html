@@ -1445,6 +1445,29 @@
       return vid;
     }
 
+    // Сохранение и получение профиля отправленного лида (для склейки с кликами того же visitor_id)
+    function saveLeadProfile(name, contact) {
+      try {
+        localStorage.setItem('skoryk_lead_profile', JSON.stringify({
+          name: (name || '').trim(),
+          contact: (contact || '').trim(),
+          savedAt: Date.now()
+        }));
+      } catch (e) {}
+    }
+
+    function getLeadProfile() {
+      try {
+        const raw = localStorage.getItem('skoryk_lead_profile');
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object' && (parsed.name || parsed.contact)) {
+          return parsed;
+        }
+      } catch (e) {}
+      return null;
+    }
+
     // Сохранение всех параметров из ссылки (UTM, fbclid и т.д.) в sessionStorage
     function initMarketingTracking() {
       try {
@@ -1732,6 +1755,7 @@
           // Отправка фонового уведомления в Telegram и Meta CAPI через бэкенд
           const mktData = getMarketingData();
           const videoStats = getVideoStats();
+          const leadProfile = getLeadProfile();
 
           fetch('/api/lead', {
             method: 'POST',
@@ -1741,6 +1765,9 @@
               type: 'contact',
               messenger: 'whatsapp',
               action: 'whatsapp_click',
+              name: leadProfile ? leadProfile.name : '',
+              contact: leadProfile ? leadProfile.contact : '',
+              hasPriorLead: Boolean(leadProfile),
               visitorId: mktData.visitorId,
               testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
               eventId: eventId,
@@ -1762,6 +1789,35 @@
           if (typeof fbq === 'function') {
             fbq('track', 'Contact', { content_name: 'Кнопка WhatsApp (Окно успеха)' });
           }
+
+          const mktData = getMarketingData();
+          const videoStats = getVideoStats();
+          const leadProfile = getLeadProfile();
+          const eventId = 'contact_wa_suc_' + Date.now();
+
+          fetch('/api/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              type: 'contact',
+              messenger: 'whatsapp',
+              action: 'whatsapp_success_click',
+              name: leadProfile ? leadProfile.name : '',
+              contact: leadProfile ? leadProfile.contact : '',
+              hasPriorLead: true,
+              visitorId: mktData.visitorId,
+              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
+              eventId: eventId,
+              pageUrl: window.location.href,
+              userAgent: navigator.userAgent,
+              fbp: mktData.fbp,
+              fbc: mktData.fbc,
+              fbclid: mktData.fbclid,
+              urlParams: mktData.urlParams,
+              videoStats: videoStats
+            })
+          }).catch(() => {});
         });
       }
 
@@ -1789,6 +1845,7 @@
           // Отправка фонового уведомления в Telegram и Meta CAPI через бэкенд
           const mktData = getMarketingData();
           const videoStats = getVideoStats();
+          const leadProfile = getLeadProfile();
 
           fetch('/api/lead', {
             method: 'POST',
@@ -1798,6 +1855,9 @@
               type: 'contact',
               messenger: 'telegram',
               action: 'telegram_click',
+              name: leadProfile ? leadProfile.name : '',
+              contact: leadProfile ? leadProfile.contact : '',
+              hasPriorLead: Boolean(leadProfile),
               visitorId: mktData.visitorId,
               testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
               eventId: eventId,
@@ -1819,6 +1879,35 @@
           if (typeof fbq === 'function') {
             fbq('track', 'Contact', { content_name: 'Кнопка Telegram (Окно успеха)' });
           }
+
+          const mktData = getMarketingData();
+          const videoStats = getVideoStats();
+          const leadProfile = getLeadProfile();
+          const eventId = 'contact_tg_suc_' + Date.now();
+
+          fetch('/api/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              type: 'contact',
+              messenger: 'telegram',
+              action: 'telegram_success_click',
+              name: leadProfile ? leadProfile.name : '',
+              contact: leadProfile ? leadProfile.contact : '',
+              hasPriorLead: true,
+              visitorId: mktData.visitorId,
+              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
+              eventId: eventId,
+              pageUrl: window.location.href,
+              userAgent: navigator.userAgent,
+              fbp: mktData.fbp,
+              fbc: mktData.fbc,
+              fbclid: mktData.fbclid,
+              urlParams: mktData.urlParams,
+              videoStats: videoStats
+            })
+          }).catch(() => {});
         });
       }
 
@@ -2105,9 +2194,11 @@
         const resData = await response.json().catch(() => ({}));
 
         if (response.ok && resData.success) {
+          saveLeadProfile(name, contact);
           document.getElementById('leadForm').reset();
           openSuccessModal();
         } else {
+          saveLeadProfile(name, contact);
           console.warn('API error response:', resData);
           if (resData.message) {
             showToast('Внимание', resData.message, 'error');

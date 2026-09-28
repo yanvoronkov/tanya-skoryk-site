@@ -492,68 +492,59 @@ async function handleLead(request, env) {
       : '';
     const siteSource = 'tanyaskoryk.com';
 
-    // Формируем payload для n8n со структурой прямо под колонки CRM таблицы (A - Q)
-    const n8nPayload = {
-      // Прямые поля под столбцы таблицы
-      date: dateFormatted,                               // Колонка A: Дата создания (DD.MM.YYYY HH:mm)
-      name: cleanName || (isContactClick ? (isWhatsApp ? 'Клиент WhatsApp' : 'Клиент Telegram') : 'Лид без имени'), // Колонка B: Имя
-      contact: cleanContact || (isContactClick ? (isWhatsApp ? 'Переход в WhatsApp' : 'Переход в Telegram') : ''), // Колонка C: Telegram/WhatsApp
-      status: 'Новый',                                   // Колонка D: Статус
-      lead_quality: 'Не определен',                     // Колонка E: Качество лида
-      first_touch: dateFormatted,                       // Колонка F: Первое касание
-      next_action: isContactClick ? 'Проверить входящие в чате' : 'Связаться', // Колонка G: Следующее действие
-      next_action_date: '',                             // Колонка H: Дата следующего действия
-      comment: isContactClick                           // Колонка I: Комментарий
-        ? (isWhatsApp ? 'Клик по кнопке «Написать мне в WhatsApp» на сайте' : 'Клик по кнопке «Написать мне в телеграм» на сайте') 
-        : 'Заявка с формы презентации на сайте',
-      rejection_reason: '',                             // Колонка J: Причина отказа
-      interest: '',                                     // Колонка K: Интерес
-      ad_id: adId,                                      // Колонка L: ad_id
-      placement: placementFormatted,                    // Колонка M: Источник, место размещения
-      campaign: campaignVal,                            // Колонка N: Кампания
-      video: videoProgressText,                         // Колонка O: Видео
-      site_source: siteSource,                          // Колонка P: Источник сайта
-      visitor_id: visitorId,                            // Колонка Q: Сквозной ID посетителя
+    const hasPriorLead = Boolean(data.hasPriorLead || (isContactClick && (cleanName || cleanContact)));
+    const hasContacts = Boolean(cleanName || cleanContact);
 
-      // Системные поля
+    // Формируем чистый плоский (flat) объект без дубликатов
+    const n8nPayload = {
+      // 1. Идентификаторы и тип события
       event_type: isContactClick ? (isWhatsApp ? 'click_whatsapp' : 'click_telegram') : 'lead',
       event_name: eventName,
       event_id: eventId,
-      is_test: isTestMode,
+      visitor_id: visitorId,
+      date: dateFormatted,
 
-      // Структурированные объекты для гибких выражений в n8n
-      lead: {
-        name: cleanName,
-        contact: cleanContact,
-        phone: extractAndNormalizePhone(cleanContact),
-        email: extractEmail(cleanContact)
-      },
-      marketing: {
-        ad_id: adId,
-        campaign: campaignVal,
-        placement: placementFormatted,
-        utm_source: (data.urlParams && data.urlParams.utm_source) || '',
-        utm_medium: (data.urlParams && data.urlParams.utm_medium) || '',
-        utm_campaign: (data.urlParams && data.urlParams.utm_campaign) || '',
-        utm_content: (data.urlParams && data.urlParams.utm_content) || '',
-        utm_term: (data.urlParams && data.urlParams.utm_term) || '',
-        fbclid: data.fbclid || (data.urlParams && data.urlParams.fbclid) || '',
-        fbp: finalFbp || '',
-        fbc: finalFbc || '',
-        all_params: data.urlParams || {}
-      },
-      video_stats: {
-        status_text: videoProgressText,
-        watched_seconds: (data.videoStats && data.videoStats.watchedSeconds) || 0,
-        duration_seconds: (data.videoStats && data.videoStats.durationSeconds) || 0,
-        completed: Boolean(data.videoStats && data.videoStats.completed)
-      },
-      tech: {
-        page_url: data.pageUrl || 'https://tanyaskoryk.com',
-        client_ip: clientIp,
-        user_agent: userAgent,
-        country: clientCountry
-      }
+      // 2. Контактные данные
+      // Если посетитель ранее заполнил форму — имя и контакт сохраняются и не теряются!
+      // Если клик без формы — пустые строки, чтобы не затирать существующую строку в CRM
+      name: cleanName,
+      contact: cleanContact,
+      has_contacts: hasContacts,
+      has_prior_lead: hasPriorLead,
+
+      // 3. Статусы и поля для Google Таблицы CRM (A - Q)
+      status: (isContactClick && !cleanName) ? 'Клик в мессенджер' : 'Новый',
+      lead_quality: 'Не определен',
+      first_touch: dateFormatted,
+      next_action: isContactClick ? 'Проверить диалог в мессенджере' : 'Связаться с клиентом',
+      next_action_date: '',
+      comment: isContactClick
+        ? (cleanName 
+            ? `Клик по кнопке ${messengerLabel} (после заявки на сайте)` 
+            : `Клик по кнопке ${messengerLabel} на сайте`)
+        : 'Заявка с формы презентации на сайте',
+      rejection_reason: '',
+      interest: '',
+      ad_id: adId,
+      placement: placementFormatted,
+      campaign: campaignVal,
+      video: videoProgressText,
+      site_source: siteSource,
+
+      // 4. UTM-метки (плоские, уникальные)
+      utm_source: (data.urlParams && data.urlParams.utm_source) || '',
+      utm_medium: (data.urlParams && data.urlParams.utm_medium) || '',
+      utm_campaign: (data.urlParams && data.urlParams.utm_campaign) || '',
+      utm_content: (data.urlParams && data.urlParams.utm_content) || '',
+      utm_term: (data.urlParams && data.urlParams.utm_term) || '',
+      fbclid: data.fbclid || (data.urlParams && data.urlParams.fbclid) || '',
+
+      // 5. Технические параметры
+      page_url: data.pageUrl || 'https://tanyaskoryk.com',
+      client_ip: clientIp,
+      country: clientCountry,
+      user_agent: userAgent,
+      is_test: isTestMode
     };
 
     // Запускаем отправку в n8n
@@ -604,10 +595,23 @@ async function handleLead(request, env) {
 
           messageParts = [
             title,
-            ``,
+            ``
+          ];
+
+          if (cleanName) {
+            messageParts.push(`👤 <b>Имя:</b> ${escapeHtml(cleanName)}`);
+          }
+          if (cleanContact) {
+            messageParts.push(`📱 <b>Контакт:</b> ${escapeHtml(cleanContact)}`);
+          }
+          if (hasPriorLead) {
+            messageParts.push(`ℹ️ <i>Пользователь ранее оставил заявку на сайте</i>`, ``);
+          }
+
+          messageParts.push(
             `⏱ <b>Время перехода:</b> ${dateStr}`,
             videoLine
-          ];
+          );
 
           if (utmLines.length > 0) {
             messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
