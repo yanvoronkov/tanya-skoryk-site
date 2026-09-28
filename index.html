@@ -1424,6 +1424,27 @@
       return match ? decodeURIComponent(match[3]) : null;
     }
 
+    // Сквозной идентификатор посетителя (Visitor ID) для связки кликов, видео и лидов
+    function getOrCreateVisitorId() {
+      const VID_KEY = 'skoryk_vid';
+      let vid = null;
+      try {
+        vid = localStorage.getItem(VID_KEY) || getCookie(VID_KEY);
+      } catch (e) {}
+
+      if (!vid || typeof vid !== 'string' || vid.length < 8) {
+        vid = 'vid_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
+        try {
+          localStorage.setItem(VID_KEY, vid);
+        } catch (e) {}
+        try {
+          // Устанавливаем cookie на 1 год
+          document.cookie = `${VID_KEY}=${encodeURIComponent(vid)}; path=/; max-age=31536000; SameSite=Lax`;
+        } catch (e) {}
+      }
+      return vid;
+    }
+
     // Сохранение всех параметров из ссылки (UTM, fbclid и т.д.) в sessionStorage
     function initMarketingTracking() {
       try {
@@ -1456,7 +1477,7 @@
       }
     }
 
-    // Получение собранных параметров для передачи в Meta CAPI
+    // Получение собранных параметров для передачи в Meta CAPI и n8n
     function getMarketingData() {
       let stored = {};
       try {
@@ -1479,6 +1500,7 @@
       }
 
       return {
+        visitorId: getOrCreateVisitorId(),
         urlParams: allParams,
         fbclid,
         fbp,
@@ -1719,6 +1741,8 @@
               type: 'contact',
               messenger: 'whatsapp',
               action: 'whatsapp_click',
+              visitorId: mktData.visitorId,
+              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
               eventId: eventId,
               pageUrl: window.location.href,
               userAgent: navigator.userAgent,
@@ -1774,6 +1798,8 @@
               type: 'contact',
               messenger: 'telegram',
               action: 'telegram_click',
+              visitorId: mktData.visitorId,
+              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
               eventId: eventId,
               pageUrl: window.location.href,
               userAgent: navigator.userAgent,
@@ -2063,6 +2089,8 @@
             name,
             contact,
             consent,
+            visitorId: mktData.visitorId,
+            testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
             eventId,
             pageUrl: window.location.href,
             userAgent: navigator.userAgent,

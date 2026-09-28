@@ -220,6 +220,106 @@ async function sendMetaCapiEvent(env, {
   }
 }
 
+// Форматирование даты в московском часовом поясе: DD.MM.YYYY HH:mm (под формат CRM)
+function formatMoscowDate(date = new Date()) {
+  try {
+    const parts = new Intl.DateTimeFormat('ru-RU', {
+      timeZone: 'Europe/Moscow',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).formatToParts(date);
+
+    const map = {};
+    for (const p of parts) map[p.type] = p.value;
+    return `${map.day}.${map.month}.${map.year} ${map.hour}:${map.minute}`;
+  } catch (e) {
+    return date.toISOString().slice(0, 16).replace('T', ' ');
+  }
+}
+
+// Форматирование размещения рекламы под колонку «Источник, место размещения»
+function formatPlacement(urlParams) {
+  if (!urlParams || typeof urlParams !== 'object') return 'Сайт (прямой заход)';
+  if (urlParams.placement && typeof urlParams.placement === 'string') {
+    return urlParams.placement;
+  }
+  const source = (urlParams.utm_source || '').toLowerCase().trim();
+  const medium = (urlParams.utm_medium || '').trim();
+
+  let platform = '';
+  if (source === 'ig' || source.includes('instagram')) {
+    platform = 'Instagram';
+  } else if (source === 'fb' || source.includes('facebook')) {
+    platform = 'Facebook';
+  } else if (source === 'an' || source.includes('audience')) {
+    platform = 'Audience Network';
+  } else if (source) {
+    platform = source;
+  }
+
+  let pos = medium;
+  const mediumLower = medium.toLowerCase();
+  if (mediumLower === 'reels' || mediumLower.includes('reels')) {
+    pos = 'Reels';
+  } else if (mediumLower.includes('mobile_feed')) {
+    pos = 'Mobile_Feed';
+  } else if (mediumLower.includes('feed')) {
+    pos = 'Feed';
+  } else if (mediumLower.includes('stories') || mediumLower.includes('story')) {
+    pos = 'Stories';
+  }
+
+  if (platform && pos) {
+    return `${platform}, ${pos}`;
+  }
+  return platform || pos || 'Сайт (прямой заход)';
+}
+
+// Отправка вебхука в n8n (поддерживает тестовый режим и боевой URL)
+async function sendN8nWebhook(env, payload, isTest = false) {
+  const defaultTestUrl = 'https://automations.inetskills.ru/webhook-test/landing-events';
+  let targetUrl = defaultTestUrl;
+
+  if (isTest) {
+    targetUrl = defaultTestUrl;
+  } else if (env.N8N_WEBHOOK_URL && env.N8N_WEBHOOK_URL.trim().length > 0) {
+    targetUrl = env.N8N_WEBHOOK_URL.trim();
+  }
+
+  try {
+    const res = await fetch(targetUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'TanyaSkoryk-Landing/1.3'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const resJson = await res.json().catch(() => ({}));
+    console.log(`n8n webhook (${isTest ? 'TEST' : 'PROD'} -> ${targetUrl}) status:`, res.status);
+    return {
+      status: res.ok ? 'success' : 'http_error',
+      statusCode: res.status,
+      target: targetUrl,
+      isTest: isTest,
+      response: resJson
+    };
+  } catch (err) {
+    console.error('Ошибка отправки в n8n:', err);
+    return {
+      status: 'exception',
+      target: targetUrl,
+      isTest: isTest,
+      error: err.message
+    };
+  }
+}
+
 const sendMetaCapiLeadEvent = sendMetaCapiEvent;
 
 // Диагностический GET-обработчик (/api/lead или /api/config)
@@ -230,6 +330,7 @@ async function handleDiagnostics(env) {
   const whatsappLink = env.WHATSAPP_LINK || 'https://wa.me/6281337045610?text=%D0%A2%D0%B0%D0%BD%D1%8F%2C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82%21%20%D0%AF%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%28%D0%B0%29%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%BE%D1%81%D1%82%D0%B8';
   const fbAccessToken = env.FB_ACCESS_TOKEN;
   const fbPixelId = env.FB_PIXEL_ID || '4047095728920722';
+  const n8nWebhookConfigured = Boolean(env.N8N_WEBHOOK_URL && env.N8N_WEBHOOK_URL.trim().length > 0);
 
   let botStatus = 'not_configured';
   let botUsername = null;
@@ -254,7 +355,7 @@ async function handleDiagnostics(env) {
     }
   }
 
-  const isConfigured = Boolean(botToken && chatId && botStatus === 'valid');
+  const isConfigured = Boolean(botToken && chatId && botStatus === 'valid') || n8nWebhookConfigured;
 
   return new Response(JSON.stringify({
     ok: true,
@@ -272,13 +373,16 @@ async function handleDiagnostics(env) {
       fbPixelId: fbPixelId,
       hasFbAccessToken: Boolean(fbAccessToken),
       hasFbTestEventCode: Boolean(env.FB_TEST_EVENT_CODE),
-      capiStatus: Boolean(fbAccessToken) ? 'ready' : 'token_needed'
+      capiStatus: Boolean(fbAccessToken) ? 'ready' : 'token_needed',
+      n8n: {
+        configured: n8nWebhookConfigured,
+        activeWebhook: n8nWebhookConfigured ? env.N8N_WEBHOOK_URL.trim() : 'https://automations.inetskills.ru/webhook-test/landing-events (по умолчанию тестовый)',
+        testWebhook: 'https://automations.inetskills.ru/webhook-test/landing-events'
+      }
     },
     hints: [
-      !botToken ? 'Добавьте TELEGRAM_BOT_TOKEN в Cloudflare Settings -> Variables' : null,
-      !chatId ? 'Добавьте TELEGRAM_CHAT_ID в Cloudflare Settings -> Variables' : null,
-      !fbAccessToken ? 'Для Meta Conversions API (CAPI) добавьте FB_ACCESS_TOKEN в Cloudflare Settings -> Variables' : null,
-      botUsername ? `Обязательно напишите /start боту @${botUsername}, чтобы он мог слать вам сообщения` : null,
+      !n8nWebhookConfigured ? 'Для боевого режима добавьте N8N_WEBHOOK_URL в Cloudflare Settings -> Variables' : null,
+      !botToken ? 'Telegram бот не настроен (если отправка идет через n8n, это нормально)' : null,
       'После добавления или изменения переменных в Cloudflare ОБЯЗАТЕЛЬНО сделайте Redeploy!'
     ].filter(Boolean)
   }, null, 2), {
@@ -287,7 +391,7 @@ async function handleDiagnostics(env) {
   });
 }
 
-// Обработчик отправки заявки
+// Обработчик отправки заявки и кликов
 async function handleLead(request, env) {
   try {
     const data = await request.json();
@@ -322,7 +426,8 @@ async function handleLead(request, env) {
 
     const cleanName = (name && typeof name === 'string') ? name.trim() : '';
     const cleanContact = (contact && typeof contact === 'string') ? contact.trim() : '';
-    const dateStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
+    const dateFormatted = formatMoscowDate();
+    const dateStr = dateFormatted + ' (МСК)';
 
     const botToken = env.TELEGRAM_BOT_TOKEN;
     const chatId = env.TELEGRAM_CHAT_ID;
@@ -331,6 +436,7 @@ async function handleLead(request, env) {
     // Извлечение IP клиента и User-Agent из заголовков запроса Cloudflare
     const clientIp = request.headers.get('CF-Connecting-IP') || request.headers.get('x-forwarded-for') || '';
     const userAgent = request.headers.get('user-agent') || data.userAgent || '';
+    const clientCountry = request.headers.get('CF-IPCountry') || '';
     const cookieHeader = request.headers.get('cookie') || '';
 
     let finalFbp = data.fbp;
@@ -351,9 +457,17 @@ async function handleLead(request, env) {
       : 'Форма презентации';
     const eventPrefix = isContactClick ? (isWhatsApp ? 'contact_wa_' : 'contact_tg_') : 'lead_';
     const eventId = data.eventId || (eventPrefix + Date.now() + '_' + Math.random().toString(36).substring(2, 8));
+    const visitorId = data.visitorId || ('vid_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8));
 
-    // Параллельная или последовательная отправка в Meta Conversions API
-    const capiResult = await sendMetaCapiEvent(env, {
+    // Проверяем тестовый режим (по параметрам URL test=1 / test_n8n=1 или флагу testMode)
+    const isTestMode = Boolean(
+      data.testMode ||
+      (data.urlParams && (data.urlParams.test_n8n || data.urlParams.test || data.urlParams.test_event_code)) ||
+      env.N8N_USE_TEST === 'true'
+    );
+
+    // 1. Отправка в Meta Conversions API (CAPI)
+    const capiPromise = sendMetaCapiEvent(env, {
       eventName: eventName,
       contentName: contentName,
       eventId: eventId,
@@ -369,147 +483,194 @@ async function handleLead(request, env) {
       videoStats: data.videoStats
     });
 
-    if (!botToken || !chatId) {
-      const missingVars = [];
-      if (!botToken) missingVars.push('TELEGRAM_BOT_TOKEN');
-      if (!chatId) missingVars.push('TELEGRAM_CHAT_ID');
-
-      const warningMsg = `В Cloudflare не обнаружены переменные: ${missingVars.join(', ')}. Убедитесь, что переменные добавлены в Settings -> Variables и выполнен повторный деплой (Redeploy).`;
-      console.warn(warningMsg);
-
-      return new Response(JSON.stringify({
-        error: true,
-        message: warningMsg,
-        capi: capiResult
-      }), {
-        status: 503,
-        headers: CORS_HEADERS
-      });
-    }
-
-    // Сбор только читаемых UTM-меток (без технических ID и fbclid)
-    const utmLines = [];
-    if (data.urlParams && typeof data.urlParams === 'object') {
-      // Только 4 человекочитаемых метки — всё остальное технический мусор
-      const allowedKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
-
-      const labelMap = {
-        utm_source: 'Источник',
-        utm_medium: 'Тип трафика',
-        utm_campaign: 'Кампания',
-        utm_content: 'Объявление'
-      };
-
-      for (const k of allowedKeys) {
-        const val = data.urlParams[k];
-        if (val && typeof val === 'string' && val.trim().length > 0) {
-          const label = labelMap[k] || k;
-          utmLines.push(`• <b>${label}:</b> <code>${escapeHtml(val.trim())}</code>`);
-        }
-      }
-    }
-
-    // Строка Meta CAPI — показываем только при ошибке (успех не нужен, захламляет чат)
-    let capiLine = null;
-    if (env.FB_ACCESS_TOKEN && capiResult.status !== 'success') {
-      capiLine = `🎯 <b>Meta CAPI:</b> ⚠️ Ошибка (${escapeHtml(capiResult.status)})`;
-    }
-
+    // 2. Подготовка полей под таблицу CRM и отправка в n8n
     const videoProgressText = formatVideoProgress(data.videoStats);
-    const videoLine = `🎬 <b>Просмотр видео:</b> ${escapeHtml(videoProgressText)}`;
+    const placementFormatted = formatPlacement(data.urlParams);
+    const adId = (data.urlParams && data.urlParams.ad_id) ? String(data.urlParams.ad_id).trim() : '';
+    const campaignVal = (data.urlParams && (data.urlParams.campaign_id || data.urlParams.utm_campaign)) 
+      ? String(data.urlParams.campaign_id || data.urlParams.utm_campaign).trim() 
+      : '';
+    const siteSource = 'tanyaskoryk.com';
 
-    let messageParts = [];
+    // Формируем payload для n8n со структурой прямо под колонки CRM таблицы (A - Q)
+    const n8nPayload = {
+      // Прямые поля под столбцы таблицы
+      date: dateFormatted,                               // Колонка A: Дата создания (DD.MM.YYYY HH:mm)
+      name: cleanName || (isContactClick ? (isWhatsApp ? 'Клиент WhatsApp' : 'Клиент Telegram') : 'Лид без имени'), // Колонка B: Имя
+      contact: cleanContact || (isContactClick ? (isWhatsApp ? 'Переход в WhatsApp' : 'Переход в Telegram') : ''), // Колонка C: Telegram/WhatsApp
+      status: 'Новый',                                   // Колонка D: Статус
+      lead_quality: 'Не определен',                     // Колонка E: Качество лида
+      first_touch: dateFormatted,                       // Колонка F: Первое касание
+      next_action: isContactClick ? 'Проверить входящие в чате' : 'Связаться', // Колонка G: Следующее действие
+      next_action_date: '',                             // Колонка H: Дата следующего действия
+      comment: isContactClick                           // Колонка I: Комментарий
+        ? (isWhatsApp ? 'Клик по кнопке «Написать мне в WhatsApp» на сайте' : 'Клик по кнопке «Написать мне в телеграм» на сайте') 
+        : 'Заявка с формы презентации на сайте',
+      rejection_reason: '',                             // Колонка J: Причина отказа
+      interest: '',                                     // Колонка K: Интерес
+      ad_id: adId,                                      // Колонка L: ad_id
+      placement: placementFormatted,                    // Колонка M: Источник, место размещения
+      campaign: campaignVal,                            // Колонка N: Кампания
+      video: videoProgressText,                         // Колонка O: Видео
+      site_source: siteSource,                          // Колонка P: Источник сайта
+      visitor_id: visitorId,                            // Колонка Q: Сквозной ID посетителя
 
-    if (isContactClick) {
-      const title = isWhatsApp
-        ? `💬 <b>Переход в WhatsApp с сайта Татьяны Скорик!</b>`
-        : `💬 <b>Переход в Telegram с сайта Татьяны Скорик!</b>`;
-      const actionText = isWhatsApp
-        ? `Клик по кнопке «Написать мне в WhatsApp»`
-        : `Клик по кнопке «Написать мне в телеграм»`;
+      // Системные поля
+      event_type: isContactClick ? (isWhatsApp ? 'click_whatsapp' : 'click_telegram') : 'lead',
+      event_name: eventName,
+      event_id: eventId,
+      is_test: isTestMode,
 
-      messageParts = [
-        title,
-        ``,
-        `⏱ <b>Время перехода:</b> ${dateStr} (МСК)`,
-        videoLine
-      ];
-
-      if (utmLines.length > 0) {
-        messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
+      // Структурированные объекты для гибких выражений в n8n
+      lead: {
+        name: cleanName,
+        contact: cleanContact,
+        phone: extractAndNormalizePhone(cleanContact),
+        email: extractEmail(cleanContact)
+      },
+      marketing: {
+        ad_id: adId,
+        campaign: campaignVal,
+        placement: placementFormatted,
+        utm_source: (data.urlParams && data.urlParams.utm_source) || '',
+        utm_medium: (data.urlParams && data.urlParams.utm_medium) || '',
+        utm_campaign: (data.urlParams && data.urlParams.utm_campaign) || '',
+        utm_content: (data.urlParams && data.urlParams.utm_content) || '',
+        utm_term: (data.urlParams && data.urlParams.utm_term) || '',
+        fbclid: data.fbclid || (data.urlParams && data.urlParams.fbclid) || '',
+        fbp: finalFbp || '',
+        fbc: finalFbc || '',
+        all_params: data.urlParams || {}
+      },
+      video_stats: {
+        status_text: videoProgressText,
+        watched_seconds: (data.videoStats && data.videoStats.watchedSeconds) || 0,
+        duration_seconds: (data.videoStats && data.videoStats.durationSeconds) || 0,
+        completed: Boolean(data.videoStats && data.videoStats.completed)
+      },
+      tech: {
+        page_url: data.pageUrl || 'https://tanyaskoryk.com',
+        client_ip: clientIp,
+        user_agent: userAgent,
+        country: clientCountry
       }
-
-      if (capiLine) {
-        messageParts.push(``, capiLine);
-      }
-
-      messageParts.push(``, `🌐 <b>Действие:</b> ${actionText}`);
-    } else {
-      const safeName = escapeHtml(cleanName);
-      const safeContact = escapeHtml(cleanContact);
-      messageParts = [
-        `🔔 <b>Новая заявка с сайта Татьяны Скорик!</b>`,
-        ``,
-        `👤 <b>Имя:</b> ${safeName}`,
-        `✈️ <b>Telegram / Телефон:</b> ${safeContact}`,
-        `⏱ <b>Время отправки:</b> ${dateStr} (МСК)`,
-        videoLine
-      ];
-
-      if (utmLines.length > 0) {
-        messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
-      }
-
-      if (capiLine) {
-        messageParts.push(``, capiLine);
-      }
-    }
-
-    const htmlMessage = messageParts.join('\n');
-
-    const tgPayload = {
-      chat_id: chatId,
-      text: htmlMessage,
-      parse_mode: 'HTML'
     };
 
-    if (topicId) {
-      tgPayload.message_thread_id = Number(topicId);
-    }
+    // Запускаем отправку в n8n
+    const n8nPromise = sendN8nWebhook(env, n8nPayload, isTestMode);
 
-    const tgUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-    const tgRes = await fetch(tgUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tgPayload)
-    });
+    // Дожидаемся результатов n8n и CAPI
+    const [capiResult, n8nResult] = await Promise.all([capiPromise, n8nPromise]);
 
-    const tgData = await tgRes.json().catch(() => ({}));
+    // 3. Отправка прямого уведомления в Telegram (резервная, если настроены переменные и не отключена)
+    const allowDirectTelegram = env.DISABLE_DIRECT_TELEGRAM !== 'true' && Boolean(botToken && chatId);
 
-    if (!tgRes.ok || !tgData.ok) {
-      let errorHelp = tgData.description || 'Неизвестная ошибка Telegram API';
-      if (tgData.error_code === 403) {
-        errorHelp += ' -> Вы не нажали /start в боте! Напишите боту в Telegram и нажмите кнопку Start.';
-      } else if (tgData.error_code === 400 && tgData.description && tgData.description.includes('chat not found')) {
-        errorHelp += ' -> Неверный TELEGRAM_CHAT_ID или бот не добавлен в этот чат.';
-      } else if (tgData.error_code === 401) {
-        errorHelp += ' -> Неверный токен TELEGRAM_BOT_TOKEN.';
+    if (allowDirectTelegram) {
+      try {
+        const utmLines = [];
+        if (data.urlParams && typeof data.urlParams === 'object') {
+          const allowedKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+          const labelMap = {
+            utm_source: 'Источник',
+            utm_medium: 'Тип трафика',
+            utm_campaign: 'Кампания',
+            utm_content: 'Объявление'
+          };
+
+          for (const k of allowedKeys) {
+            const val = data.urlParams[k];
+            if (val && typeof val === 'string' && val.trim().length > 0) {
+              const label = labelMap[k] || k;
+              utmLines.push(`• <b>${label}:</b> <code>${escapeHtml(val.trim())}</code>`);
+            }
+          }
+        }
+
+        let capiLine = null;
+        if (env.FB_ACCESS_TOKEN && capiResult.status !== 'success') {
+          capiLine = `🎯 <b>Meta CAPI:</b> ⚠️ Ошибка (${escapeHtml(capiResult.status)})`;
+        }
+
+        const videoLine = `🎬 <b>Просмотр видео:</b> ${escapeHtml(videoProgressText)}`;
+        let messageParts = [];
+
+        if (isContactClick) {
+          const title = isWhatsApp
+            ? `💬 <b>Переход в WhatsApp с сайта Татьяны Скорик!</b>`
+            : `💬 <b>Переход в Telegram с сайта Татьяны Скорик!</b>`;
+          const actionText = isWhatsApp
+            ? `Клик по кнопке «Написать мне в WhatsApp»`
+            : `Клик по кнопке «Написать мне в телеграм»`;
+
+          messageParts = [
+            title,
+            ``,
+            `⏱ <b>Время перехода:</b> ${dateStr}`,
+            videoLine
+          ];
+
+          if (utmLines.length > 0) {
+            messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
+          }
+
+          if (capiLine) {
+            messageParts.push(``, capiLine);
+          }
+
+          messageParts.push(``, `🌐 <b>Действие:</b> ${actionText}`);
+        } else {
+          const safeName = escapeHtml(cleanName);
+          const safeContact = escapeHtml(cleanContact);
+          messageParts = [
+            `🔔 <b>Новая заявка с сайта Татьяны Скорик!</b>`,
+            ``,
+            `👤 <b>Имя:</b> ${safeName}`,
+            `✈️ <b>Telegram / Телефон:</b> ${safeContact}`,
+            `⏱ <b>Время отправки:</b> ${dateStr}`,
+            videoLine
+          ];
+
+          if (utmLines.length > 0) {
+            messageParts.push(``, `📊 <b>UTM-метки:</b>`, ...utmLines);
+          }
+
+          if (capiLine) {
+            messageParts.push(``, capiLine);
+          }
+        }
+
+        const htmlMessage = messageParts.join('\n');
+        const tgPayload = {
+          chat_id: chatId,
+          text: htmlMessage,
+          parse_mode: 'HTML'
+        };
+
+        if (topicId) {
+          tgPayload.message_thread_id = Number(topicId);
+        }
+
+        const tgUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+        await fetch(tgUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(tgPayload)
+        });
+      } catch (tgErr) {
+        console.warn('Direct Telegram notification failed (n8n is primary):', tgErr.message);
       }
-
-      console.error('Ошибка Telegram Bot API:', errorHelp);
-      return new Response(JSON.stringify({
-        error: true,
-        message: `Ошибка Telegram (${tgData.error_code || 500}): ${errorHelp}`,
-        capi: capiResult
-      }), {
-        status: 502,
-        headers: CORS_HEADERS
-      });
     }
 
+    // Успешный ответ клиенту
     return new Response(JSON.stringify({
       success: true,
       message: isContactClick ? 'Переход зафиксирован' : 'Спасибо! Ваша заявка принята. В ближайшее время я свяжусь с вами.',
+      visitorId: visitorId,
+      n8n: {
+        status: n8nResult.status,
+        statusCode: n8nResult.statusCode,
+        isTest: n8nResult.isTest
+      },
       capi: {
         status: capiResult.status
       }
