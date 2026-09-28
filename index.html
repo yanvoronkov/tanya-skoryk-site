@@ -1444,7 +1444,8 @@
               class="form-input" 
               placeholder="Например, Анна" 
               required
-              autocomplete="name"
+              autocomplete="off"
+              data-lpignore="true"
             >
           </div>
 
@@ -1458,7 +1459,8 @@
               class="form-input" 
               placeholder="@username или +7 999 123-45-67" 
               required
-              autocomplete="tel"
+              autocomplete="off"
+              data-lpignore="true"
             >
           </div>
 
@@ -1644,6 +1646,33 @@
        JavaScript: High Performance, No Dependencies
        ======================================================================== -->
   <script>
+    // ========================================================================
+    // Защита от авто-скролла к форме в соцсетях (Instagram, Facebook, Telegram)
+    // ========================================================================
+    // 1. Отключаем автоматическое восстановление позиции скролла браузером (bfcache / история)
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    // 2. Гарантированно фиксируем страницу на самом верху (первый экран с видео)
+    window.scrollTo(0, 0);
+
+    // 3. Сбрасываем возможный хэш-якорь из ссылки соцсети (#form, #lead и т.д.)
+    if (window.location.hash) {
+      try {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      } catch (e) {}
+      window.scrollTo(0, 0);
+    }
+
+    // 4. Повторный сброс скролла при возврате на страницу (pageshow / bfcache в In-App браузерах)
+    window.addEventListener('pageshow', () => {
+      window.scrollTo(0, 0);
+    });
+    window.addEventListener('load', () => {
+      window.scrollTo(0, 0);
+    });
+
     // ========================================================================
     // Настройка прямых ссылок на мессенджеры (Telegram и WhatsApp)
     // Можно изменить прямо здесь или передать через переменные окружения Cloudflare
@@ -1954,8 +1983,58 @@
       if (successBtn) successBtn.href = url;
     }
 
+    // Защита от авто-фокуса полей формы и скролла к ним скриптами соцсетей (Meta IAB, Telegram и т.д.)
+    function initAutofocusProtection() {
+      let isUserDirectTouch = false;
+      const inputs = [
+        document.getElementById('userNameInput'),
+        document.getElementById('userContactInput')
+      ].filter(Boolean);
+
+      const markUserInteraction = () => {
+        isUserDirectTouch = true;
+      };
+
+      // Фиксируем физическое нажатие пользователем (клавиатура или клик/тач)
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          isUserDirectTouch = true;
+        }
+      });
+
+      inputs.forEach(input => {
+        input.addEventListener('touchstart', markUserInteraction, { passive: true });
+        input.addEventListener('pointerdown', markUserInteraction);
+        input.addEventListener('mousedown', markUserInteraction);
+
+        input.addEventListener('focus', () => {
+          // Если фокус вызван не прямым тапом пользователя, а скриптом автозаполнения браузера соцсети
+          if (!isUserDirectTouch) {
+            input.blur();
+            window.scrollTo(0, 0);
+          }
+        });
+      });
+
+      // Снимаем случайный фокус и сбрасываем скролл наверх в первые моменты загрузки
+      const resetScrollToTop = () => {
+        if (!isUserDirectTouch && document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+          document.activeElement.blur();
+          window.scrollTo(0, 0);
+        }
+      };
+
+      resetScrollToTop();
+      setTimeout(resetScrollToTop, 100);
+      setTimeout(resetScrollToTop, 350);
+      setTimeout(resetScrollToTop, 800);
+    }
+
     // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
+      // 0. Защита от авто-скролла и непроизвольного фокуса полей соцсетями
+      initAutofocusProtection();
+
       // 1. Инициализируем сбор маркетинговых параметров из ссылки
       initMarketingTracking();
 
