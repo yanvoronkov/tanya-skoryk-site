@@ -447,6 +447,192 @@
       display: block;
     }
 
+    /* Play Prompt Wrapper (Резервный уровень: заметный акцент на обложке) */
+    .play-prompt-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 25;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+      padding: 0 16px;
+      pointer-events: auto;
+    }
+    .play-btn-caption {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: rgba(15, 23, 42, 0.84);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      padding: 9px 20px;
+      border-radius: 40px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .play-prompt-wrap:hover .play-btn-caption {
+      transform: scale(1.05);
+      background: rgba(15, 23, 42, 0.95);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    .caption-action {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .caption-sub {
+      font-size: 11.5px;
+      color: #FCD34D;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    /* Unmute Badge (Основной уровень: плавающая плашка «ВКЛЮЧИТЬ ЗВУК» при автопроигрывании) */
+    .unmute-badge {
+      display: none;
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 35;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(244, 63, 94, 0.65);
+      color: #FFFFFF;
+      padding: 11px 22px;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 24px rgba(244, 63, 94, 0.4);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: unmuteGlow 2s ease-in-out infinite;
+    }
+    .unmute-badge:hover {
+      transform: translateX(-50%) scale(1.06);
+      background: rgba(15, 23, 42, 0.98);
+      border-color: rgba(244, 63, 94, 0.9);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65), 0 0 32px rgba(244, 63, 94, 0.6);
+    }
+    .unmute-pulse-ring {
+      position: absolute;
+      inset: -5px;
+      border-radius: 40px;
+      border: 2px solid rgba(244, 63, 94, 0.65);
+      animation: unmutePulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes unmutePulse {
+      0% { transform: scale(0.96); opacity: 0.9; }
+      60% { transform: scale(1.15); opacity: 0; }
+      100% { transform: scale(1.15); opacity: 0; }
+    }
+    @keyframes unmuteGlow {
+      0%, 100% { box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 20px rgba(244, 63, 94, 0.35); }
+      50% { box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 32px rgba(244, 63, 94, 0.65); }
+    }
+    .unmute-icon-wrap {
+      position: relative;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .unmute-speaker-svg {
+      width: 24px;
+      height: 24px;
+      fill: #FDA4AF;
+    }
+    .unmute-text-wrap {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .unmute-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .unmute-sub {
+      font-size: 11px;
+      color: #FCD34D;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    /* Friendly Video Advice Card (Вариант А перед кнопками) */
+    .video-advice-card {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: linear-gradient(135deg, rgba(255, 247, 245, 0.95) 0%, rgba(255, 251, 248, 0.95) 100%);
+      border: 1.5px solid rgba(226, 149, 135, 0.35);
+      border-radius: var(--radius-card);
+      padding: 14px 16px;
+      box-shadow: 0 4px 18px rgba(194, 116, 100, 0.08);
+      margin-bottom: -4px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .video-advice-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(194, 116, 100, 0.16);
+      border-color: rgba(226, 149, 135, 0.55);
+    }
+    .advice-icon-wrap {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(226, 149, 135, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-rose-500);
+      font-size: 16px;
+    }
+    .advice-icon {
+      width: 18px;
+      height: 18px;
+      fill: var(--color-rose-500);
+    }
+    .advice-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .advice-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--color-navy-900);
+      line-height: 1.35;
+    }
+    .advice-desc {
+      font-size: 12.5px;
+      color: var(--color-slate-600);
+      line-height: 1.45;
+    }
+
     /* Video Quote */
     .video-quote {
       position: absolute;
@@ -1078,7 +1264,7 @@
 
     <!-- Video Module (9:16 Aspect, Cloudflare Stream / R2 / MP4 Ready) -->
     <div class="video-card-wrap">
-      <div class="video-container" id="videoContainer" onclick="handlePlayVideo(event)" style="cursor: pointer;">
+      <div class="video-container" id="videoContainer" onclick="handleVideoContainerClick(event)" style="cursor: pointer;">
         
         <!-- Video Poster -->
         <img 
@@ -1104,18 +1290,44 @@
           </div>
         </div>
 
-        <!-- Play Button -->
+        <!-- Play Prompt Wrapper (Уровень 2: Резервная кнопка и крупная надпись, если автоплей заблокирован) -->
+        <div id="playPromptWrapper" class="play-prompt-wrap" onclick="handlePlayVideo(event)">
+          <button 
+            id="playVideoBtn" 
+            class="play-btn" 
+            aria-label="Смотреть видео со звуком"
+          >
+            <div class="play-btn-ripple"></div>
+            <div class="play-btn-ripple" style="animation-delay: 1.2s;"></div>
+            <svg class="play-icon" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <div class="play-btn-spinner"></div>
+          </button>
+
+          <div class="play-btn-caption">
+            <span class="caption-action">▶ НАЖМИТЕ ДЛЯ ПРОСМОТРА</span>
+            <span class="caption-sub">со звуком • 07:11</span>
+          </div>
+        </div>
+
+        <!-- Unmute Badge (Уровень 1: Плавающая плашка «Включить звук», когда видео проигрывается без звука) -->
         <button 
-          id="playVideoBtn" 
-          class="play-btn" 
-          onclick="handlePlayVideo(event)" 
-          aria-label="Смотреть видео"
+          id="unmuteVideoBtn" 
+          class="unmute-badge" 
+          onclick="handleUnmuteVideo(event)" 
+          aria-label="Включить звук"
         >
-          <div class="play-btn-ripple"></div>
-          <svg class="play-icon" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <div class="play-btn-spinner"></div>
+          <div class="unmute-pulse-ring"></div>
+          <div class="unmute-icon-wrap">
+            <svg viewBox="0 0 24 24" class="unmute-speaker-svg">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </div>
+          <div class="unmute-text-wrap">
+            <span class="unmute-title">ВКЛЮЧИТЬ ЗВУК</span>
+            <span class="unmute-sub">Нажмите в любое место 🔊</span>
+          </div>
         </button>
 
         <!-- Speaker Quote -->
@@ -1130,7 +1342,9 @@
           src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4"
           controls 
           playsinline 
-          preload="metadata"
+          webkit-playsinline
+          muted
+          preload="auto"
           poster="assets/video-preview.jpeg"
         >
           <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4" type="video/mp4">
@@ -1153,6 +1367,27 @@
          Action Group & Form (Exact Match to Screenshot)
          ====================================================================== -->
     <div class="action-section">
+
+      <!-- Friendly Video Advice Badge (Вариант А) -->
+      <div 
+        class="video-advice-card" 
+        onclick="document.getElementById('videoContainer').scrollIntoView({ behavior: 'smooth', block: 'center' })"
+        title="Нажмите, чтобы перейти к видео"
+      >
+        <div class="advice-icon-wrap">
+          <svg viewBox="0 0 24 24" class="advice-icon">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v-6h-2v6zm0-8h2V6h-2v2z"/>
+          </svg>
+        </div>
+        <div class="advice-content">
+          <div class="advice-title">
+            🎬 Пожалуйста, посмотрите 7-минутное видео выше 👆
+          </div>
+          <div class="advice-desc">
+            В нём Татьяна показала суть круизного клуба, цены и как устроен бизнес. Это сэкономит ваше время и ответит на 90% вопросов перед диалогом.
+          </div>
+        </div>
+      </div>
 
       <!-- Green WhatsApp Button (Above Telegram) -->
       <a 
@@ -1724,8 +1959,9 @@
       // 1. Инициализируем сбор маркетинговых параметров из ссылки
       initMarketingTracking();
 
-      // 2. Инициализируем аналитику видеоплеера
+      // 2. Инициализируем аналитику видеоплеера и автовоспроизведение
       initVideoAnalytics();
+      initVideoAutoplay();
 
       // 3. Применяем ссылки на мессенджеры по умолчанию
       applyTelegramLink(DEFAULT_TELEGRAM_LINK);
@@ -2048,7 +2284,76 @@
       }
     }
 
-    // Воспроизведение видео
+    // ========================================================================
+    // Воспроизведение видео: Muted Autoplay + Fallback + Включение звука
+    // ========================================================================
+    let isVideoAutoplayActive = false;
+    let isVideoSoundEnabled = false;
+
+    // Включение звука на видео (Уровень 1: плашка «ВКЛЮЧИТЬ ЗВУК»)
+    function handleUnmuteVideo(event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+
+      const video = document.getElementById('nativeVideoPlayer');
+      const unmuteBtn = document.getElementById('unmuteVideoBtn');
+      const poster = document.getElementById('videoPoster');
+      const promptWrap = document.getElementById('playPromptWrapper');
+      const quote = document.querySelector('.video-quote');
+      const topBar = document.querySelector('.video-top-bar');
+
+      if (!video) return;
+
+      isVideoSoundEnabled = true;
+      video.muted = false;
+      video.controls = true;
+
+      // Если прошло менее 5 секунд, плавно сбрасываем на 00:00, чтобы зритель услышал приветствие Татьяны
+      if (video.currentTime < 5) {
+        video.currentTime = 0;
+      }
+
+      video.style.display = 'block';
+      if (poster) poster.style.display = 'none';
+      if (promptWrap) promptWrap.style.display = 'none';
+      if (quote) quote.style.display = 'none';
+      if (topBar) topBar.style.display = 'none';
+
+      video.play().catch(e => console.warn('Unmute play catch:', e));
+
+      if (unmuteBtn) {
+        unmuteBtn.style.opacity = '0';
+        setTimeout(() => {
+          unmuteBtn.style.display = 'none';
+        }, 250);
+      }
+    }
+
+    // Клик по контейнеру видео (если играло без звука — включить звук; если пауза — запустить)
+    function handleVideoContainerClick(event) {
+      // Если звук уже включен и пользователь взаимодействует со стандартным плеером, не перехватываем
+      if (isVideoSoundEnabled) {
+        return;
+      }
+
+      const video = document.getElementById('nativeVideoPlayer');
+      if (!video) return;
+
+      // Если видео играет без звука — сразу включаем звук и управление!
+      if (!video.paused && video.muted) {
+        handleUnmuteVideo(event);
+        return;
+      }
+
+      // Если автоплей был заблокирован и видео на паузе — запускаем со звуком
+      if (video.paused) {
+        handlePlayVideo(event);
+      }
+    }
+
+    // Запуск видео со звуком (Уровень 2: по клику на Play или постер)
     function handlePlayVideo(event) {
       if (event) {
         event.stopPropagation();
@@ -2057,13 +2362,26 @@
       const video = document.getElementById('nativeVideoPlayer');
       const poster = document.getElementById('videoPoster');
       const playBtn = document.getElementById('playVideoBtn');
+      const promptWrap = document.getElementById('playPromptWrapper');
+      const unmuteBtn = document.getElementById('unmuteVideoBtn');
       const quote = document.querySelector('.video-quote');
       const topBar = document.querySelector('.video-top-bar');
 
       if (!video) return;
 
-      // Если видео уже играет, ничего не делаем
+      // Если видео уже играет без звука — просто включаем звук
+      if (!video.paused && video.muted) {
+        handleUnmuteVideo(event);
+        return;
+      }
+
+      // Если видео уже играет со звуком, ничего не делаем
       if (!video.paused && video.currentTime > 0) return;
+
+      // Включаем звук и элементы управления сразу для прямого клика
+      isVideoSoundEnabled = true;
+      video.muted = false;
+      video.controls = true;
 
       // Показываем спиннер загрузки на кнопке
       if (playBtn) {
@@ -2082,6 +2400,8 @@
         isRevealed = true;
         video.style.display = 'block';
         if (poster) poster.style.display = 'none';
+        if (promptWrap) promptWrap.style.display = 'none';
+        if (unmuteBtn) unmuteBtn.style.display = 'none';
         if (playBtn) {
           playBtn.style.display = 'none';
           playBtn.classList.remove('loading');
@@ -2110,6 +2430,54 @@
         playPromise.catch(e => {
           console.warn('Воспроизведение приостановлено браузером:', e);
           if (playBtn) playBtn.classList.remove('loading');
+        });
+      }
+    }
+
+    // Инициализация автовоспроизведения (Уровень 1 + Уровень 2)
+    function initVideoAutoplay() {
+      const video = document.getElementById('nativeVideoPlayer');
+      const poster = document.getElementById('videoPoster');
+      const promptWrap = document.getElementById('playPromptWrapper');
+      const unmuteBtn = document.getElementById('unmuteVideoBtn');
+      const quote = document.querySelector('.video-quote');
+      const topBar = document.querySelector('.video-top-bar');
+
+      if (!video) return;
+
+      // Устанавливаем атрибуты для гарантированного muted autoplay без наложения нативных контролов
+      video.muted = true;
+      video.controls = false;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.playsInline = true;
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          // Уровень 1: Автоплей без звука успешно начался!
+          isVideoAutoplayActive = true;
+          video.style.display = 'block';
+          if (poster) poster.style.display = 'none';
+          if (promptWrap) promptWrap.style.display = 'none';
+          if (quote) quote.style.display = 'none';
+          if (topBar) topBar.style.display = 'none';
+
+          // Показываем плавающую кнопку «ВКЛЮЧИТЬ ЗВУК»
+          if (unmuteBtn && !isVideoSoundEnabled) {
+            unmuteBtn.style.display = 'inline-flex';
+          }
+        }).catch((err) => {
+          // Уровень 2: Автоплей заблокирован браузером (Low Power Mode / строгие настройки)
+          // Оставляем постер и показываем крупную кнопку Play с явной надписью НАЖМИТЕ ДЛЯ ПРОСМОТРА
+          console.log('Muted autoplay restricted by browser (interactive prompt active):', err);
+          video.controls = true;
+          if (promptWrap) promptWrap.style.display = 'flex';
+          if (unmuteBtn) unmuteBtn.style.display = 'none';
+          if (poster) poster.style.display = 'block';
+          if (quote) quote.style.display = 'block';
+          if (topBar) topBar.style.display = 'flex';
         });
       }
     }
