@@ -553,8 +553,8 @@ async function handleLead(request, env) {
     // Дожидаемся результатов n8n и CAPI
     const [capiResult, n8nResult] = await Promise.all([capiPromise, n8nPromise]);
 
-    // 3. Отправка прямого уведомления в Telegram (резервная, если настроены переменные и не отключена)
-    const allowDirectTelegram = env.DISABLE_DIRECT_TELEGRAM !== 'true' && Boolean(botToken && chatId);
+    // 3. Прямая отправка в Telegram с сайта полностью отключена (все уведомления идут через n8n)
+    const allowDirectTelegram = false;
 
     if (allowDirectTelegram) {
       try {

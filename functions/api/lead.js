@@ -301,23 +301,7 @@ export async function onRequestPost(context) {
       videoStats: data.videoStats
     });
 
-    if (!botToken || !chatId) {
-      const missingVars = [];
-      if (!botToken) missingVars.push('TELEGRAM_BOT_TOKEN');
-      if (!chatId) missingVars.push('TELEGRAM_CHAT_ID');
-
-      const warningMsg = `В Cloudflare не обнаружены переменные: ${missingVars.join(', ')}. Убедитесь, что переменные добавлены в Settings -> Variables и выполнен повторный деплой (Redeploy).`;
-      console.warn(warningMsg);
-
-      return new Response(JSON.stringify({
-        error: true,
-        message: warningMsg,
-        capi: capiResult
-      }), {
-        status: 503,
-        headers: CORS_HEADERS
-      });
-    }
+    // Прямая отправка в Telegram отключена (уведомления идут через n8n)
 
     // Сбор UTM-меток и параметров рекламных кампаний
     const utmLines = [];
@@ -422,45 +406,7 @@ export async function onRequestPost(context) {
 
     const htmlMessage = messageParts.join('\n');
 
-    const tgPayload = {
-      chat_id: chatId,
-      text: htmlMessage,
-      parse_mode: 'HTML'
-    };
-
-    if (topicId) {
-      tgPayload.message_thread_id = Number(topicId);
-    }
-
-    const tgUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-    const tgRes = await fetch(tgUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tgPayload)
-    });
-
-    const tgData = await tgRes.json().catch(() => ({}));
-
-    if (!tgRes.ok || !tgData.ok) {
-      let errorHelp = tgData.description || 'Неизвестная ошибка Telegram API';
-      if (tgData.error_code === 403) {
-        errorHelp += ' -> Вы не нажали /start в боте! Напишите боту в Telegram и нажмите кнопку Start.';
-      } else if (tgData.error_code === 400 && tgData.description && tgData.description.includes('chat not found')) {
-        errorHelp += ' -> Неверный TELEGRAM_CHAT_ID или бот не добавлен в этот чат.';
-      } else if (tgData.error_code === 401) {
-        errorHelp += ' -> Неверный токен TELEGRAM_BOT_TOKEN.';
-      }
-
-      console.error('Ошибка Telegram Bot API:', errorHelp);
-      return new Response(JSON.stringify({
-        error: true,
-        message: `Ошибка Telegram (${tgData.error_code || 500}): ${errorHelp}`,
-        capi: capiResult
-      }), {
-        status: 502,
-        headers: CORS_HEADERS
-      });
-    }
+    // Прямая отправка в Telegram отключена (уведомления идут через n8n)
 
     return new Response(JSON.stringify({
       success: true,
