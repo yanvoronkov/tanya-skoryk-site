@@ -495,6 +495,9 @@ async function handleLead(request, env) {
     const hasPriorLead = Boolean(data.hasPriorLead || (isContactClick && (cleanName || cleanContact)));
     const hasContacts = Boolean(cleanName || cleanContact);
 
+    // Нормализуем телефон для хранения в CRM и последующей отправки в Meta CAPI из n8n
+    const normalizedPhone = extractAndNormalizePhone(cleanContact);
+
     // Формируем чистый плоский (flat) объект без дубликатов
     const n8nPayload = {
       // 1. Идентификаторы и тип события
@@ -544,7 +547,14 @@ async function handleLead(request, env) {
       client_ip: clientIp,
       country: clientCountry,
       user_agent: userAgent,
-      is_test: isTestMode
+      is_test: isTestMode,
+
+      // 6. Данные для Meta CAPI из CRM (CompleteRegistration / Purchase из n8n)
+      // Сохраняются в Google Sheets и используются при смене статуса лида
+      fbc: finalFbc || '',
+      fbp: finalFbp || '',
+      phone_normalized: normalizedPhone || '',
+      capi_lead_event_id: eventId
     };
 
     // Запускаем отправку в n8n
