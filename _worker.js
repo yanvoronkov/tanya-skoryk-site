@@ -678,7 +678,7 @@ async function handleLead(request, env) {
     // Успешный ответ клиенту
     return new Response(JSON.stringify({
       success: true,
-      message: isContactClick ? 'Переход зафиксирован' : 'Спасибо! Ваша заявка принята. В ближайшее время я свяжусь с вами.',
+      message: isContactClick ? 'Переход зафиксирован' : 'Спасибо! Ваша заявка принята. В ближайшее время я или мой координатор свяжемся с вами, чтобы обсудить детали.',
       visitorId: visitorId,
       n8n: {
         status: n8nResult.status,
