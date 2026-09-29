@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <!-- SCROLL LOCK: Блокировка скролла до первого касания пользователя (защита от Instagram/Facebook IAB автоскролла) -->
+  <style id="iab-scroll-lock">
+    html.scroll-locked, html.scroll-locked body {
+      overflow: hidden !important;
+      position: fixed !important;
+      width: 100% !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
+  </style>
+  <script>
+    // Немедленно применяем блокировку скролла — ещё до парсинга тела страницы
+    document.documentElement.classList.add('scroll-locked');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Татьяна Скорик | Путешествия на круизных лайнерах и онлайн-бизнес</title>
@@ -1425,6 +1439,7 @@
               required
               autocomplete="off"
               data-lpignore="true"
+              tabindex="-1"
             >
           </div>
 
@@ -1440,6 +1455,7 @@
               required
               autocomplete="off"
               data-lpignore="true"
+              tabindex="-1"
             >
           </div>
 
@@ -1964,49 +1980,68 @@
 
     // Защита от авто-фокуса полей формы и скролла к ним скриптами соцсетей (Meta IAB, Telegram и т.д.)
     function initAutofocusProtection() {
-      let isUserDirectTouch = false;
+      let isUserInteracted = false;
+
       const inputs = [
         document.getElementById('userNameInput'),
         document.getElementById('userContactInput')
       ].filter(Boolean);
 
-      const markUserInteraction = () => {
-        isUserDirectTouch = true;
+      // Функция снятия блокировки скролла и восстановления tabindex
+      const unlockScrollAndInputs = () => {
+        if (isUserInteracted) return;
+        isUserInteracted = true;
+
+        // Снимаем CSS-блокировку скролла
+        document.documentElement.classList.remove('scroll-locked');
+
+        // Восстанавливаем доступность полей формы
+        inputs.forEach(input => {
+          input.removeAttribute('tabindex');
+        });
       };
 
-      // Фиксируем физическое нажатие пользователем (клавиатура или клик/тач)
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') {
-          isUserDirectTouch = true;
-        }
-      });
+      // Первое реальное касание/клик пользователя снимает все блокировки
+      window.addEventListener('touchstart', unlockScrollAndInputs, { passive: true, once: true });
+      window.addEventListener('pointerdown', unlockScrollAndInputs, { once: true });
+      window.addEventListener('mousedown', unlockScrollAndInputs, { once: true });
+      window.addEventListener('keydown', unlockScrollAndInputs, { once: true });
+      window.addEventListener('scroll', unlockScrollAndInputs, { once: true });
 
+      // Перехватываем попытку авто-фокуса на инпуты до взаимодействия
       inputs.forEach(input => {
-        input.addEventListener('touchstart', markUserInteraction, { passive: true });
-        input.addEventListener('pointerdown', markUserInteraction);
-        input.addEventListener('mousedown', markUserInteraction);
-
         input.addEventListener('focus', () => {
-          // Если фокус вызван не прямым тапом пользователя, а скриптом автозаполнения браузера соцсети
-          if (!isUserDirectTouch) {
+          if (!isUserInteracted) {
             input.blur();
             window.scrollTo(0, 0);
           }
         });
       });
 
-      // Снимаем случайный фокус и сбрасываем скролл наверх в первые моменты загрузки
-      const resetScrollToTop = () => {
-        if (!isUserDirectTouch && document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
-          document.activeElement.blur();
+      // Сбрасываем скролл наверх в первые секунды после загрузки (на случай если IAB делает это с задержкой)
+      const forceScrollTop = () => {
+        if (!isUserInteracted) {
+          if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+            document.activeElement.blur();
+          }
           window.scrollTo(0, 0);
         }
       };
 
-      resetScrollToTop();
-      setTimeout(resetScrollToTop, 100);
-      setTimeout(resetScrollToTop, 350);
-      setTimeout(resetScrollToTop, 800);
+      forceScrollTop();
+      setTimeout(forceScrollTop, 100);
+      setTimeout(forceScrollTop, 300);
+      setTimeout(forceScrollTop, 600);
+      setTimeout(forceScrollTop, 1000);
+      setTimeout(forceScrollTop, 1500);
+      setTimeout(forceScrollTop, 2000);
+
+      // Через 3 секунды снимаем блокировку в любом случае (гарантия что сайт не завис)
+      setTimeout(() => {
+        if (!isUserInteracted) {
+          unlockScrollAndInputs();
+        }
+      }, 3000);
     }
 
     // Инициализация при загрузке страницы
