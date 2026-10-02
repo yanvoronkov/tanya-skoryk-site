@@ -1616,92 +1616,95 @@
     </button>
     <span class="cta-subnote">Без обязательств. Сначала разберитесь, как всё работает.</span>
     
-    <div class="hero-video-pill">
-      ▶ Короткое видео — около 3–4 минут
-    </div>
-
-    <!-- ======================================================================
-         БЛОК 2: ВИДЕО + ИНТРО
-         ====================================================================== -->
-    <div class="section-block" style="margin-top: 32px;">
-      <div class="section-badge">ВИДЕО-ПРЕЗЕНТАЦИЯ</div>
-      <h2 class="section-title">Посмотрите, как всё работает на практике</h2>
-      <p class="section-subtitle">
-        3–4 минуты. Татьяна покажет механику клуба, стоимость участия и реальный пример бронирования.
-      </p>
-
-      <!-- Video Player Card -->
-      <div class="video-card-wrap" id="videoWrapper">
-        <div class="video-container" id="videoContainer" onclick="handleVideoContainerClick(event)" style="cursor: pointer;">
-          
-          <img 
-            id="videoPoster" 
-            src="assets/video-preview.jpeg" 
-            alt="Татьяна Скорик — презентация круизного клуба" 
-            class="video-poster"
-            loading="eager"
-            fetchpriority="high"
-          >
-          <div class="video-overlay"></div>
-
-          <div class="video-top-bar" id="videoTopBar">
-            <div class="duration-badge">
-              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 14h-2v-6h2zm0-8h-2V6h2z"/></svg>
-              <span>03:30</span>
-            </div>
-          </div>
-
-          <!-- Play Button Prompt -->
-          <div id="playPromptWrapper" class="play-prompt-wrap" onclick="handlePlayVideo(event)">
-            <button id="playVideoBtn" class="play-btn" aria-label="Смотреть видео">
-              <div class="play-btn-ripple"></div>
-              <div class="play-btn-ripple" style="animation-delay: 1.1s;"></div>
-              <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <div class="play-btn-caption">
-              <span class="caption-action">▶ НАЖМИТЕ ДЛЯ ПРОСМОТРА</span>
-              <span class="caption-sub">со звуком • 03:30</span>
-            </div>
-          </div>
-
-          <!-- Unmute Badge -->
-          <button id="unmuteVideoBtn" class="unmute-badge" onclick="handleUnmuteVideo(event)" aria-label="Включить звук">
-            <div class="unmute-icon-wrap">
-              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            </div>
-            <div class="unmute-text-wrap">
-              <span class="unmute-title">ВКЛЮЧИТЬ ЗВУК</span>
-              <span class="unmute-sub">Нажмите в любое место 🔊</span>
-            </div>
-          </button>
-
-          <!-- Quote -->
-          <div class="video-quote" id="videoQuote">
-            <p>«Я не буду грузить вас сложными схемами. Покажу реальный кабинет клуба и на конкретном примере разберу, как формируется экономия.»</p>
-          </div>
-
-          <!-- HTML5 Video Player -->
-          <video 
-            id="nativeVideoPlayer" 
-            class="native-player" 
-            src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4"
-            controls 
-            playsinline 
-            webkit-playsinline
-            muted
-            preload="metadata"
-            poster="assets/video-preview.jpeg"
-          >
-            <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4" type="video/mp4">
-            <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.MP4" type="video/mp4">
-          </video>
-        </div>
+    <!-- [ВРЕМЕННО СКРЫТО] Блок с видео от плашки до блока о продукте -->
+    <div style="display: none;" aria-hidden="true">
+      <div class="hero-video-pill">
+        ▶ Короткое видео — около 3–4 минут
       </div>
 
-      <!-- Quick Anchor under Video -->
-      <button class="btn-secondary-anchor" onclick="scrollToClubForm(event)">
-        Получить условия клуба ↓
-      </button>
+      <!-- ======================================================================
+           БЛОК 2: ВИДЕО + ИНТРО
+           ====================================================================== -->
+      <div class="section-block" style="margin-top: 32px;">
+        <div class="section-badge">ВИДЕО-ПРЕЗЕНТАЦИЯ</div>
+        <h2 class="section-title">Посмотрите, как всё работает на практике</h2>
+        <p class="section-subtitle">
+          3–4 минуты. Татьяна покажет механику клуба, стоимость участия и реальный пример бронирования.
+        </p>
+
+        <!-- Video Player Card -->
+        <div class="video-card-wrap" id="videoWrapper">
+          <div class="video-container" id="videoContainer" onclick="handleVideoContainerClick(event)" style="cursor: pointer;">
+            
+            <img 
+              id="videoPoster" 
+              src="assets/video-preview.jpeg" 
+              alt="Татьяна Скорик — презентация круизного клуба" 
+              class="video-poster"
+              loading="eager"
+              fetchpriority="high"
+            >
+            <div class="video-overlay"></div>
+
+            <div class="video-top-bar" id="videoTopBar">
+              <div class="duration-badge">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 14h-2v-6h2zm0-8h-2V6h2z"/></svg>
+                <span>03:30</span>
+              </div>
+            </div>
+
+            <!-- Play Button Prompt -->
+            <div id="playPromptWrapper" class="play-prompt-wrap" onclick="handlePlayVideo(event)">
+              <button id="playVideoBtn" class="play-btn" aria-label="Смотреть видео">
+                <div class="play-btn-ripple"></div>
+                <div class="play-btn-ripple" style="animation-delay: 1.1s;"></div>
+                <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <div class="play-btn-caption">
+                <span class="caption-action">▶ НАЖМИТЕ ДЛЯ ПРОСМОТРА</span>
+                <span class="caption-sub">со звуком • 03:30</span>
+              </div>
+            </div>
+
+            <!-- Unmute Badge -->
+            <button id="unmuteVideoBtn" class="unmute-badge" onclick="handleUnmuteVideo(event)" aria-label="Включить звук">
+              <div class="unmute-icon-wrap">
+                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+              </div>
+              <div class="unmute-text-wrap">
+                <span class="unmute-title">ВКЛЮЧИТЬ ЗВУК</span>
+                <span class="unmute-sub">Нажмите в любое место 🔊</span>
+              </div>
+            </button>
+
+            <!-- Quote -->
+            <div class="video-quote" id="videoQuote">
+              <p>«Я не буду грузить вас сложными схемами. Покажу реальный кабинет клуба и на конкретном примере разберу, как формируется экономия.»</p>
+            </div>
+
+            <!-- HTML5 Video Player -->
+            <video 
+              id="nativeVideoPlayer" 
+              class="native-player" 
+              src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4"
+              controls 
+              playsinline 
+              webkit-playsinline
+              muted
+              preload="metadata"
+              poster="assets/video-preview.jpeg"
+            >
+              <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4" type="video/mp4">
+              <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.MP4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- Quick Anchor under Video -->
+        <button class="btn-secondary-anchor" onclick="scrollToClubForm(event)">
+          Получить условия клуба ↓
+        </button>
+      </div>
     </div>
 
     <!-- ======================================================================
@@ -1750,7 +1753,8 @@
     <!-- ======================================================================
          БЛОК 4: ПОКАЖУ НА РЕАЛЬНОМ ПРИМЕРЕ
          ====================================================================== -->
-    <div class="section-block">
+    <!-- [ВРЕМЕННО СКРЫТО] Блок 4: Реальный расчет -->
+    <div class="section-block" style="display: none;" aria-hidden="true">
       <div class="section-badge">РЕАЛЬНЫЙ РАСЧЕТ</div>
       <h2 class="section-title">Покажу на реальном примере</h2>
       <p class="section-subtitle">
@@ -1840,7 +1844,8 @@
     <!-- ======================================================================
          БЛОК 6: СКОЛЬКО СТОИТ УЧАСТИЕ?
          ====================================================================== -->
-    <div class="section-block">
+    <!-- [ВРЕМЕННО СКРЫТО] Блок 6: Сколько стоит участие -->
+    <div class="section-block" style="display: none;" aria-hidden="true">
       <div class="section-badge">ПРОЗРАЧНОСТЬ</div>
       <h2 class="section-title">Сколько стоит участие?</h2>
       
@@ -1929,7 +1934,8 @@
           </div>
         </div>
 
-        <div class="faq-item">
+        <!-- [ВРЕМЕННО СКРЫТО] Вопрос о стоимости в FAQ -->
+        <div class="faq-item" style="display: none;" aria-hidden="true">
           <button class="faq-question" onclick="toggleFaq(this)">
             <span>Сколько стоит членство в клубе?</span>
             <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
