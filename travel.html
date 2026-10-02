@@ -827,6 +827,14 @@
       aspect-ratio: 4 / 3.8;
       background: #0A1722;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+    }
+    .photo-card.featured {
+      grid-column: span 2;
+      aspect-ratio: 16 / 10;
+    }
+    .photo-card.featured img {
+      object-position: center 55%;
     }
     .photo-card img {
       width: 100%;
@@ -843,11 +851,74 @@
       left: 0;
       right: 0;
       background: linear-gradient(180deg, transparent 0%, rgba(10, 23, 34, 0.88) 100%);
-      padding: 18px 10px 8px;
+      padding: 18px 12px 10px;
       color: #FFFFFF;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       line-height: 1.3;
+    }
+
+    /* Photo Lightbox Modal */
+    .photo-lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 23, 34, 0.94);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: zoom-out;
+    }
+    .photo-lightbox.open {
+      display: flex;
+    }
+    .photo-lightbox-content {
+      position: relative;
+      max-width: 94vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: default;
+    }
+    .photo-lightbox-img {
+      max-width: 100%;
+      max-height: 82vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      object-fit: contain;
+    }
+    .photo-lightbox-caption {
+      margin-top: 12px;
+      color: #FFFFFF;
+      font-size: 14.5px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+    .photo-lightbox-close {
+      position: absolute;
+      top: -46px;
+      right: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #FFFFFF;
+      font-size: 24px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .photo-lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.35);
     }
 
     /* Price Highlight Box */
@@ -1738,21 +1809,30 @@
       </p>
 
       <div class="photo-grid">
-        <div class="photo-card">
+        <!-- Главное фото: Норвежские фьорды на всю ширину -->
+        <div class="photo-card featured" onclick="openLightbox('assets/norwegian-fjords.jpg', 'Норвежские фьорды • Лайнер в заливе')">
+          <img src="assets/norwegian-fjords.jpg" alt="Татьяна Скорик — Норвежские фьорды" loading="lazy">
+          <div class="photo-card-caption">Норвежские фьорды • Лайнер в заливе</div>
+        </div>
+        <!-- Фото 2: Посадка на лайнер MSC Musica -->
+        <div class="photo-card" onclick="openLightbox('assets/msc-musica.jpg', 'Посадка на лайнер MSC Musica')">
+          <img src="assets/msc-musica.jpg" alt="Татьяна Скорик у лайнера MSC Musica" loading="lazy">
+          <div class="photo-card-caption">Лайнер MSC Musica</div>
+        </div>
+        <!-- Фото 3: Каюта лайнера MSC -->
+        <div class="photo-card" onclick="openLightbox('assets/msc-cabin.jpg', 'Уют и сервис в каюте MSC')">
+          <img src="assets/msc-cabin.jpg" alt="Татьяна Скорик в каюте лайнера MSC" loading="lazy">
+          <div class="photo-card-caption">Каюта лайнера MSC</div>
+        </div>
+        <!-- Фото 4: Греческие острова (открытая палуба) -->
+        <div class="photo-card" onclick="openLightbox('2026-09-21 15.02.40.jpg', 'Греческие острова • Открытая палуба')">
+          <img src="2026-09-21 15.02.40.jpg" alt="Круизный отдых на открытой палубе" loading="lazy">
+          <div class="photo-card-caption">Греческие острова • Палуба</div>
+        </div>
+        <!-- Фото 5: Средиземноморье -->
+        <div class="photo-card" onclick="openLightbox('assets/tatiana.jpg', 'Средиземноморье • 8 лет в клубе')">
           <img src="assets/tatiana.jpg" alt="Татьяна Скорик в круизе" loading="lazy">
-          <div class="photo-card-caption">Средиземноморье • Лайнер MSC</div>
-        </div>
-        <div class="photo-card">
-          <img src="2026-09-21 15.02.40.jpg" alt="Круизный отдых" loading="lazy">
-          <div class="photo-card-caption">Греческие острова • Costa</div>
-        </div>
-        <div class="photo-card">
-          <img src="assets/og-image.jpg" alt="Круизы по миру" loading="lazy">
-          <div class="photo-card-caption">Норвежские фьорды</div>
-        </div>
-        <div class="photo-card">
-          <img src="assets/video-preview.jpeg" alt="Отдых с семьей" loading="lazy">
-          <div class="photo-card-caption">Канарские острова • Семья</div>
+          <div class="photo-card-caption">Средиземноморье • 8 лет опыта</div>
         </div>
       </div>
     </div>
@@ -2096,6 +2176,17 @@
   </div>
 
   <!-- ========================================================================
+       MODAL: PHOTO LIGHTBOX
+       ======================================================================== -->
+  <div class="photo-lightbox" id="photoLightbox" onclick="closeLightbox(event)">
+    <div class="photo-lightbox-content" onclick="event.stopPropagation()">
+      <button class="photo-lightbox-close" onclick="closeLightbox(event)" aria-label="Закрыть">✕</button>
+      <img src="" alt="" class="photo-lightbox-img" id="lightboxImg">
+      <div class="photo-lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
        JAVASCRIPT
        ======================================================================== -->
   <script>
@@ -2132,6 +2223,31 @@
         input.placeholder = '+7 999 123-45-67';
       }
     }
+
+    // Фото-галерея (Lightbox)
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('photoLightbox');
+      const img = document.getElementById('lightboxImg');
+      const cap = document.getElementById('lightboxCaption');
+      if (!lb || !img) return;
+      img.src = src;
+      img.alt = caption || 'Фото из круиза';
+      if (cap) cap.textContent = caption || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+      if (e) e.stopPropagation();
+      const lb = document.getElementById('photoLightbox');
+      if (!lb) return;
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
 
     // 3. Smooth Scroll to Form
     function scrollToClubForm(e) {
