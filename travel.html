@@ -831,10 +831,15 @@
     }
     .photo-card.featured {
       grid-column: span 2;
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 4 / 3.7;
+      min-height: 360px;
     }
     .photo-card.featured img {
-      object-position: center 55%;
+      object-position: center bottom;
+    }
+    .photo-card.featured .photo-card-caption {
+      padding: 24px 14px 10px;
+      background: linear-gradient(180deg, transparent 0%, rgba(10, 23, 34, 0.72) 100%);
     }
     .photo-card img {
       width: 100%;
@@ -1828,14 +1833,14 @@
           <img src="assets/msc-cabin.jpg" alt="Татьяна Скорик в каюте лайнера MSC" loading="lazy">
           <div class="photo-card-caption">Каюта лайнера MSC</div>
         </div>
-        <!-- Фото 4: Греческие острова (открытая палуба) -->
-        <div class="photo-card" onclick="openLightbox('2026-09-21 15.02.40.jpg', 'Греческие острова • Открытая палуба')">
-          <img src="2026-09-21 15.02.40.jpg" alt="Круизный отдых на открытой палубе" loading="lazy">
-          <div class="photo-card-caption">Греческие острова • Палуба</div>
+        <!-- Фото 4: Греческие острова -->
+        <div class="photo-card" onclick="openLightbox('assets/greek_island.jpeg', 'Греческие острова • Закат в море')">
+          <img src="assets/greek_island.jpeg" alt="Татьяна Скорик — Греческие острова" loading="lazy">
+          <div class="photo-card-caption">Греческие острова</div>
         </div>
         <!-- Фото 5: Средиземноморье -->
-        <div class="photo-card" onclick="openLightbox('assets/tatiana.jpg', 'Средиземноморье • 8 лет в клубе')">
-          <img src="assets/tatiana.jpg" alt="Татьяна Скорик в круизе" loading="lazy">
+        <div class="photo-card" onclick="openLightbox('assets/mediterranean.jpeg', 'Средиземноморье • 8 лет в клубе')">
+          <img src="assets/mediterranean.jpeg" alt="Татьяна Скорик — Средиземноморье" loading="lazy">
           <div class="photo-card-caption">Средиземноморье • 8 лет опыта</div>
         </div>
       </div>
