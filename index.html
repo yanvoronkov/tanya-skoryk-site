@@ -857,6 +857,44 @@
       background: #FEF2F2;
     }
 
+    /* Messenger Selector (Segmented Radio) */
+    .messenger-segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .messenger-opt {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 14px;
+      background: #FAF7F4;
+      border: 1.5px solid rgba(215, 146, 130, 0.35);
+      border-radius: var(--radius-input);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-navy);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .messenger-opt svg {
+      width: 19px;
+      height: 19px;
+      fill: #64748B;
+      transition: fill 0.2s ease;
+    }
+    .messenger-opt.active {
+      background: #FFFFFF;
+      border-color: var(--color-terracotta);
+      color: var(--color-terracotta);
+      box-shadow: 0 4px 12px rgba(190, 109, 88, 0.15);
+    }
+    .messenger-opt[data-messenger="tg"].active svg { fill: var(--color-tg-blue); }
+    .messenger-opt[data-messenger="wa"].active svg { fill: #25D366; }
+
     /* Consent Checkbox */
     .checkbox-row {
       display: flex;
@@ -1377,46 +1415,9 @@
             🎬 Пожалуйста, посмотрите 7-минутное видео выше 👆
           </div>
           <div class="advice-desc">
-            В нём Татьяна показала суть круизного клуба, цены и как устроен бизнес. Это сэкономит ваше время и ответит на 90% вопросов перед диалогом.
+            В нём Татьяна показала суть круизного клуба. Это сэкономит ваше время и ответит на 90% вопросов перед диалогом.
           </div>
         </div>
-      </div>
-
-      <!-- Green WhatsApp Button (Above Telegram) -->
-      <a 
-        id="mainWaBtn"
-        href="https://wa.me/37256256388"
-        target="_blank" 
-        rel="noopener noreferrer" 
-        class="btn-wa-primary"
-        data-fbq-track="false"
-      >
-        <!-- Authentic WhatsApp Icon -->
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7.02 8.48 7.02 9.69C7.02 10.9 7.9 12.06 8.02 12.23C8.14 12.4 9.73 14.86 12.18 15.92C12.76 16.17 13.22 16.32 13.57 16.43C14.16 16.62 14.7 16.59 15.12 16.53C15.6 16.46 16.58 15.94 16.79 15.36C17 14.78 17 14.28 16.93 14.18C16.87 14.07 16.71 14.01 16.46 13.89C16.22 13.76 15 13.16 14.77 13.08C14.55 13 14.38 12.96 14.22 13.21C14.05 13.46 13.58 14.01 13.44 14.18C13.3 14.34 13.15 14.36 12.91 14.24C12.66 14.11 11.87 13.85 10.93 13.01C10.2 12.36 9.71 11.55 9.56 11.3C9.42 11.06 9.55 10.92 9.67 10.8C9.78 10.69 9.92 10.51 10.05 10.36C10.17 10.22 10.21 10.11 10.3 9.94C10.38 9.78 10.34 9.63 10.28 9.51C10.22 9.39 9.73 8.18 9.52 7.68C9.33 7.19 9.12 7.26 8.97 7.25C8.82 7.24 8.68 7.33 8.53 7.33Z"/>
-        </svg>
-        <span>Написать в WhatsApp</span>
-      </a>
-
-      <!-- Blue Telegram Button with Authentic Telegram Icon -->
-      <a 
-        id="mainTgBtn"
-        href="https://t.me/SergeiVmeste"
-        target="_blank" 
-        rel="noopener noreferrer" 
-        class="btn-tg-primary"
-        data-fbq-track="false"
-      >
-        <!-- Authentic Round Telegram Icon -->
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/>
-        </svg>
-        <span>Написать в Telegram</span>
-      </a>
-
-      <!-- Divider: или оставьте контакт -->
-      <div class="divider">
-        <span>или оставьте контакт</span>
       </div>
 
       <!-- Form Card -->
@@ -1442,15 +1443,30 @@
             >
           </div>
 
-          <!-- Field 2: Telegram или WhatsApp -->
+          <!-- Field 2: Messenger Toggle -->
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label">Куда вам удобнее написать?</label>
+            <div class="messenger-segmented">
+              <div class="messenger-opt active" data-messenger="tg" onclick="selectMessenger('tg')">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/></svg>
+                <span>Telegram</span>
+              </div>
+              <div class="messenger-opt" data-messenger="wa" onclick="selectMessenger('wa')">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7.02 8.48 7.02 9.69C7.02 10.9 7.9 12.06 8.02 12.23C8.14 12.4 9.73 14.86 12.18 15.92C12.76 16.17 13.22 16.32 13.57 16.43C14.16 16.62 14.7 16.59 15.12 16.53C15.6 16.46 16.58 15.94 16.79 15.36C17 14.78 17 14.28 16.93 14.18C16.87 14.07 16.71 14.01 16.46 13.89C16.22 13.76 15 13.16 14.77 13.08C14.55 13 14.38 12.96 14.22 13.21C14.05 13.46 13.58 14.01 13.44 14.18C13.3 14.34 13.15 14.36 12.91 14.24C12.66 14.11 11.87 13.85 10.93 13.01C10.2 12.36 9.71 11.55 9.56 11.3C9.42 11.06 9.55 10.92 9.67 10.8C9.78 10.69 9.92 10.51 10.05 10.36C10.17 10.22 10.21 10.11 10.3 9.94C10.38 9.78 10.34 9.63 10.28 9.51C10.22 9.39 9.73 8.18 9.52 7.68C9.33 7.19 9.12 7.26 8.97 7.25C8.82 7.24 8.68 7.33 8.53 7.33Z"/></svg>
+                <span>WhatsApp</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Field 3: Contact -->
           <div class="form-group" style="margin-bottom: 18px;">
-            <label for="userContactInput" class="form-label">Telegram или WhatsApp</label>
+            <label for="userContactInput" class="form-label" id="contactLabel">Ваш контакт в Telegram</label>
             <input 
               type="text" 
               id="userContactInput" 
               name="contact" 
               class="form-input" 
-              placeholder="@username или +7 999 123-45-67" 
+              placeholder="@username или номер телефона" 
               required
               autocomplete="off"
               data-lpignore="true"
@@ -2097,6 +2113,24 @@
     });
     window.addEventListener('pagehide', handlePageExitAnalytics);
     window.addEventListener('beforeunload', handlePageExitAnalytics);
+
+    // Выбор предпочитаемого мессенджера для связи (Telegram / WhatsApp)
+    let currentMessenger = 'tg';
+    function selectMessenger(m) {
+      currentMessenger = m;
+      document.querySelectorAll('.messenger-opt').forEach(el => {
+        el.classList.toggle('active', el.dataset.messenger === m);
+      });
+      const label = document.getElementById('contactLabel');
+      const input = document.getElementById('userContactInput');
+      if (m === 'tg') {
+        if (label) label.textContent = 'Ваш контакт в Telegram';
+        if (input) input.placeholder = '@username или номер телефона';
+      } else {
+        if (label) label.textContent = 'Ваш номер в WhatsApp';
+        if (input) input.placeholder = '+7 999 123-45-67';
+      }
+    }
 
     // Функция обновления всех ссылок Telegram на странице
     function applyTelegramLink(url) {
@@ -2765,7 +2799,7 @@
       if (!contact) {
         contactInput.focus();
         contactInput.classList.add('error');
-        showToast('Укажите контакт', 'Введите ваш Telegram никнейм или номер телефона', 'error');
+        showToast('Укажите контакт', currentMessenger === 'tg' ? 'Введите ваш Telegram никнейм или номер телефона' : 'Введите ваш номер WhatsApp', 'error');
         return;
       }
       contactInput.classList.remove('error');
@@ -2779,6 +2813,9 @@
       submitBtn.disabled = true;
       if (spinner) spinner.style.display = 'inline-block';
       if (btnText) btnText.textContent = 'Отправка...';
+
+      const messengerName = currentMessenger === 'tg' ? 'Telegram' : 'WhatsApp';
+      const fullContact = `${contact} (${messengerName})`;
 
       // Генерируем уникальный event_id для дедупликации Browser Pixel и Conversions API
       const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
@@ -2804,7 +2841,8 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name,
-            contact,
+            contact: fullContact,
+            messenger: messengerName,
             consent,
             visitorId: mktData.visitorId,
             testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
@@ -2822,22 +2860,25 @@
         const resData = await response.json().catch(() => ({}));
 
         if (response.ok && resData.success) {
-          saveLeadProfile(name, contact);
+          saveLeadProfile(name, fullContact);
           document.getElementById('leadForm').reset();
+          selectMessenger('tg');
           openSuccessModal();
         } else {
-          saveLeadProfile(name, contact);
+          saveLeadProfile(name, fullContact);
           console.warn('API error response:', resData);
           if (resData.message) {
             showToast('Внимание', resData.message, 'error');
           }
           // Очищаем форму и открываем модальное окно подтверждения
           document.getElementById('leadForm').reset();
+          selectMessenger('tg');
           openSuccessModal();
         }
       } catch (err) {
         console.warn('Local/Network fallback:', err);
         document.getElementById('leadForm').reset();
+        selectMessenger('tg');
         openSuccessModal();
       } finally {
         submitBtn.disabled = false;
