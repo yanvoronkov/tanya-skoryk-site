@@ -5,3 +5,4 @@ screenshot_*.png
 node_modules/
 *.mp4
 *.MP4
+.wrangler/

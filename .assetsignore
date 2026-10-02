@@ -4,3 +4,7 @@
 _worker.js
 wrangler.jsonc
 functions
+*.mp4
+*.MP4
+assets/*.mp4
+assets/*.MP4

@@ -734,6 +734,16 @@ export default {
 
     // Для всех остальных запросов отдаем статические файлы
     if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
+      if (url.pathname === '/travel' || url.pathname === '/travel/' || url.pathname === '/travel.html') {
+        const travelUrl = new URL(request.url);
+        travelUrl.pathname = '/travel.html';
+        return env.ASSETS.fetch(new Request(travelUrl.toString(), request));
+      }
+      if (url.pathname === '/club' || url.pathname === '/club/' || url.pathname === '/club.html') {
+        const clubUrl = new URL(request.url);
+        clubUrl.pathname = '/travel.html';
+        return env.ASSETS.fetch(new Request(clubUrl.toString(), request));
+      }
       return env.ASSETS.fetch(request);
     }
 

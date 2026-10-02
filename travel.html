@@ -1,0 +1,2434 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!-- SCROLL LOCK: Защита от автоскролла в Instagram/Facebook In-App Browser -->
+  <style id="iab-scroll-lock">
+    html.scroll-locked, html.scroll-locked body {
+      overflow: hidden !important;
+      position: fixed !important;
+      width: 100% !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
+  </style>
+  <script>
+    document.documentElement.classList.add('scroll-locked');
+  </script>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Татьяна Скорик | Круизы по миру на специальных условиях клуба</title>
+  
+  <!-- SEO & Meta -->
+  <meta name="description" content="Покажу, как устроен международный круизный клуб, которым я пользуюсь 8 лет, сколько стоит участие и за счёт чего формируется реальная выгода на круизах.">
+  <meta name="keywords" content="Татьяна Скорик, круизный клуб, круизы, путешествия по миру, скидки на круизы, отдых на лайнере, клубное членство">
+  <meta name="author" content="Татьяна Скорик">
+  <meta name="version" content="2.0.0">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://club.tanyaskoryk.online/travel">
+  
+  <!-- Mobile & PWA Theme -->
+  <meta name="theme-color" content="#FAF7F2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Татьяна Скорик">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Татьяна Скорик — Круизы по миру на специальных условиях клуба">
+  <meta property="og:title" content="Круизы по миру на специальных условиях клуба | Татьяна Скорик">
+  <meta property="og:description" content="Покажу, как устроен международный круизный клуб, которым я пользуюсь 8 лет, сколько стоит участие и за счёт чего формируется выгода.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/yanvoronkov/tanya-skoryk-site/main/assets/og-image.jpg">
+  <meta property="og:locale" content="ru_RU">
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('set', 'autoConfig', false, '4047095728920722');
+    fbq('init', '4047095728920722');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=4047095728920722&ev=PageView&noscript=1"
+  /></noscript>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       Pure Vanilla CSS Design System - Luxury Warm Minimalist
+       ========================================================================== */
+    :root {
+      --bg-cream: #FAF7F2;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #FFFDF9 0%, #F7F1EB 50%, #EFE7DF 100%);
+      --text-dark: #1F2428;
+      --text-navy: #15222E;
+      --text-muted: #64748B;
+      --text-body: #4A5568;
+      
+      --color-rose-300: #E8B4A6;
+      --color-rose-400: #D79282;
+      --color-rose-500: #C27464;
+      --color-terracotta: #BE6D58;
+      --color-terracotta-hover: #AB5E4A;
+      
+      --color-tg-blue: #229ED9;
+      --color-wa-green: #25D366;
+      --color-gold: #D4AF37;
+      --color-gold-light: #FDF8ED;
+      
+      --card-bg: #FFFFFF;
+      --glass-bg: rgba(255, 255, 255, 0.92);
+      --glass-border: rgba(255, 255, 255, 0.95);
+      
+      --shadow-sm: 0 2px 8px rgba(21, 34, 46, 0.04);
+      --shadow-card: 0 16px 40px -12px rgba(180, 140, 130, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.03);
+      --shadow-btn: 0 10px 24px -4px rgba(190, 109, 88, 0.38);
+      --shadow-hover: 0 14px 28px -4px rgba(190, 109, 88, 0.45);
+      
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --radius-card: 26px;
+      --radius-input: 14px;
+      --radius-btn: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-dark);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px 16px 90px;
+      padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: relative;
+    }
+
+    /* Ambient background glows */
+    .ambient-glow {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+      contain: paint;
+    }
+    .glow-blob-1 {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 180, 166, 0.35) 0%, rgba(232, 180, 166, 0) 70%);
+      filter: blur(55px);
+    }
+    .glow-blob-2 {
+      position: absolute;
+      bottom: 10%;
+      right: 0;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0) 70%);
+      filter: blur(55px);
+    }
+
+    /* Main Container */
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 4px;
+    }
+
+    /* Speaker Pill Badge */
+    .speaker-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 7px 22px 7px 7px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(215, 146, 130, 0.4);
+      border-radius: 50px;
+      box-shadow: 0 6px 20px rgba(194, 116, 100, 0.12);
+      margin-bottom: 20px;
+    }
+    .speaker-avatar-wrap {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2.5px solid #FFFFFF;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+      flex-shrink: 0;
+    }
+    .speaker-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .speaker-online-dot {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      background: #10B981;
+      border: 2px solid #FFFFFF;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .speaker-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .speaker-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--text-navy);
+      line-height: 1.2;
+    }
+    .verified-icon {
+      width: 17px;
+      height: 17px;
+      fill: var(--color-tg-blue);
+      flex-shrink: 0;
+    }
+    .speaker-tag {
+      font-size: 13px;
+      color: var(--color-rose-500);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    /* Hero Typography */
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(34px, 8.5vw, 46px);
+      line-height: 1.05;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-navy);
+      letter-spacing: -0.015em;
+      margin-bottom: 14px;
+      padding: 0 4px;
+      text-wrap: balance;
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg, #A86050 0%, #D88F7F 50%, #9C5444 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .hero-subtitle {
+      font-size: 16.5px;
+      line-height: 1.55;
+      text-align: center;
+      color: #4A5568;
+      font-weight: 400;
+      margin-bottom: 18px;
+      padding: 0 4px;
+      text-wrap: pretty;
+    }
+
+    /* Destination Chips Row */
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 22px;
+      width: 100%;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(215, 146, 130, 0.35);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-navy);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+    .chip-dot {
+      color: var(--color-terracotta);
+      font-size: 11px;
+    }
+
+    /* Hero Knowledge Box */
+    .hero-knowledge-box {
+      width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(215, 146, 130, 0.3);
+      border-radius: var(--radius-card);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 22px;
+    }
+    .hero-knowledge-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-navy);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .hero-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .hero-bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14.5px;
+      line-height: 1.45;
+      color: var(--text-body);
+    }
+    .bullet-check-icon {
+      width: 18px;
+      height: 18px;
+      fill: var(--color-terracotta);
+      flex-shrink: 0;
+      margin-top: 1.5px;
+    }
+
+    /* Primary Anchor Button Style */
+    .btn-cta-anchor {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, #C27464 0%, #BE6D58 45%, #AA5944 100%);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-btn);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-cta-anchor:hover, .btn-cta-anchor:active {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      background: linear-gradient(135deg, #C97D6E 0%, #C3735E 45%, #B5604B 100%);
+    }
+    .btn-cta-anchor:active {
+      transform: translateY(1px);
+    }
+
+    .cta-subnote {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 10px;
+      display: block;
+    }
+    .hero-video-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-terracotta);
+      background: rgba(190, 109, 88, 0.1);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(190, 109, 88, 0.2);
+    }
+
+    /* Section Wrapper */
+    .section-block {
+      width: 100%;
+      margin-top: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .section-badge {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      background: rgba(190, 109, 88, 0.09);
+      padding: 5px 12px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 7vw, 36px);
+      font-weight: 700;
+      color: var(--text-navy);
+      text-align: center;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      padding: 0 6px;
+      text-wrap: balance;
+    }
+    .section-subtitle {
+      font-size: 14.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 0 8px;
+      text-wrap: pretty;
+    }
+
+    /* Video Frame Card */
+    .video-card-wrap {
+      width: 100%;
+      position: relative;
+      border-radius: 28px;
+      padding: 5px;
+      background: linear-gradient(180deg, rgba(232, 180, 166, 0.8) 0%, rgba(212, 175, 55, 0.45) 50%, rgba(215, 146, 130, 0.7) 100%);
+      box-shadow: 0 16px 36px -10px rgba(194, 116, 100, 0.35);
+      margin-top: 14px;
+      margin-bottom: 16px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 13.6;
+      border-radius: 23px;
+      overflow: hidden;
+      background: #0A1722;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-poster {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.88);
+      transition: transform 0.6s ease;
+    }
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10, 23, 34, 0.35) 0%, rgba(10, 23, 34, 0.1) 40%, rgba(10, 23, 34, 0.85) 100%);
+      pointer-events: none;
+    }
+    .video-top-bar {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: flex-end;
+      z-index: 10;
+    }
+    .duration-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.62);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .duration-badge svg {
+      width: 13px;
+      height: 13px;
+      fill: #FBBF24;
+    }
+
+    .play-prompt-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      cursor: pointer;
+    }
+    .play-btn {
+      position: relative;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFF5F2 100%);
+      border: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+    .play-btn-ripple {
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      animation: ripple 2.2s infinite cubic-bezier(0, 0.2, 0.8, 1);
+      pointer-events: none;
+    }
+    @keyframes ripple {
+      0% { transform: scale(0.85); opacity: 1; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .play-icon {
+      width: 32px;
+      height: 32px;
+      fill: var(--color-terracotta);
+      margin-left: 4px;
+    }
+    .play-btn-caption {
+      margin-top: 14px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .caption-action {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #FFFFFF;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      background: rgba(190, 109, 88, 0.9);
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+    .caption-sub {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    }
+
+    .unmute-badge {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 40px;
+      padding: 8px 18px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 25;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    .unmute-icon-wrap svg {
+      width: 20px;
+      height: 20px;
+      fill: #FFFFFF;
+    }
+    .unmute-text-wrap {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .unmute-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.04em;
+    }
+    .unmute-sub {
+      font-size: 10.5px;
+      color: #94A3B8;
+    }
+
+    .video-quote {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 10;
+      color: #FFFFFF;
+      font-size: 13px;
+      line-height: 1.4;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(6px);
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .native-player {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .btn-secondary-anchor {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 14px 20px;
+      background: #FFFFFF;
+      color: var(--color-terracotta);
+      border: 1.5px solid rgba(190, 109, 88, 0.35);
+      border-radius: var(--radius-btn);
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+      margin-bottom: 10px;
+    }
+    .btn-secondary-anchor:hover {
+      background: #FFF9F7;
+      border-color: var(--color-terracotta);
+    }
+
+    /* Product 3-Cards Grid */
+    .product-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(215, 146, 130, 0.25);
+      border-radius: 20px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-2px);
+    }
+    .product-icon-wrap {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #FFF6F3 0%, #FEEBE6 100%);
+      border: 1px solid rgba(215, 146, 130, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .product-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .product-heading {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-navy);
+    }
+    .product-text {
+      font-size: 13.5px;
+      line-height: 1.48;
+      color: var(--text-body);
+    }
+
+    /* Real Calculation Proof Card */
+    .calc-card {
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: var(--radius-card);
+      border: 1.5px solid rgba(190, 109, 88, 0.35);
+      padding: 24px 22px;
+      box-shadow: var(--shadow-card);
+      margin-top: 6px;
+    }
+    .calc-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed rgba(215, 146, 130, 0.4);
+    }
+    .calc-header-icon {
+      font-size: 24px;
+    }
+    .calc-header-text h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-navy);
+      line-height: 1.25;
+    }
+    .calc-header-text span {
+      font-size: 13px;
+      color: var(--color-rose-500);
+      font-weight: 500;
+    }
+    .calc-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14.5px;
+      color: var(--text-body);
+    }
+    .calc-row.old-price .calc-value {
+      text-decoration: line-through;
+      color: #94A3B8;
+      font-weight: 600;
+    }
+    .calc-row.points-row {
+      color: #15803D;
+      font-weight: 600;
+      background: rgba(34, 197, 94, 0.08);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+    .calc-row .calc-value {
+      font-weight: 700;
+      font-size: 15.5px;
+      color: var(--text-navy);
+    }
+    .calc-divider {
+      height: 1.5px;
+      background: rgba(215, 146, 130, 0.3);
+      margin: 12px 0;
+    }
+    .calc-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 0 6px;
+    }
+    .calc-total-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-navy);
+    }
+    .calc-total-price {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-terracotta);
+    }
+    .calc-disclaimer {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin-top: 14px;
+      font-style: italic;
+    }
+
+    /* Photo Grid (Proof of Experience) */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .photo-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3.8;
+      background: #0A1722;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .photo-card:hover img {
+      transform: scale(1.05);
+    }
+    .photo-card-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(10, 23, 34, 0.88) 100%);
+      padding: 18px 10px 8px;
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    /* Price Highlight Box */
+    .price-card {
+      width: 100%;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFF9F7 100%);
+      border: 1.5px solid rgba(215, 146, 130, 0.45);
+      border-radius: var(--radius-card);
+      padding: 26px 22px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+    .price-value-wrap {
+      margin: 10px 0 14px;
+    }
+    .price-number {
+      font-family: var(--font-serif);
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--color-terracotta);
+      line-height: 1;
+    }
+    .price-period {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .price-desc {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-body);
+      margin-bottom: 20px;
+    }
+
+    /* Fit / Unfit Comparison Cards */
+    .fit-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+    }
+    .fit-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 20px 18px;
+      box-shadow: var(--shadow-card);
+    }
+    .fit-card.fit-yes {
+      border: 1.5px solid rgba(34, 197, 94, 0.35);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F6FEF9 100%);
+    }
+    .fit-card.fit-no {
+      border: 1.5px solid rgba(239, 68, 68, 0.25);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFFBFB 100%);
+    }
+    .fit-card-title {
+      font-size: 15.5px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .fit-yes .fit-card-title {
+      color: #15803D;
+    }
+    .fit-no .fit-card-title {
+      color: #B91C1C;
+    }
+    .fit-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .fit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13.8px;
+      line-height: 1.45;
+      color: var(--text-body);
+    }
+    .fit-bullet {
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .fit-yes .fit-bullet { color: #16A34A; }
+    .fit-no .fit-bullet { color: #DC2626; }
+
+    /* FAQ Accordion */
+    .faq-accordion {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .faq-item {
+      background: var(--card-bg);
+      border: 1px solid rgba(215, 146, 130, 0.28);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 16px 18px;
+      background: none;
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-navy);
+      line-height: 1.35;
+    }
+    .faq-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      fill: var(--color-terracotta);
+      transition: transform 0.25s ease;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+      padding: 0 18px;
+      font-size: 13.8px;
+      line-height: 1.52;
+      color: var(--text-body);
+    }
+    .faq-item.active .faq-answer {
+      max-height: 240px;
+      padding-bottom: 16px;
+    }
+
+    /* Business Separate Block */
+    .business-card {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1.5px dashed rgba(215, 146, 130, 0.5);
+      border-radius: 20px;
+      padding: 22px 20px;
+      box-shadow: var(--shadow-card);
+      text-align: center;
+      margin-top: 14px;
+    }
+    .business-card-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-rose-500);
+      background: #FDF2F0;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .business-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-navy);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .business-card-text {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text-body);
+      margin-bottom: 14px;
+    }
+    .btn-business-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: transparent;
+      border: 1.5px solid var(--color-terracotta);
+      border-radius: 20px;
+      color: var(--color-terracotta);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-business-link:hover {
+      background: var(--color-terracotta);
+      color: #FFFFFF;
+    }
+
+    /* Final Form Card */
+    .form-card {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(215, 146, 130, 0.4);
+      border-radius: var(--radius-card);
+      padding: 26px 22px;
+      box-shadow: 0 20px 48px -12px rgba(190, 109, 88, 0.22);
+      margin-top: 10px;
+      scroll-margin-top: 30px;
+    }
+    .form-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-title {
+      font-family: var(--font-serif);
+      font-size: 27px;
+      font-weight: 700;
+      color: var(--text-navy);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .form-subtitle {
+      font-size: 13.8px;
+      line-height: 1.48;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-navy);
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 16px;
+      background: #FAF7F4;
+      border: 1.5px solid rgba(215, 146, 130, 0.35);
+      border-radius: var(--radius-input);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--text-dark);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .form-input:focus {
+      background: #FFFFFF;
+      border-color: var(--color-terracotta);
+      box-shadow: 0 0 0 3px rgba(190, 109, 88, 0.18);
+    }
+    .form-input.error {
+      border-color: #EF4444;
+      background: #FEF2F2;
+    }
+
+    /* Messenger Selector (Segmented Radio) */
+    .messenger-segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .messenger-opt {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 14px;
+      background: #FAF7F4;
+      border: 1.5px solid rgba(215, 146, 130, 0.35);
+      border-radius: var(--radius-input);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-navy);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .messenger-opt svg {
+      width: 19px;
+      height: 19px;
+      fill: #64748B;
+    }
+    .messenger-opt.active {
+      background: #FFFFFF;
+      border-color: var(--color-terracotta);
+      color: var(--color-terracotta);
+      box-shadow: 0 4px 12px rgba(190, 109, 88, 0.15);
+    }
+    .messenger-opt[data-messenger="tg"].active svg { fill: var(--color-tg-blue); }
+    .messenger-opt[data-messenger="wa"].active svg { fill: var(--color-wa-green); }
+
+    /* Consent Checkbox */
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    .checkbox-row input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .custom-checkbox {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1.5px solid rgba(215, 146, 130, 0.5);
+      background: #FAF7F4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1.5px;
+      transition: all 0.2s ease;
+    }
+    .checkbox-row input[type="checkbox"]:checked + .custom-checkbox {
+      background: var(--color-terracotta);
+      border-color: var(--color-terracotta);
+    }
+    .custom-checkbox svg {
+      width: 14px;
+      height: 14px;
+      fill: #FFFFFF;
+      display: none;
+    }
+    .checkbox-row input[type="checkbox"]:checked + .custom-checkbox svg {
+      display: block;
+    }
+    .checkbox-label-text {
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+    .checkbox-label-text a {
+      color: var(--color-terracotta);
+      text-decoration: underline;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      height: 56px;
+      background: linear-gradient(135deg, #C27464 0%, #BE6D58 45%, #AA5944 100%);
+      color: #FFFFFF;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-btn);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+    }
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Floating Mobile Sticky CTA Bar */
+    .sticky-cta-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(215, 146, 130, 0.35);
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+      z-index: 99;
+      display: flex;
+      justify-content: center;
+      transform: translateY(110%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+    }
+    .sticky-cta-bar.visible {
+      transform: translateY(0);
+    }
+    .sticky-cta-inner {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-sticky {
+      flex: 1;
+      height: 48px;
+      background: linear-gradient(135deg, #C27464 0%, #BE6D58 100%);
+      color: #FFFFFF;
+      font-size: 14.5px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(190, 109, 88, 0.35);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 23, 34, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-dialog {
+      background: #FFFFFF;
+      border-radius: 22px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: modalFadeIn 0.28s ease;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header {
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-navy);
+    }
+    .modal-close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94A3B8;
+      padding: 4px;
+      display: flex;
+    }
+    .modal-body {
+      padding: 20px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text-body);
+    }
+    .modal-body h4 {
+      font-size: 14.5px;
+      color: var(--text-navy);
+      margin: 14px 0 6px;
+    }
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid #F1F5F9;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-modal-close {
+      padding: 10px 20px;
+      background: #F1F5F9;
+      color: var(--text-dark);
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Success Modal */
+    .success-icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #DCFCE7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .success-icon-check {
+      width: 32px;
+      height: 32px;
+      fill: #16A34A;
+    }
+    .success-modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-navy);
+      margin-bottom: 8px;
+    }
+    .success-modal-desc {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-body);
+      margin-bottom: 20px;
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+      width: 90%;
+      max-width: 380px;
+    }
+    .toast {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      animation: toastIn 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
+    .legal-footer {
+      margin-top: 36px;
+      text-align: center;
+      padding: 0 12px;
+    }
+    .disclaimer-text {
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .privacy-link {
+      background: none;
+      border: none;
+      font-size: 12px;
+      color: var(--color-terracotta);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Background -->
+  <div class="ambient-glow">
+    <div class="glow-blob-1"></div>
+    <div class="glow-blob-2"></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Floating Mobile Sticky CTA Bar -->
+  <div class="sticky-cta-bar" id="stickyCtaBar">
+    <div class="sticky-cta-inner">
+      <button class="btn-sticky" onclick="scrollToClubForm(event)">
+        Получить условия клуба ↓
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Top Speaker Badge -->
+    <div class="speaker-badge">
+      <div class="speaker-avatar-wrap">
+        <img src="assets/tatiana.jpg" alt="Татьяна Скорик" class="speaker-avatar-img">
+        <div class="speaker-online-dot"></div>
+      </div>
+      <div class="speaker-text">
+        <div class="speaker-name-row">
+          <span>Татьяна Скорик</span>
+          <svg class="verified-icon" viewBox="0 0 24 24" title="Верифицированный партнер">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+        </div>
+        <span class="speaker-tag">Участник клуба с 2018 года</span>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 1: HERO
+         ====================================================================== -->
+    <h1 class="hero-title">
+      Круизы по миру <span class="shimmer-text">на специальных условиях клуба</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Покажу, как работает круизный клуб, которым я пользуюсь уже 8 лет, и как участники получают доступ к круизам на специальных условиях.
+    </p>
+
+    <!-- Destination Tags -->
+    <div class="chips-row">
+      <div class="chip">Греция</div>
+      <span class="chip-dot">•</span>
+      <div class="chip">Средиземноморье</div>
+      <span class="chip-dot">•</span>
+      <div class="chip">Канары</div>
+      <span class="chip-dot">•</span>
+      <div class="chip">Норвегия</div>
+      <span class="chip-dot">•</span>
+      <div class="chip">Карибы</div>
+    </div>
+
+    <!-- Knowledge Box -->
+    <div class="hero-knowledge-box">
+      <div class="hero-knowledge-title">
+        <svg class="bullet-check-icon" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        За несколько минут вы узнаете:
+      </div>
+      <ul class="hero-bullets">
+        <li class="hero-bullet-item">
+          <svg class="bullet-check-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <span>как устроено членство в клубе;</span>
+        </li>
+        <li class="hero-bullet-item">
+          <svg class="bullet-check-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <span>за счёт чего формируется реальная выгода;</span>
+        </li>
+        <li class="hero-bullet-item">
+          <svg class="bullet-check-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <span>сколько стоит участие и ежемесячные условия;</span>
+        </li>
+        <li class="hero-bullet-item">
+          <svg class="bullet-check-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <span>как выглядит бронирование каюты изнутри кабинета;</span>
+        </li>
+        <li class="hero-bullet-item">
+          <svg class="bullet-check-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <span>кому такой формат действительно подходит, а кому нет.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Hero Action Group -->
+    <button class="btn-cta-anchor" onclick="scrollToClubForm(event)">
+      ПОЛУЧИТЬ УСЛОВИЯ КЛУБА
+    </button>
+    <span class="cta-subnote">Без обязательств. Сначала разберитесь, как всё работает.</span>
+    
+    <div class="hero-video-pill">
+      ▶ Короткое видео — около 3–4 минут
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 2: ВИДЕО + ИНТРО
+         ====================================================================== -->
+    <div class="section-block" style="margin-top: 32px;">
+      <div class="section-badge">ВИДЕО-ПРЕЗЕНТАЦИЯ</div>
+      <h2 class="section-title">Посмотрите, как всё работает на практике</h2>
+      <p class="section-subtitle">
+        3–4 минуты. Татьяна покажет механику клуба, стоимость участия и реальный пример бронирования.
+      </p>
+
+      <!-- Video Player Card -->
+      <div class="video-card-wrap" id="videoWrapper">
+        <div class="video-container" id="videoContainer" onclick="handleVideoContainerClick(event)" style="cursor: pointer;">
+          
+          <img 
+            id="videoPoster" 
+            src="assets/video-preview.jpeg" 
+            alt="Татьяна Скорик — презентация круизного клуба" 
+            class="video-poster"
+            loading="eager"
+            fetchpriority="high"
+          >
+          <div class="video-overlay"></div>
+
+          <div class="video-top-bar" id="videoTopBar">
+            <div class="duration-badge">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 14h-2v-6h2zm0-8h-2V6h2z"/></svg>
+              <span>03:30</span>
+            </div>
+          </div>
+
+          <!-- Play Button Prompt -->
+          <div id="playPromptWrapper" class="play-prompt-wrap" onclick="handlePlayVideo(event)">
+            <button id="playVideoBtn" class="play-btn" aria-label="Смотреть видео">
+              <div class="play-btn-ripple"></div>
+              <div class="play-btn-ripple" style="animation-delay: 1.1s;"></div>
+              <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div class="play-btn-caption">
+              <span class="caption-action">▶ НАЖМИТЕ ДЛЯ ПРОСМОТРА</span>
+              <span class="caption-sub">со звуком • 03:30</span>
+            </div>
+          </div>
+
+          <!-- Unmute Badge -->
+          <button id="unmuteVideoBtn" class="unmute-badge" onclick="handleUnmuteVideo(event)" aria-label="Включить звук">
+            <div class="unmute-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </div>
+            <div class="unmute-text-wrap">
+              <span class="unmute-title">ВКЛЮЧИТЬ ЗВУК</span>
+              <span class="unmute-sub">Нажмите в любое место 🔊</span>
+            </div>
+          </button>
+
+          <!-- Quote -->
+          <div class="video-quote" id="videoQuote">
+            <p>«Я не буду грузить вас сложными схемами. Покажу реальный кабинет клуба и на конкретном примере разберу, как формируется экономия.»</p>
+          </div>
+
+          <!-- HTML5 Video Player -->
+          <video 
+            id="nativeVideoPlayer" 
+            class="native-player" 
+            src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4"
+            controls 
+            playsinline 
+            webkit-playsinline
+            muted
+            preload="metadata"
+            poster="assets/video-preview.jpeg"
+          >
+            <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.mp4" type="video/mp4">
+            <source src="https://video.inetskills.ru/taniya-video-presentation-incruses.MP4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <!-- Quick Anchor under Video -->
+      <button class="btn-secondary-anchor" onclick="scrollToClubForm(event)">
+        Получить условия клуба ↓
+      </button>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 3: САМ ПРОДУКТ (ЧТО ТАКОЕ КРУИЗНЫЙ КЛУБ?)
+         ====================================================================== -->
+    <div class="section-block">
+      <div class="section-badge">О ПРОДУКТЕ</div>
+      <h2 class="section-title">Что такое круизный клуб?</h2>
+      <p class="section-subtitle">
+        Это формат клубного участия, который позволяет получать доступ к круизам и партнерским туристическим предложениям на специальных условиях программы.
+      </p>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-icon-wrap">🚢</div>
+          <div class="product-content">
+            <h3 class="product-heading">Круизы мировых линий</h3>
+            <p class="product-text">
+              Прямой доступ к предложениям круизных компаний через удобную платформу клуба: MSC, Costa, Carnival, Royal Caribbean и др.
+            </p>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon-wrap">💰</div>
+          <div class="product-content">
+            <h3 class="product-heading">Travel Value & Бонусы</h3>
+            <p class="product-text">
+              Специальные клубные условия и Reward Points, которые накапливаются и используются для уменьшения стоимости подходящих бронирований.
+            </p>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon-wrap">🌍</div>
+          <div class="product-content">
+            <h3 class="product-heading">Тысячи направлений</h3>
+            <p class="product-text">
+              Выбор круизов по всему миру: Средиземное море, греческие острова, норвежские фьорды, Канары, Персидский залив и Карибы.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 4: ПОКАЖУ НА РЕАЛЬНОМ ПРИМЕРЕ
+         ====================================================================== -->
+    <div class="section-block">
+      <div class="section-badge">РЕАЛЬНЫЙ РАСЧЕТ</div>
+      <h2 class="section-title">Покажу на реальном примере</h2>
+      <p class="section-subtitle">
+        Не абстрактные обещания «до 50% скидки», а прозрачный расчет стоимости на реальном маршруте:
+      </p>
+
+      <div class="calc-card">
+        <div class="calc-header">
+          <div class="calc-header-icon">🚢</div>
+          <div class="calc-header-text">
+            <h4>Средиземноморье (Италия • Франция • Испания)</h4>
+            <span>7 ночей на круизном лайнере на двоих</span>
+          </div>
+        </div>
+
+        <div class="calc-rows">
+          <div class="calc-row old-price">
+            <span>Обычная рыночная стоимость:</span>
+            <span class="calc-value">$1,650</span>
+          </div>
+          <div class="calc-row">
+            <span>Стоимость в системе клуба:</span>
+            <span class="calc-value">$1,240</span>
+          </div>
+          <div class="calc-row points-row">
+            <span>Зачет баллов (Reward Points):</span>
+            <span class="calc-value">-$400</span>
+          </div>
+        </div>
+
+        <div class="calc-divider"></div>
+
+        <div class="calc-total-row">
+          <span class="calc-total-label">Итого к оплате участником:</span>
+          <span class="calc-total-price">$840</span>
+        </div>
+
+        <p class="calc-disclaimer">
+          * Условия и размер применяемых Reward Points зависят от плана членства, конкретного бронирования и актуальных правил программы.
+        </p>
+      </div>
+
+      <button class="btn-cta-anchor" style="margin-top: 16px;" onclick="scrollToClubForm(event)">
+        Рассчитать условия под мой маршрут
+      </button>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 5: ПОЧЕМУ Я ЭТИМ ПОЛЬЗУЮСЬ (ТАТЬЯНА СКОРИК)
+         ====================================================================== -->
+    <div class="section-block">
+      <div class="section-badge">ЛИЧНЫЙ ОПЫТ</div>
+      <h2 class="section-title">Я не просто рассказываю — я сама пользуюсь клубом 8 лет</h2>
+      <p class="section-subtitle">
+        Для меня это проверенный образ жизни, десятки посещенных стран и сотни счастливых воспоминаний.
+      </p>
+
+      <div class="photo-grid">
+        <div class="photo-card">
+          <img src="assets/tatiana.jpg" alt="Татьяна Скорик в круизе" loading="lazy">
+          <div class="photo-card-caption">Средиземноморье • Лайнер MSC</div>
+        </div>
+        <div class="photo-card">
+          <img src="2026-09-21 15.02.40.jpg" alt="Круизный отдых" loading="lazy">
+          <div class="photo-card-caption">Греческие острова • Costa</div>
+        </div>
+        <div class="photo-card">
+          <img src="assets/og-image.jpg" alt="Круизы по миру" loading="lazy">
+          <div class="photo-card-caption">Норвежские фьорды</div>
+        </div>
+        <div class="photo-card">
+          <img src="assets/video-preview.jpeg" alt="Отдых с семьей" loading="lazy">
+          <div class="photo-card-caption">Канарские острова • Семья</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 6: СКОЛЬКО СТОИТ УЧАСТИЕ?
+         ====================================================================== -->
+    <div class="section-block">
+      <div class="section-badge">ПРОЗРАЧНОСТЬ</div>
+      <h2 class="section-title">Сколько стоит участие?</h2>
+      
+      <div class="price-card">
+        <div class="price-value-wrap">
+          <span class="price-number">от $50</span>
+          <span class="price-period">/ в месяц</span>
+        </div>
+        <p class="price-desc">
+          В клубе действует несколько вариантов членства. Каждый доллар взноса конвертируется в бонусные баллы Reward Points для уменьшения стоимости поездок. Я помогу подобрать план, выгодный именно вам.
+        </p>
+        <button class="btn-cta-anchor" onclick="scrollToClubForm(event)">
+          Узнать варианты членства
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 7: КОМУ ПОДХОДИТ, А КОМУ ТОЧНО НЕТ
+         ====================================================================== -->
+    <div class="section-block">
+      <div class="section-badge">КВАЛИФИКАЦИЯ</div>
+      <h2 class="section-title">Кому подходит клуб?</h2>
+      <p class="section-subtitle">
+        Мы ценим честность и открыто говорим, кому наш формат подходит идеально, а кому стоит выбрать другой вариант отдыха:
+      </p>
+
+      <div class="fit-grid">
+        <div class="fit-card fit-yes">
+          <h3 class="fit-card-title">✓ Вам точно подойдёт клуб, если:</h3>
+          <ul class="fit-list">
+            <li class="fit-item">
+              <span class="fit-bullet">✓</span>
+              <span>Вы любите путешествовать и планируете круизы в отпуске;</span>
+            </li>
+            <li class="fit-item">
+              <span class="fit-bullet">✓</span>
+              <span>Хотите получать больше travel value и выгоды за свои расходы;</span>
+            </li>
+            <li class="fit-item">
+              <span class="fit-bullet">✓</span>
+              <span>Готовы заранее планировать свои путешествия;</span>
+            </li>
+            <li class="fit-item">
+              <span class="fit-bullet">✓</span>
+              <span>Хотите спокойно и детально разобраться в условиях клуба.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="fit-card fit-no">
+          <h3 class="fit-card-title">✕ Это НЕ для вас, если:</h3>
+          <ul class="fit-list">
+            <li class="fit-item">
+              <span class="fit-bullet">✕</span>
+              <span>Вы ищете «полностью бесплатные путешествия без условий»;</span>
+            </li>
+            <li class="fit-item">
+              <span class="fit-bullet">✕</span>
+              <span>Не готовы платить за клубное членство;</span>
+            </li>
+            <li class="fit-item">
+              <span class="fit-bullet">✕</span>
+              <span>Хотите просто купить один тур «на завтра» без участия в клубе.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 8: ЧАСТЫЕ ВОПРОСЫ (FAQ)
+         ====================================================================== -->
+    <div class="section-block">
+      <div class="section-badge">ОТВЕТЫ НА ВОПРОСЫ</div>
+      <h2 class="section-title">Частые вопросы</h2>
+
+      <div class="faq-accordion">
+        <div class="faq-item active">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Нужно ли мне обязательно становиться партнёром или кого-то звать?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            <strong>Нет! Это главное отличие.</strong> Клубное членство для путешествий и партнёрская программа — это две совершенно разные сущности. Более 90% участников клуба — обычные туристы, которые просто выгодно бронируют круизы для себя и своих близких.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Сколько стоит членство в клубе?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Базовое членство начинается от $50 в месяц в зависимости от выбранного плана. Все взносы конвертируются в Reward Points на вашем персональном счете.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Как используются и начисляются Reward Points?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Баллы накапливаются на счете и списываются при бронировании круиза прямо на платформе клуба, уменьшая сумму фактической доплаты за каюту.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Можно ли бронировать круиз для всей семьи?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Да! Член клуба оформляет бронь на себя и может поселить в каюту свою семью (супруга, детей, родственников) или друзей на клубных условиях.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Какие круизные линии и направления доступны?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            В каталоге доступны тысячи маршрутов ведущих мировых линий: MSC Cruises, Costa, Royal Caribbean, Carnival, Norwegian Cruise Line, Celebrity и других по всему миру.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Можно ли сначала просто быть участником и не заниматься бизнесом?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Конечно. Вы получаете все привилегии путешественника. А о партнерстве вы можете подумать позже — или не думать вовсе, если вам интересен только отдых.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 9: ПАРТНЕРСКИЙ БИЗНЕС (ОТДЕЛЬНЫЙ БЛОК ВНИЗУ)
+         ====================================================================== -->
+    <div class="section-block">
+      <div class="business-card">
+        <span class="business-card-badge">ДЛЯ ТЕХ, КОМУ ИНТЕРЕСЕН БИЗНЕС</span>
+        <h3 class="business-card-title">А если вам интересен не только отдых, но и возможность зарабатывать?</h3>
+        <p class="business-card-text">
+          Участники могут отдельно подключить партнёрскую программу и получать вознаграждение за привлечение новых участников согласно официальному маркетинг-плану.
+        </p>
+        <button class="btn-business-link" onclick="openBusinessModal(event)">
+          Узнать о партнёрской программе →
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         БЛОК 10: ФИНАЛЬНАЯ ФОРМА
+         ====================================================================== -->
+    <div class="section-block" style="margin-top: 32px; width: 100%;">
+      <div class="form-card" id="clubForm">
+        <div class="form-header">
+          <h2 class="form-title">Хотите понять, подходит ли вам клуб?</h2>
+          <p class="form-subtitle">
+            Оставьте контакт — Татьяна или её координатор свяжутся с вами в выбранном мессенджере, ответят на вопросы и покажут актуальные условия.
+          </p>
+        </div>
+
+        <form id="leadForm" onsubmit="handleFormSubmit(event)">
+          <!-- Field 1: Name -->
+          <div class="form-group">
+            <label for="userNameInput" class="form-label">Ваше имя</label>
+            <input 
+              type="text" 
+              id="userNameInput" 
+              name="name" 
+              class="form-input" 
+              placeholder="Например, Анна" 
+              required
+              autocomplete="name"
+            >
+          </div>
+
+          <!-- Field 2: Messenger Toggle -->
+          <div class="form-group">
+            <label class="form-label">Куда вам удобнее написать?</label>
+            <div class="messenger-segmented">
+              <div class="messenger-opt active" data-messenger="tg" onclick="selectMessenger('tg')">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/></svg>
+                <span>Telegram</span>
+              </div>
+              <div class="messenger-opt" data-messenger="wa" onclick="selectMessenger('wa')">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7.02 8.48 7.02 9.69C7.02 10.9 7.9 12.06 8.02 12.23C8.14 12.4 9.73 14.86 12.18 15.92C12.76 16.17 13.22 16.32 13.57 16.43C14.16 16.62 14.7 16.59 15.12 16.53C15.6 16.46 16.58 15.94 16.79 15.36C17 14.78 17 14.28 16.93 14.18C16.87 14.07 16.71 14.01 16.46 13.89C16.22 13.76 15 13.16 14.77 13.08C14.55 13 14.38 12.96 14.22 13.21C14.05 13.46 13.58 14.01 13.44 14.18C13.3 14.34 13.15 14.36 12.91 14.24C12.66 14.11 11.87 13.85 10.93 13.01C10.2 12.36 9.71 11.55 9.56 11.3C9.42 11.06 9.55 10.92 9.67 10.8C9.78 10.69 9.92 10.51 10.05 10.36C10.17 10.22 10.21 10.11 10.3 9.94C10.38 9.78 10.34 9.63 10.28 9.51C10.22 9.39 9.73 8.18 9.52 7.68C9.33 7.19 9.12 7.26 8.97 7.25C8.82 7.24 8.68 7.33 8.53 7.33Z"/></svg>
+                <span>WhatsApp</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Field 3: Contact -->
+          <div class="form-group">
+            <label for="userContactInput" class="form-label" id="contactLabel">Ваш контакт в Telegram</label>
+            <input 
+              type="text" 
+              id="userContactInput" 
+              name="contact" 
+              class="form-input" 
+              placeholder="@username или номер телефона" 
+              required
+              autocomplete="tel"
+            >
+          </div>
+
+          <!-- Checkbox: Consent -->
+          <label class="checkbox-row" for="consentCheckbox">
+            <input type="checkbox" id="consentCheckbox" name="consent" required checked>
+            <span class="custom-checkbox">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </span>
+            <span class="checkbox-label-text">
+              Я согласна на обработку данных для связи со мной. 
+              <a href="javascript:void(0)" onclick="openPrivacyModal(event)">Политика конфиденциальности</a>
+            </span>
+          </label>
+
+          <!-- Submit -->
+          <button type="submit" id="submitLeadBtn" class="btn-submit">
+            <span class="spinner" id="btnSpinner"></span>
+            <span id="btnText">ПОЛУЧИТЬ УСЛОВИЯ КЛУБА</span>
+          </button>
+
+          <span class="cta-subnote" style="margin-top: 12px;">
+            Без обязательств. Вы сначала получаете информацию и принимаете решение самостоятельно.
+          </span>
+        </form>
+      </div>
+
+      <!-- Footer Disclaimer -->
+      <footer class="legal-footer">
+        <p class="disclaimer-text">
+          Результаты у каждого участника индивидуальны. Условия клубного членства, расчёты Reward Points и стоимость круизов регулируются официальными правилами программы.
+        </p>
+        <button type="button" class="privacy-link" onclick="openPrivacyModal(event)">
+          Политика конфиденциальности
+        </button>
+      </footer>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL: PRIVACY POLICY
+       ======================================================================== -->
+  <div class="modal-backdrop" id="privacyModal" onclick="handleBackdropClick(event, 'privacyModal')">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="privacyTitle">Политика конфиденциальности</h3>
+        <button class="modal-close-btn" onclick="closePrivacyModal()" aria-label="Закрыть">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>1. Общие положения</h4>
+        <p>Настоящая Политика конфиденциальности определяет порядок обработки персональных данных посетителей лендинга независимого партнера круизного клуба Татьяны Скорик.</p>
+        <h4>2. Цели обработки</h4>
+        <p>Сбор данных (имя, контакт Telegram/WhatsApp) осуществляется исключительно для предоставления персональной консультации по условиям участия в круизном клубе.</p>
+        <h4>3. Безопасность</h4>
+        <p>Данные никогда не передаются и не продаются третьим лицам. Вы можете отозвать согласие в любой момент.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-close" onclick="closePrivacyModal()">Понятно</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: BUSINESS EXPLANATION
+       ======================================================================== -->
+  <div class="modal-backdrop" id="businessModal" onclick="handleBackdropClick(event, 'businessModal')">
+    <div class="modal-dialog" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 class="modal-title">Партнёрская программа клуба</h3>
+        <button class="modal-close-btn" onclick="closeBusinessModal()" aria-label="Закрыть">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Разделение членства и бизнеса</h4>
+        <p>
+          В круизном клубе членство туриста (Member) и партнерство (Partner) полностью разделены. Туристы просто накапливают баллы и ездят в круизы.
+        </p>
+        <p style="margin-top: 10px;">
+          Партнёры получают отдельную лицензию и возможность развивать международный бизнес, совмещая путешествия и удаленный доход.
+        </p>
+        <p style="margin-top: 10px;">
+          Если вы хотите узнать маркетинг-план и детали бизнеса, просто укажите об этом в заявке, и Татьяна проведет персональный разбор.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cta-anchor" style="padding: 12px 20px; font-size: 14px;" onclick="closeBusinessModal(); scrollToClubForm();">
+          Заполнить форму заявки
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: SUCCESS SUBMISSION
+       ======================================================================== -->
+  <div class="modal-backdrop" id="successModal" onclick="handleBackdropClick(event, 'successModal')">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <div class="modal-header" style="border-bottom: none; padding: 12px 16px 0; justify-content: flex-end;">
+        <button class="modal-close-btn" onclick="closeSuccessModal()" aria-label="Закрыть">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 0 20px 24px;">
+        <div class="success-icon-wrap">
+          <svg viewBox="0 0 24 24" class="success-icon-check"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <h3 class="success-modal-title" id="successTitle">Заявка успешно принята!</h3>
+        <p class="success-modal-desc">
+          Спасибо! Татьяна или её координатор свяжутся с вами в выбранном мессенджере в ближайшее время, чтобы ответить на вопросы и прислать актуальные условия.
+        </p>
+        <button 
+          class="btn-modal-close" 
+          onclick="closeSuccessModal()"
+          style="width: 100%; padding: 14px; background: rgba(0,0,0,0.06); color: #475569; font-size: 14.5px; border-radius: var(--radius-btn);"
+        >
+          Отлично, жду сообщения
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       JAVASCRIPT
+       ======================================================================== -->
+  <script>
+    // 1. IAB Scroll unlock
+    (function initScrollUnlock() {
+      function unlock() {
+        document.documentElement.classList.remove('scroll-locked');
+        const style = document.getElementById('iab-scroll-lock');
+        if (style) style.remove();
+        window.removeEventListener('touchstart', unlock);
+        window.removeEventListener('scroll', unlock);
+        window.removeEventListener('click', unlock);
+      }
+      window.addEventListener('touchstart', unlock, { passive: true });
+      window.addEventListener('scroll', unlock, { passive: true });
+      window.addEventListener('click', unlock, { passive: true });
+      setTimeout(unlock, 1200);
+    })();
+
+    // 2. Active Messenger Selection
+    let currentMessenger = 'tg';
+    function selectMessenger(m) {
+      currentMessenger = m;
+      document.querySelectorAll('.messenger-opt').forEach(el => {
+        el.classList.toggle('active', el.dataset.messenger === m);
+      });
+      const label = document.getElementById('contactLabel');
+      const input = document.getElementById('userContactInput');
+      if (m === 'tg') {
+        label.textContent = 'Ваш контакт в Telegram';
+        input.placeholder = '@username или номер телефона';
+      } else {
+        label.textContent = 'Ваш номер в WhatsApp';
+        input.placeholder = '+7 999 123-45-67';
+      }
+    }
+
+    // 3. Smooth Scroll to Form
+    function scrollToClubForm(e) {
+      if (e) e.preventDefault();
+      const form = document.getElementById('clubForm');
+      if (form) {
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const nameInput = document.getElementById('userNameInput');
+        if (nameInput) setTimeout(() => nameInput.focus(), 600);
+      }
+    }
+
+    // 4. Sticky CTA Bar visibility on scroll
+    window.addEventListener('scroll', function() {
+      const bar = document.getElementById('stickyCtaBar');
+      const form = document.getElementById('clubForm');
+      if (!bar) return;
+
+      const scrollY = window.scrollY || window.pageYOffset;
+      const formRect = form ? form.getBoundingClientRect() : null;
+
+      // Show after 350px scroll, hide if near form
+      if (scrollY > 350) {
+        if (formRect && formRect.top < window.innerHeight && formRect.bottom > 0) {
+          bar.classList.remove('visible');
+        } else {
+          bar.classList.add('visible');
+        }
+      } else {
+        bar.classList.remove('visible');
+      }
+    }, { passive: true });
+
+    // 5. FAQ Accordion Toggle
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
+    }
+
+    // 6. Visitor ID & Marketing Tracking
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+      return match ? decodeURIComponent(match[3]) : null;
+    }
+
+    function getOrCreateVisitorId() {
+      const VID_KEY = 'skoryk_vid';
+      let vid = null;
+      try { vid = localStorage.getItem(VID_KEY) || getCookie(VID_KEY); } catch (e) {}
+      if (!vid || vid.length < 8) {
+        vid = 'vid_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
+        try { localStorage.setItem(VID_KEY, vid); } catch (e) {}
+        try { document.cookie = `${VID_KEY}=${encodeURIComponent(vid)}; path=/; max-age=31536000; SameSite=Lax`; } catch (e) {}
+      }
+      return vid;
+    }
+
+    function getMarketingData() {
+      const params = new URLSearchParams(window.location.search);
+      const allParams = {};
+      for (const [key, value] of params.entries()) {
+        allParams[key] = value;
+      }
+      const fbclid = allParams.fbclid || null;
+      const fbp = getCookie('_fbp') || null;
+      let fbc = getCookie('_fbc') || null;
+      if (!fbc && fbclid) fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+
+      return {
+        visitorId: getOrCreateVisitorId(),
+        urlParams: allParams,
+        fbclid,
+        fbp,
+        fbc
+      };
+    }
+
+    // 7. Video Player Handling & Retention Tracking
+    let videoStartTime = null;
+    let videoWatchSeconds = 0;
+    let videoStarted = false;
+    let tracked20s = false;
+    let tracked60s = false;
+
+    function handleVideoContainerClick(e) {
+      if (e.target.closest('#playPromptWrapper') || e.target.closest('#unmuteVideoBtn')) return;
+      handlePlayVideo(e);
+    }
+
+    function handlePlayVideo(e) {
+      if (e) e.stopPropagation();
+      const video = document.getElementById('nativeVideoPlayer');
+      const poster = document.getElementById('videoPoster');
+      const quote = document.getElementById('videoQuote');
+      const topBar = document.getElementById('videoTopBar');
+      const promptWrap = document.getElementById('playPromptWrapper');
+      const unmuteBtn = document.getElementById('unmuteVideoBtn');
+
+      if (!video) return;
+
+      if (!videoStarted) {
+        videoStarted = true;
+        videoStartTime = Date.now();
+        if (typeof fbq === 'function') fbq('trackCustom', 'VideoStart');
+      }
+
+      video.style.display = 'block';
+      if (poster) poster.style.display = 'none';
+      if (quote) quote.style.display = 'none';
+      if (topBar) topBar.style.display = 'none';
+      if (promptWrap) promptWrap.style.display = 'none';
+
+      video.muted = false;
+      video.play().then(() => {
+        if (unmuteBtn) unmuteBtn.style.display = 'none';
+      }).catch(() => {
+        // Autoplay restricted with sound, try muted
+        video.muted = true;
+        video.play().then(() => {
+          if (unmuteBtn) unmuteBtn.style.display = 'flex';
+        }).catch(err => {
+          console.warn('Playback error:', err);
+        });
+      });
+    }
+
+    function handleUnmuteVideo(e) {
+      if (e) e.stopPropagation();
+      const video = document.getElementById('nativeVideoPlayer');
+      const unmuteBtn = document.getElementById('unmuteVideoBtn');
+      if (video) {
+        video.muted = false;
+        if (unmuteBtn) unmuteBtn.style.display = 'none';
+      }
+    }
+
+    const videoEl = document.getElementById('nativeVideoPlayer');
+    if (videoEl) {
+      videoEl.addEventListener('timeupdate', function() {
+        const sec = Math.floor(videoEl.currentTime);
+        videoWatchSeconds = Math.max(videoWatchSeconds, sec);
+
+        if (sec >= 20 && !tracked20s) {
+          tracked20s = true;
+          if (typeof fbq === 'function') fbq('trackCustom', 'Video20s');
+        }
+        if (sec >= 60 && !tracked60s) {
+          tracked60s = true;
+          if (typeof fbq === 'function') fbq('trackCustom', 'Video60s');
+        }
+      });
+    }
+
+    // 8. Form Submission Handler
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const nameInput = document.getElementById('userNameInput');
+      const contactInput = document.getElementById('userContactInput');
+      const consentInput = document.getElementById('consentCheckbox');
+      const submitBtn = document.getElementById('submitLeadBtn');
+      const spinner = document.getElementById('btnSpinner');
+      const btnText = document.getElementById('btnText');
+
+      const name = nameInput.value.trim();
+      const contactVal = contactInput.value.trim();
+      const consent = consentInput.checked;
+
+      if (!name) {
+        nameInput.focus();
+        nameInput.classList.add('error');
+        showToast('Пожалуйста, укажите имя');
+        return;
+      }
+      nameInput.classList.remove('error');
+
+      if (!contactVal) {
+        contactInput.focus();
+        contactInput.classList.add('error');
+        showToast('Укажите ваш контакт');
+        return;
+      }
+      contactInput.classList.remove('error');
+
+      if (!consent) {
+        showToast('Подтвердите согласие на обработку данных');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      if (spinner) spinner.style.display = 'inline-block';
+      if (btnText) btnText.textContent = 'Отправка...';
+
+      const messengerName = currentMessenger === 'tg' ? 'Telegram' : 'WhatsApp';
+      const fullContact = `${contactVal} (${messengerName})`;
+      const eventId = 'lead_club_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+      const mktData = getMarketingData();
+
+      if (typeof fbq === 'function') {
+        fbq('track', 'Lead', {
+          content_name: 'Круизы на условиях клуба',
+          content_category: 'Круизный клуб',
+          status: 'submitted'
+        }, { eventID: eventId });
+      }
+
+      try {
+        const response = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            contact: fullContact,
+            messenger: messengerName,
+            page_variant: 'club_v2',
+            consent: consent,
+            visitorId: mktData.visitorId,
+            testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
+            eventId: eventId,
+            pageUrl: window.location.href,
+            userAgent: navigator.userAgent,
+            fbp: mktData.fbp,
+            fbc: mktData.fbc,
+            fbclid: mktData.fbclid,
+            urlParams: mktData.urlParams,
+            videoStats: {
+              started: videoStarted,
+              watchedSeconds: videoWatchSeconds,
+              durationSeconds: 210,
+              completed: videoWatchSeconds >= 190
+            }
+          })
+        });
+
+        const res = await response.json().catch(() => ({}));
+        if (response.ok && res.success) {
+          document.getElementById('leadForm').reset();
+          openSuccessModal();
+        } else {
+          showToast('Заявка принята! Мы скоро свяжемся с вами.');
+          openSuccessModal();
+        }
+      } catch (err) {
+        console.warn('Submit fallback:', err);
+        openSuccessModal();
+      } finally {
+        submitBtn.disabled = false;
+        if (spinner) spinner.style.display = 'none';
+        if (btnText) btnText.textContent = 'ПОЛУЧИТЬ УСЛОВИЯ КЛУБА';
+      }
+    }
+
+    // 9. Modals & Helpers
+    function openPrivacyModal(e) {
+      if (e) e.preventDefault();
+      document.getElementById('privacyModal').style.display = 'flex';
+    }
+    function closePrivacyModal() {
+      document.getElementById('privacyModal').style.display = 'none';
+    }
+
+    function openBusinessModal(e) {
+      if (e) e.preventDefault();
+      document.getElementById('businessModal').style.display = 'flex';
+    }
+    function closeBusinessModal() {
+      document.getElementById('businessModal').style.display = 'none';
+    }
+
+    function openSuccessModal() {
+      document.getElementById('successModal').style.display = 'flex';
+    }
+    function closeSuccessModal() {
+      document.getElementById('successModal').style.display = 'none';
+    }
+
+    function handleBackdropClick(e, modalId) {
+      if (e.target.id === modalId) {
+        document.getElementById(modalId).style.display = 'none';
+      }
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      container.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => t.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
