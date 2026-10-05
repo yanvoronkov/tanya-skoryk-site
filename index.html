@@ -2699,7 +2699,7 @@
       if (btnText) btnText.textContent = 'Отправка...';
 
       const messengerName = currentMessenger === 'tg' ? 'Telegram' : 'WhatsApp';
-      const fullContact = `${contact} (${messengerName})`;
+      const cleanContact = contact.trim();
 
       // Генерируем уникальный event_id для дедупликации Browser Pixel и Conversions API
       const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
@@ -2724,8 +2724,8 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name,
-            contact: fullContact,
+            name: name.trim(),
+            contact: cleanContact,
             messenger: messengerName,
             consent,
             visitorId: mktData.visitorId,
@@ -2744,12 +2744,12 @@
         const resData = await response.json().catch(() => ({}));
 
         if (response.ok && resData.success) {
-          saveLeadProfile(name, fullContact);
+          saveLeadProfile(name.trim(), cleanContact);
           document.getElementById('leadForm').reset();
           selectMessenger('tg');
           openSuccessModal();
         } else {
-          saveLeadProfile(name, fullContact);
+          saveLeadProfile(name.trim(), cleanContact);
           console.warn('API error response:', resData);
           if (resData.message) {
             showToast('Внимание', resData.message, 'error');

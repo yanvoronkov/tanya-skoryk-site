@@ -2557,7 +2557,7 @@
       if (btnText) btnText.textContent = 'Отправка...';
 
       const messengerName = currentMessenger === 'tg' ? 'Telegram' : 'WhatsApp';
-      const fullContact = `${contactVal} (${messengerName})`;
+      const cleanContact = contactVal.trim();
       const eventId = 'lead_club_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
       const mktData = getMarketingData();
 
@@ -2579,8 +2579,8 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: name,
-            contact: fullContact,
+            name: name.trim(),
+            contact: cleanContact,
             messenger: messengerName,
             page_variant: 'club_v2',
             consent: consent,

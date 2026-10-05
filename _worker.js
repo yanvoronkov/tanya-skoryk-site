@@ -425,7 +425,21 @@ async function handleLead(request, env) {
     }
 
     const cleanName = (name && typeof name === 'string') ? name.trim() : '';
-    const cleanContact = (contact && typeof contact === 'string') ? contact.trim() : '';
+    let cleanContact = (contact && typeof contact === 'string') ? contact.trim() : '';
+    // Очищаем контакт от возможных старых суффиксов в скобках, чтобы оставался только чистый контакт
+    cleanContact = cleanContact.replace(/\s*\((?:telegram|whatsapp)\)\s*$/i, '').trim();
+
+    // Извлекаем pathname страницы (например: "/travel", "/club" или "/")
+    let pagePath = '/';
+    try {
+      if (data.pageUrl) {
+        const parsedUrl = new URL(data.pageUrl);
+        pagePath = parsedUrl.pathname || '/';
+      }
+    } catch (e) {
+      pagePath = '/';
+    }
+
     const dateFormatted = formatMoscowDate();
     const dateStr = dateFormatted + ' (МСК)';
 
@@ -490,7 +504,11 @@ async function handleLead(request, env) {
     const campaignVal = (data.urlParams && (data.urlParams.campaign_id || data.urlParams.utm_campaign)) 
       ? String(data.urlParams.campaign_id || data.urlParams.utm_campaign).trim() 
       : '';
-    const siteSource = 'tanyaskoryk.com';
+
+    // Источник сайта: Форма на сайте (Telegram) /travel или Форма на сайте (WhatsApp) /
+    const siteSource = isContactClick
+      ? `Клик (${messengerLabel}) ${pagePath}`
+      : `Форма на сайте (${messengerLabel}) ${pagePath}`;
 
     const hasPriorLead = Boolean(data.hasPriorLead || (isContactClick && (cleanName || cleanContact)));
     const hasContacts = Boolean(cleanName || cleanContact);
@@ -508,10 +526,10 @@ async function handleLead(request, env) {
       date: dateFormatted,
 
       // 2. Контактные данные
-      // Если посетитель ранее заполнил форму — имя и контакт сохраняются и не теряются!
-      // Если клик без формы — пустые строки, чтобы не затирать существующую строку в CRM
+      // Имя и чистый контакт (без приписок в скобках)
       name: cleanName,
       contact: cleanContact,
+      messenger: messengerLabel,
       has_contacts: hasContacts,
       has_prior_lead: hasPriorLead,
 
@@ -521,11 +539,7 @@ async function handleLead(request, env) {
       first_touch: dateFormatted,
       next_action: isContactClick ? 'Проверить диалог в мессенджере' : 'Связаться с клиентом',
       next_action_date: '',
-      comment: isContactClick
-        ? (cleanName 
-            ? `Клик по кнопке ${messengerLabel} (после заявки на сайте)` 
-            : `Клик по кнопке ${messengerLabel} на сайте`)
-        : 'Заявка с формы презентации на сайте',
+      comment: '', // Оставляем чистым для заполнения менеджером вручную
       rejection_reason: '',
       interest: '',
       ad_id: adId,
