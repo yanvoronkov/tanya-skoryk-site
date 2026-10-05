@@ -50,8 +50,12 @@ function extractEmail(str) {
   return match ? match[0].toLowerCase().trim() : null;
 }
 
-// Форматирование статистики просмотра видео для Telegram
+// Форматирование статистики просмотра видео для Telegram и CRM
 function formatVideoProgress(videoStats) {
+  if (videoStats && videoStats.hasVideo === false) {
+    return 'Нет видео';
+  }
+
   if (!videoStats || !videoStats.started || !videoStats.watchedSeconds || videoStats.watchedSeconds < 2) {
     return 'Не просмотрено';
   }
@@ -498,7 +502,9 @@ async function handleLead(request, env) {
     });
 
     // 2. Подготовка полей под таблицу CRM и отправка в n8n
-    const videoProgressText = formatVideoProgress(data.videoStats);
+    // Для страниц без видео (/travel, /club или явного hasVideo === false) передаем 'Нет видео'
+    const isNoVideoPage = pagePath.startsWith('/travel') || pagePath.startsWith('/club') || data.hasVideo === false || (data.videoStats && data.videoStats.hasVideo === false);
+    const videoProgressText = isNoVideoPage ? 'Нет видео' : formatVideoProgress(data.videoStats);
     const placementFormatted = formatPlacement(data.urlParams);
     const adId = (data.urlParams && data.urlParams.ad_id) ? String(data.urlParams.ad_id).trim() : '';
     const campaignVal = (data.urlParams && (data.urlParams.campaign_id || data.urlParams.utm_campaign)) 

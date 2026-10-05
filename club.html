@@ -2592,11 +2592,13 @@
             fbc: mktData.fbc,
             fbclid: mktData.fbclid,
             urlParams: mktData.urlParams,
+            hasVideo: false,
             videoStats: {
-              started: videoStarted,
-              watchedSeconds: videoWatchSeconds,
-              durationSeconds: 210,
-              completed: videoWatchSeconds >= 190
+              hasVideo: false,
+              started: false,
+              watchedSeconds: 0,
+              durationSeconds: 0,
+              completed: false
             }
           })
         });
