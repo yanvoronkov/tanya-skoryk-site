@@ -557,8 +557,10 @@ async function handleLead(request, env) {
       capi_lead_event_id: eventId
     };
 
-    // Запускаем отправку в n8n
-    const n8nPromise = sendN8nWebhook(env, n8nPayload, isTestMode);
+    // Запускаем отправку в n8n (только для лидов с формы; клики по кнопкам мессенджеров на landing-events не отправляются)
+    const n8nPromise = isContactClick
+      ? Promise.resolve({ status: 'skipped', reason: 'contact_click_disabled' })
+      : sendN8nWebhook(env, n8nPayload, isTestMode);
 
     // Дожидаемся результатов n8n и CAPI
     const [capiResult, n8nResult] = await Promise.all([capiPromise, n8nPromise]);

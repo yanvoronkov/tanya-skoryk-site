@@ -2233,6 +2233,9 @@
         label.textContent = 'Ваш номер в WhatsApp';
         input.placeholder = '+7 999 123-45-67';
       }
+      if (typeof sendVisitorAnalytics === 'function') {
+        sendVisitorAnalytics('button_click', { clicked_button: m === 'tg' ? 'Telegram' : 'WhatsApp' });
+      }
     }
 
     // Фото-галерея (Lightbox)
@@ -2337,6 +2340,105 @@
         fbc
       };
     }
+
+    // ========================================================================
+    // АНАЛИТИКА ПОСЕТИТЕЛЕЙ (n8n Webhook: landing-analitics)
+    // ========================================================================
+    const ANALYTICS_WEBHOOK_URL = 'https://automations.inetskills.ru/webhook/landing-analitics';
+
+    function formatAnalyticsDate(d) {
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+
+    if (!sessionStorage.getItem('skoryk_visit_ts')) {
+      const nowTs = Date.now();
+      sessionStorage.setItem('skoryk_visit_ts', String(nowTs));
+      sessionStorage.setItem('skoryk_visit_date_str', formatAnalyticsDate(new Date(nowTs)));
+    }
+
+    function sendVisitorAnalytics(eventType, extraData = {}) {
+      try {
+        const mkt = getMarketingData();
+        const visitTimestamp = Number(sessionStorage.getItem('skoryk_visit_ts') || Date.now());
+        const timeOnSite = Math.max(1, Math.round((Date.now() - visitTimestamp) / 1000));
+        const visitDateStr = sessionStorage.getItem('skoryk_visit_date_str') || formatAnalyticsDate(new Date(visitTimestamp));
+        const clickedButton = extraData.clicked_button || sessionStorage.getItem('skoryk_clicked_button') || 'Нет';
+        if (extraData.clicked_button) {
+          sessionStorage.setItem('skoryk_clicked_button', extraData.clicked_button);
+        }
+
+        const payload = {
+          visitor_ID: mkt.visitorId,
+          event_type: eventType,
+          visit_date: visitDateStr,
+          last_active_date: formatAnalyticsDate(new Date()),
+          source: (mkt.urlParams && (mkt.urlParams.utm_source || mkt.urlParams.placement)) || (mkt.fbclid ? 'Facebook Ads' : 'Прямой заход'),
+          campaign: (mkt.urlParams && (mkt.urlParams.utm_campaign || mkt.urlParams.campaign_name)) || '',
+          ad_id: (mkt.urlParams && (mkt.urlParams.ad_id || mkt.urlParams.utm_content)) || '',
+          video_started: 'Нет',
+          video_start_time: '',
+          video_watch_seconds: 0,
+          video_duration_seconds: 0,
+          video_percent: 0,
+          video_percent_formatted: '0%',
+          video_status: 'Не запускал',
+          clicked_button: clickedButton,
+          time_on_site_seconds: timeOnSite,
+          page_url: window.location.href,
+          fbc: mkt.fbc || '',
+          fbp: mkt.fbp || '',
+          ...extraData
+        };
+
+        const jsonStr = JSON.stringify(payload);
+
+        if (typeof fetch === 'function') {
+          fetch(ANALYTICS_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: jsonStr,
+            keepalive: true
+          }).catch(() => {
+            if (navigator.sendBeacon) {
+              const blob = new Blob([jsonStr], { type: 'application/json' });
+              navigator.sendBeacon(ANALYTICS_WEBHOOK_URL, blob);
+            }
+          });
+          return;
+        }
+
+        if (navigator.sendBeacon) {
+          const blob = new Blob([jsonStr], { type: 'application/json' });
+          navigator.sendBeacon(ANALYTICS_WEBHOOK_URL, blob);
+        }
+      } catch (err) {
+        console.warn('Analytics tracking error:', err);
+      }
+    }
+
+    let lastExitSendTime = 0;
+    function handlePageExitAnalytics() {
+      const now = Date.now();
+      if (now - lastExitSendTime < 3000) return;
+      lastExitSendTime = now;
+      sendVisitorAnalytics('page_exit');
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        handlePageExitAnalytics();
+      }
+    });
+    window.addEventListener('pagehide', handlePageExitAnalytics);
+    window.addEventListener('beforeunload', handlePageExitAnalytics);
+
+    setTimeout(() => {
+      if (!sessionStorage.getItem('skoryk_pv_sent_travel')) {
+        sessionStorage.setItem('skoryk_pv_sent_travel', '1');
+        sendVisitorAnalytics('page_view');
+      }
+    }, 2000);
 
     // 7. Video Player Handling & Retention Tracking
     let videoStartTime = null;
@@ -2465,6 +2567,11 @@
           content_category: 'Круизный клуб',
           status: 'submitted'
         }, { eventID: eventId });
+      }
+
+      // Отправка в аналитику посетителей (landing-analitics)
+      if (typeof sendVisitorAnalytics === 'function') {
+        sendVisitorAnalytics('button_click', { clicked_button: 'Форма заявки' });
       }
 
       try {

@@ -2267,37 +2267,8 @@
           }
           sessionStorage.setItem('wa_main_click_time', String(now));
 
-          // Отправка в аналитику посетителей
+          // Отправка события клика исключительно в вебхук аналитики (landing-analitics)
           sendVisitorAnalytics('button_click', { clicked_button: 'WhatsApp' });
-
-          // Отправка фонового уведомления в Telegram и Meta CAPI через бэкенд
-          const mktData = getMarketingData();
-          const videoStats = getVideoStats();
-          const leadProfile = getLeadProfile();
-
-          fetch('/api/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true,
-            body: JSON.stringify({
-              type: 'contact',
-              messenger: 'whatsapp',
-              action: 'whatsapp_click',
-              name: leadProfile ? leadProfile.name : '',
-              contact: leadProfile ? leadProfile.contact : '',
-              hasPriorLead: Boolean(leadProfile),
-              visitorId: mktData.visitorId,
-              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
-              eventId: eventId,
-              pageUrl: window.location.href,
-              userAgent: navigator.userAgent,
-              fbp: mktData.fbp,
-              fbc: mktData.fbc,
-              fbclid: mktData.fbclid,
-              urlParams: mktData.urlParams,
-              videoStats: videoStats
-            })
-          }).catch((err) => console.warn('WA click notify error:', err));
         });
       }
 
@@ -2308,41 +2279,12 @@
             fbq('track', 'Contact', { content_name: 'Кнопка WhatsApp (Окно успеха)' });
           }
 
-          const mktData = getMarketingData();
-          const videoStats = getVideoStats();
-          const leadProfile = getLeadProfile();
-          const eventId = 'contact_wa_suc_' + Date.now();
-
-          // Отправка в аналитику посетителей
+          // Отправка события клика исключительно в вебхук аналитики (landing-analitics)
           sendVisitorAnalytics('button_click', { clicked_button: 'WhatsApp (Окно успеха)' });
-
-          fetch('/api/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true,
-            body: JSON.stringify({
-              type: 'contact',
-              messenger: 'whatsapp',
-              action: 'whatsapp_success_click',
-              name: leadProfile ? leadProfile.name : '',
-              contact: leadProfile ? leadProfile.contact : '',
-              hasPriorLead: true,
-              visitorId: mktData.visitorId,
-              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
-              eventId: eventId,
-              pageUrl: window.location.href,
-              userAgent: navigator.userAgent,
-              fbp: mktData.fbp,
-              fbc: mktData.fbc,
-              fbclid: mktData.fbclid,
-              urlParams: mktData.urlParams,
-              videoStats: videoStats
-            })
-          }).catch(() => {});
         });
       }
 
-      // 5. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel и уведомление в Telegram)
+      // 5. Отслеживание кликов по кнопкам Telegram (событие Contact в Meta Pixel и аналитика)
       const mainTgBtn = document.getElementById('mainTgBtn');
       if (mainTgBtn) {
         mainTgBtn.addEventListener('click', () => {
@@ -2363,37 +2305,8 @@
           }
           sessionStorage.setItem('tg_main_click_time', String(now));
 
-          // Отправка в аналитику посетителей
+          // Отправка события клика исключительно в вебхук аналитики (landing-analitics)
           sendVisitorAnalytics('button_click', { clicked_button: 'Telegram' });
-
-          // Отправка фонового уведомления в Telegram и Meta CAPI через бэкенд
-          const mktData = getMarketingData();
-          const videoStats = getVideoStats();
-          const leadProfile = getLeadProfile();
-
-          fetch('/api/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true,
-            body: JSON.stringify({
-              type: 'contact',
-              messenger: 'telegram',
-              action: 'telegram_click',
-              name: leadProfile ? leadProfile.name : '',
-              contact: leadProfile ? leadProfile.contact : '',
-              hasPriorLead: Boolean(leadProfile),
-              visitorId: mktData.visitorId,
-              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
-              eventId: eventId,
-              pageUrl: window.location.href,
-              userAgent: navigator.userAgent,
-              fbp: mktData.fbp,
-              fbc: mktData.fbc,
-              fbclid: mktData.fbclid,
-              urlParams: mktData.urlParams,
-              videoStats: videoStats
-            })
-          }).catch((err) => console.warn('TG click notify error:', err));
         });
       }
 
@@ -2404,37 +2317,8 @@
             fbq('track', 'Contact', { content_name: 'Кнопка Telegram (Окно успеха)' });
           }
 
-          const mktData = getMarketingData();
-          const videoStats = getVideoStats();
-          const leadProfile = getLeadProfile();
-          const eventId = 'contact_tg_suc_' + Date.now();
-
-          // Отправка в аналитику посетителей
+          // Отправка события клика исключительно в вебхук аналитики (landing-analitics)
           sendVisitorAnalytics('button_click', { clicked_button: 'Telegram (Окно успеха)' });
-
-          fetch('/api/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true,
-            body: JSON.stringify({
-              type: 'contact',
-              messenger: 'telegram',
-              action: 'telegram_success_click',
-              name: leadProfile ? leadProfile.name : '',
-              contact: leadProfile ? leadProfile.contact : '',
-              hasPriorLead: true,
-              visitorId: mktData.visitorId,
-              testMode: Boolean(mktData.urlParams && (mktData.urlParams.test || mktData.urlParams.test_n8n)),
-              eventId: eventId,
-              pageUrl: window.location.href,
-              userAgent: navigator.userAgent,
-              fbp: mktData.fbp,
-              fbc: mktData.fbc,
-              fbclid: mktData.fbclid,
-              urlParams: mktData.urlParams,
-              videoStats: videoStats
-            })
-          }).catch(() => {});
         });
       }
 
