@@ -2020,6 +2020,7 @@
         </div>
 
         <form id="leadForm" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" name="messenger" id="selectedMessengerInput" value="Telegram">
           <!-- Field 1: Name -->
           <div class="form-group">
             <label for="userNameInput" class="form-label">Ваше имя</label>
@@ -2220,6 +2221,10 @@
     let currentMessenger = 'tg';
     function selectMessenger(m) {
       currentMessenger = m;
+      const hiddenInput = document.getElementById('selectedMessengerInput');
+      if (hiddenInput) {
+        hiddenInput.value = m === 'wa' ? 'WhatsApp' : 'Telegram';
+      }
       document.querySelectorAll('.messenger-opt').forEach(el => {
         el.classList.toggle('active', el.dataset.messenger === m);
       });
@@ -2555,7 +2560,8 @@
       if (spinner) spinner.style.display = 'inline-block';
       if (btnText) btnText.textContent = 'Отправка...';
 
-      const messengerName = currentMessenger === 'tg' ? 'Telegram' : 'WhatsApp';
+      const hiddenInput = document.getElementById('selectedMessengerInput');
+      const messengerName = (hiddenInput && hiddenInput.value) || (currentMessenger === 'wa' ? 'WhatsApp' : 'Telegram');
       const cleanContact = contactVal.trim();
       const eventId = 'lead_club_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
       const mktData = getMarketingData();

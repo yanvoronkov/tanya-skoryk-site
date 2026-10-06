@@ -400,7 +400,8 @@ async function handleLead(request, env) {
   try {
     const data = await request.json();
     const isContactClick = data.type === 'contact' || data.action === 'telegram_click' || data.action === 'whatsapp_click';
-    const isWhatsApp = data.messenger === 'whatsapp' || data.action === 'whatsapp_click';
+    const rawMessenger = String(data.messenger || '').toLowerCase().trim();
+    const isWhatsApp = rawMessenger === 'whatsapp' || rawMessenger === 'wa' || data.action === 'whatsapp_click';
     const messengerLabel = isWhatsApp ? 'WhatsApp' : 'Telegram';
     const { name, contact, consent } = data;
 
